@@ -1,0 +1,10 @@
+Package: openalpr-hotlistimport
+Version: 1.0.1-1
+Section: web
+Priority: optional
+Architecture: all
+Depends: debconf, python2.7, python-httplib2, cron, 
+         python-yaml, python-requests
+Maintainer: Matthew Hill <matthill@openalpr.com>
+Description: OpenALPR Hotlist Import
+ Parses the State Hotlist and imports to OpenALPR daily

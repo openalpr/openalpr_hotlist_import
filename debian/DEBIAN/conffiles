@@ -1,0 +1,2 @@
+/etc/cron.d/openalpr-hotlist
+/etc/openalpr/hotlist.yaml.sample

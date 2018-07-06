@@ -1,0 +1,4 @@
+.idea/
+*.pyc
+debian/usr
+debian/etc
