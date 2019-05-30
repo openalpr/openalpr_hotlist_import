@@ -5,6 +5,8 @@ server_base_url: http://localhost:9001
 
 company_id: yourcompanyid
 
+hotlist_parser: ca_doj_clew
+
 temp_dat_file: /tmp/hotlistimport.dat
 temp_csv_file: /tmp/hotlistimport.csv
 
@@ -37,14 +39,14 @@ alert_types:
   - name: Stolen Vehicle
     openalpr_list_id: 1
     match_strategy: exact
-    hotlist_url: http://localhost:9099/svs.tbl
+    hotlist_path: http://localhost:9099/svs.tbl
 
   - name: Felony Vehicles
     openalpr_list_id: 2
     match_strategy: exact
-    hotlist_url: http://localhost:9099/sfr.tbl
+    hotlist_path: http://localhost:9099/sfr.tbl
 
   - name: Stolen License Plates
     openalpr_list_id: 3
     match_strategy: exact
-    hotlist_url: http://localhost:9099/slr.tbl
+    hotlist_path: http://localhost:9099/slr.tbl

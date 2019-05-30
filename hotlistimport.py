@@ -8,12 +8,13 @@ import sys
 import time
 import json
 from logging.handlers import RotatingFileHandler
-import re
 import requests
 import urllib
 import smtplib
 from email.mime.text import MIMEText
 import traceback
+from shutil import copyfile
+from parsers import factory
 
 def send_email(config_obj, subject, message):
     if 'smtp_server' not in config_obj or config_obj['smtp_server'] is None or config_obj['smtp_server'].strip() == '':
@@ -55,35 +56,6 @@ def get_color(config_obj, color):
 
     return color
 
-def parse_hotlist_line(raw_line, list_name, config_obj):
-    # Example:
-    # plate     state/vehicle type  alert_list-vehicle-color
-    # 0         ILPC VMELRYEL/BLK
-    #pieces = raw_line.split()
-
-    fields = raw_line.split(' ')
-    plate_number = fields[0].strip()
-    state = fields[1][0:2].strip()
-    county_code = fields[1][2:4]
-    date_of_loss = fields[1][4:].strip()
-
-
-    # Stolen vehicle, Green Honda Passenger Car (State)
-    description = '%s State: %s County: %s Lost on: %s' % (list_name, state, county_code, date_of_loss)
-
-    # Remove double spaces for empty stuff
-    description = re.sub(' +', ' ', description)
-
-    print description
-    return {
-        'plate': plate_number.upper().replace("-", "").replace(" ", ""),
-        'state': state,
-        'county_code': county_code,
-        'list_type': list_name,
-        'date_of_loss': date_of_loss,
-        'description': description
-        #'vehicle_other_info': vehicle_other_info
-    }
 
 
 if __name__ == "__main__":
@@ -146,52 +118,28 @@ if __name__ == "__main__":
     for alert_type in config_data['alert_types']:
         try:
 
-            # First download the list for this alert list
-            urllib.urlretrieve (alert_type['hotlist_url'], config_data['temp_dat_file'])
+            if 'hotlist_path' in alert_type:
+                hotlist_path = alert_type['hotlist_path']
+            else:
+                hotlist_path = config_data['hotlist_path']
+
+            # First get the hotlist data (either from the network or a local file)
+            # Copy the file to a temporary file to start working with it
+            if hotlist_path.lower().startswith('http://') or hotlist_path.lower().startswith('https://'):
+                # This is a URL, try to download it
+                urllib.urlretrieve (hotlist_path, config_data['temp_dat_file'])
+            else:
+                if not os.path.isfile(hotlist_path):
+                    logger.error("Could not find hotlist file: %s" % (hotlist_path))
+                    sys.exit(1)
+
+                copyfile(hotlist_path, config_data['temp_dat_file'])
+
+            hotlistparser = factory.get_parser(config_data)
 
             logger.info("processing alert list for " + alert_type['name'])
-            with open(config_data['temp_csv_file'], 'w') as outcsv:
 
-                with open(config_data['temp_dat_file'], 'r') as conffile:
-
-                    dup_filter = {}
-
-                    outcsv.write("Plate Number,Description,Match Strategy\n")
-                    line_count = 0
-                    for line in conffile:
-                        line_count += 1
-
-                        # Skip the first (header) line
-                        if line_count <= 1:
-                            continue
-
-                        # Skip the last (footer) line
-                        if line.startswith('TOTAL RECORD'):
-                            continue
-
-                        try:
-                            line_content = parse_hotlist_line(line, alert_type['name'], config_data)
-                        except Exception as e:
-                            logger.exception("Failed to parse line: %d -- %s" % (line_count, line))
-                            continue
-
-                        # The user has configured a restriction on states.  ONLY import alerts that have the correct state code
-                        if 'state_import' in config_data and len(config_data['state_import']) > 0:
-                            if line_content['state'].upper() not in config_data['state_import']:
-                                continue
-
-                        # Skip particular alerts that are generating false positives for Brian
-                        if 'skip_list' in config_data and len(config_data['skip_list']) > 0:
-                            if str(line_content['plate']).upper() in config_data['skip_list']:
-                                continue
-
-                        if line_content['plate'] in dup_filter:
-                            logger.info("Skipping duplicate plate %s for list %s" % (line_content['plate'], line_content['list_type']))
-                            continue
-
-                        dup_filter[line_content['plate']] = True
-                        # Write this line to the CSV
-                        outcsv.write("%s,%s,%s\n" % (line_content['plate'], line_content['description'], alert_type['match_strategy']))
+            hotlistparser.parse(alert_type)
 
             logger.info("Wrote temp CSV %s" % (config_data['temp_csv_file']))
 
