@@ -15,6 +15,7 @@ mkdir -p debian/etc/cron.d/
 
 mkdir -p debian/usr/share/openalpr-hotlist/parsers
 cp $CUR_DIR/hotlistimport.py debian/usr/share/openalpr-hotlist/
+cp $CUR_DIR/print_alert_lists.py debian/usr/share/openalpr-hotlist/
 cp $CUR_DIR/parsers/*.py debian/usr/share/openalpr-hotlist/parsers/
 cp $CUR_DIR/config/hotlist.yaml.sample debian/etc/openalpr/hotlist.yaml.sample
 cp $CUR_DIR/deploy/openalpr-hotlistimport.cron  debian/etc/cron.d/openalpr-hotlist
