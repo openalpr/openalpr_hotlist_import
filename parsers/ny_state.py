@@ -19,6 +19,17 @@ class NyStateParser(BaseParser):
         # 0         ILPC VMELRYEL/BLK
         #pieces = raw_line.split()
 
+        # Parse codes
+        # M – MISSING PERSON ASSOCIATED WITH REGISTRATION/PLATE
+        # P – STOLEN LICENSE PLATE
+        # R – STOLEN CANADIAN LICENSE PLATE
+        # S – SEX OFFENDER ASSOCIATED WITH REGISTRATION/PLATE
+        # T – POSSIBLE TERRORIST ASSOCIATED WITH REGISTRATION/PLATE
+        # V – STOLEN MOTOR VEHICLE OR TRAILER WITH MAKE/COLOR
+        # W – WANTED PERSON ASSOCIATED WITH REGISTRATION/PLATE
+        # X – SUSPENDED REGISTRATION OR FALSIFIED REGISTRATION
+        # Z – CLIENT ID SUSPENDED OPERATING PRIVILEGE IN NEW YORK
+
         # Skip the first (header) line
         if self.line_count <= 1:
             return None
