@@ -1,0 +1,133 @@
+# Configuration for NY Hotlist import
+
+hotlist_path: /tmp/LPRinfo.dat
+server_base_url: http://localhost:9001
+
+hotlist_parser: ny_state
+company_id: 1234
+
+temp_csv_file: /tmp/nyimport.csv
+temp_dat_file: /tmp/nyhotlist.dat
+
+log_file: /tmp/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+smtp_server: 
+smtp_domain: 
+smtp_recipient: 
+smtp_sender: 
+smtp_port: 
+smtp_username: ""
+smtp_password: ""
+send_email_on_success: True
+
+state_import:
+  - NY
+  - NJ
+  - CT
+  - PA
+  - MA
+  - RI
+  - VA
+  - NH
+  - VT
+  - ME
+  - MD
+  - DE
+  - WV
+  - SC
+  - GA
+  - FL
+  - CA
+  - IN
+
+skip_list:
+  - '000'
+  - 'AL45214'
+  - 'WFF384'
+  - 'CET6510'
+  - 'JDP9601'
+  - 'PHH2'      
+  - '999'
+  - 'T506336C'
+  - 'GHJ1925'
+  - 'JEH9579'
+  - 'HEC5937'
+  - 'BP26848'
+  - '5MDG364'
+ 
+alert_types:
+  - name: Stolen Vehicle
+    parse_code: V
+    openalpr_list_id: 8
+    match_strategy: exact
+
+  - name: Missing Person
+    parse_code: M
+    openalpr_list_id: 9
+    match_strategy: exact
+
+  - name: Stolen Plate
+    parse_code: P
+    openalpr_list_id: 10
+    match_strategy: exact
+
+  - name: Stolen Canadian Plate
+    parse_code: R
+    openalpr_list_id: 11
+    match_strategy: exact
+
+  - name: Sex Offender
+    parse_code: S
+    openalpr_list_id: 12
+    match_strategy: exact
+
+  - name: Possible Terrorist
+    parse_code: T
+    openalpr_list_id: 13
+    match_strategy: exact
+
+  - name: Wanted Person
+    parse_code: W
+    openalpr_list_id: 14
+    match_strategy: exact
+
+car_types:
+  - PC: Passenger Car
+  - TL: Trailer
+
+car_makes:
+  FORD: Ford
+  DODG: Dodge
+  TOYT: Toyota
+  CHEV: Chevrolet
+  NISS: Nissan
+  BUIC: Buick
+  HOND: Honda
+  GMC: GMC
+  CADI: Cadillac
+  KIA: Kia
+  SUBA: Subaru
+  JEEP: Jeep
+  PONT: Pontiac
+  INFI: Infinit
+  ACUR: Acura
+  SUZI: Suzuki
+  MITS: Mitsubishi
+  HYUN: Hyundai
+  LINC: Lincoln
+  VOLV: Volvo
+
+car_colors:
+  WHI: White
+  RED: Red
+  GLD: Gold
+  GRN: Green
+  YEL: Yellow
+  BLK: Black
+  SIL: Silver
+  GRY: Gray
+  ONG: Orange
+  BLU: Blue
+  TAN: Tan

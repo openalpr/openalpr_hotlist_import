@@ -1,0 +1,54 @@
+# Configuration for Hotlist import
+
+
+server_base_url: http://localhost:9001
+
+company_id: yourcompanyid
+
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
+
+log_file: /var/log/openalpr/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+hotlist_parser: ca_doj_clew
+
+state_import:
+  - CA
+  - OR
+  - NV
+  - AZ
+
+skip_list:
+  - '0'
+  - '00'
+  - '000'
+  - '190'
+
+smtp_server: 
+smtp_domain:
+smtp_recipient: 
+smtp_sender: 
+smtp_port: 25
+smtp_username: 
+smtp_password: 
+send_email_on_success: False
+
+
+alert_types:
+  - name: Stolen Vehicle
+    openalpr_list_id: 1
+    parse_code: Z
+    match_strategy: exact
+    hotlist_path: /tmp/ca/svs.tbl
+
+  - name: Felony Vehicles
+    openalpr_list_id: 2
+    match_strategy: exact
+    hotlist_path: /tmp/ca/sfr.tbl
+
+  - name: Stolen License Plates
+    openalpr_list_id: 3
+    match_strategy: exact
+    hotlist_path: /tmp/ca/slr.tbl

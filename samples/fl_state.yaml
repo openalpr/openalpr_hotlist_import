@@ -1,0 +1,50 @@
+# Configuration for Hotlist import
+
+
+server_base_url: http://localhost:9001
+
+company_id: yourcompanyid
+
+hotlist_parser: fl_state
+
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
+
+log_file: /var/log/openalpr/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+state_import:
+  - AL
+  - MS
+  - SC
+  - GA
+  - FL
+
+skip_list:
+  - '0'
+  - '00'
+  - '000'
+  - '190'
+
+smtp_server: 
+smtp_domain:
+smtp_recipient: 
+smtp_sender: 
+smtp_port: 25
+smtp_username: 
+smtp_password: 
+send_email_on_success: False
+
+alert_types:
+  - name: Stolen License Plate
+    parse_code: STOLEN LICENSE PLATE
+    openalpr_list_id: 1
+    match_strategy: exact
+    hotlist_path: /tmp/HCSO_Plate_Dump.txt
+  
+  - name: Stolen Vehicle
+    parse_code: STOLEN VEHICLE
+    openalpr_list_id: 2
+    match_strategy: exact
+    hotlist_path: /tmp/HCSO_Plate_Dump.txt
