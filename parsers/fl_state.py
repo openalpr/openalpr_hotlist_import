@@ -1,9 +1,6 @@
 from base import BaseParser
 import re
 
-with open('/home/addison/Downloads/florida.txt', 'r') as f:
-    lines = [l.strip() for l in f.read().splitlines()]
-
 class FlStateParser(BaseParser):
     def __init__(self, config_obj):
         super(FlStateParser, self).__init__(config_obj)
