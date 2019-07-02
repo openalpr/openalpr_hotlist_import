@@ -37,7 +37,7 @@ class FlStateParser(BaseParser):
         elif len(ncic) > 0: 
             extra_info = "NCIC: " + ncic
         # Stolen vehicle - State
-        description = '{} ({}) - {}, {}'.format(list_name, state, ori_description, extra_info)
+        description = '"{} ({}) - {}, {}"'.format(list_name, state, ori_description, extra_info)
         description = re.sub(' +', ' ', description)
 
         alert_data = {
