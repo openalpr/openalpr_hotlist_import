@@ -22,7 +22,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     with open(options.config_file, 'r') as confin:
-        config_data = yaml.load(confin)
+        config_data = yaml.load(confin, Loader=yaml.FullLoader)
 
 
     list_url='%s/api/alert-lists/?company_id=%s' % (config_data['server_base_url'], config_data['company_id'])
