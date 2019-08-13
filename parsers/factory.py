@@ -1,7 +1,7 @@
-from ca_doj_clew import CaClewParser
-from pa_psp import PaPspParser
-from ny_state import NyStateParser
-from fl_state import FlStateParser
+from .ca_doj_clew import CaClewParser
+from .pa_psp import PaPspParser
+from .ny_state import NyStateParser
+from .fl_state import FlStateParser
 
 def get_parser(config_obj):
     parser_name = config_obj['hotlist_parser']

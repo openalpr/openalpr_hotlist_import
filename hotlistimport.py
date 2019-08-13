@@ -78,7 +78,7 @@ if __name__ == "__main__":
     options = parser.parse_args()
 
     if not os.path.isfile(options.config_file):
-        print "Config file does not exist"
+        print ("Config file does not exist")
         sys.exit(1)
 
     with open(options.config_file, 'r') as confin:
