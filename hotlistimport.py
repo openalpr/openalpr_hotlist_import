@@ -82,7 +82,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     with open(options.config_file, 'r') as confin:
-        config_data = yaml.load(confin, Loader=yaml.FullLoader)
+        # config_data = yaml.load(confin, Loader=yaml.FullLoader) # Uncomment to fix for PyYaml 5.x+
+        config_data = yaml.load(confin)
 
 
     if options.foreground or 'log_file' not in config_data or config_data['log_file'] == None or len(config_data['log_file']) <= 0:

@@ -93,7 +93,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     with open(options.config_file, 'r') as confin:
-        config_data = yaml.load(confin, Loader=yaml.FullLoader)
+        # config_data = yaml.load(confin, Loader=yaml.FullLoader) # Uncomment to fix for PyYaml 5.x+
+        config_data = yaml.load(confin)
 
     api_key = None
     company_id = None
