@@ -5,6 +5,9 @@ server_base_url: http://localhost:9001
 
 company_id: asdfasdf
 
+# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+
 hotlist_parser: pa_psp
 
 temp_dat_file: /tmp/paimport.dat
@@ -32,52 +35,42 @@ send_email_on_success: False
 alert_types:
   - name: Amber Alert
     parse_code: A
-    openalpr_list_id: 158
     match_strategy: exact
 
   - name: Felony
     parse_code: F
-    openalpr_list_id: 159
     match_strategy: exact
 
   - name: Wanted Person
     parse_code: W
-    openalpr_list_id: 160
     match_strategy: exact
 
   - name: Stolen Vehicle
     parse_code: V
-    openalpr_list_id: 161
     match_strategy: exact
 
   - name: Stolen Plate
     parse_code: P
-    openalpr_list_id: 162
     match_strategy: exact
 
   - name: Missing Person
     parse_code: M
-    openalpr_list_id: 163
     match_strategy: exact
 
   - name: Supervised Release
     parse_code: C
-    openalpr_list_id: 164
     match_strategy: exact
 
   - name: Protection Order
     parse_code: H
-    openalpr_list_id: 165
     match_strategy: exact
 
   - name: Protective Interest
     parse_code: K
-    openalpr_list_id: 166
     match_strategy: exact
 
   - name: Violent Person
     parse_code: L
-    openalpr_list_id: 167
     match_strategy: exact
 
 #  - name: Immigration Violator
@@ -87,16 +80,13 @@ alert_types:
 
   - name: Stolen Canadian Vehicle
     parse_code: R
-    openalpr_list_id: 169
     match_strategy: exact
 
   - name: Gang/Terrorist Member
     parse_code: T
-    openalpr_list_id: 170
     match_strategy: exact
 
   - name: Sex Offender
     parse_code: X
-    openalpr_list_id: 171
     match_strategy: exact
 

@@ -38,7 +38,7 @@ Configuration
 
 Copy the configuration file in /etc/openalpr/hotlist.yaml.sample to /etc/openalpr/hotlist.yaml
 
-Edit the hotlist.yaml file to use your own company_id, alert list configuration (openalpr_list_id, name, and hotlist_url), and other parameters.
+Edit the hotlist.yaml file to use your own company_id, alert list configuration (name, and hotlist_url), and other parameters.
 
 The SMTP configuration parameters, if configured, will send an e-mail on success or failure every time the script is run.
 
@@ -46,7 +46,7 @@ The state_import parameter (if configured) will ignore plate alerts for states o
 
 The skip_list will ignore any plate numbers on that list.
 
-To find the Alert List ID, first create the Alert List in the OpenALPR Web UI, then open the "Network Console" tab in the web tools.  Each time you click on an alert list, the URL that it requests will contain the alert list ID.
+The alerts will automatically be created based on the "name" provided on the alert list
 
 Running the script
 --------------------

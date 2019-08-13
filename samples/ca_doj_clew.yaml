@@ -5,6 +5,9 @@ server_base_url: http://localhost:9001
 
 company_id: yourcompanyid
 
+# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+
 temp_dat_file: /tmp/hotlistimport.dat
 temp_csv_file: /tmp/hotlistimport.csv
 
@@ -38,17 +41,14 @@ send_email_on_success: False
 
 alert_types:
   - name: Stolen Vehicle
-    openalpr_list_id: 1
     parse_code: Z
     match_strategy: exact
     hotlist_path: /tmp/ca/svs.tbl
 
   - name: Felony Vehicles
-    openalpr_list_id: 2
     match_strategy: exact
     hotlist_path: /tmp/ca/sfr.tbl
 
   - name: Stolen License Plates
-    openalpr_list_id: 3
     match_strategy: exact
     hotlist_path: /tmp/ca/slr.tbl

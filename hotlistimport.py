@@ -15,6 +15,7 @@ from email.mime.text import MIMEText
 import traceback
 from shutil import copyfile
 from parsers import factory
+from print_alert_lists import AlertListManager
 
 def send_email(config_obj, subject, message):
     if 'smtp_server' not in config_obj or config_obj['smtp_server'] is None or config_obj['smtp_server'].strip() == '':
@@ -145,11 +146,25 @@ if __name__ == "__main__":
 
             if not options.skip_upload:
 
+                if 'api_key' in config_data:
+                    alert_list_manager = AlertListManager(config_data['server_base_url'], api_key=config_data['api_key'])
+                else:
+                    alert_list_manager = AlertListManager(config_data['server_base_url'], company_id=config_data['company_id'])
+
+                # if they don't specify a list ID explicitly, then create it
+                if 'openalpr_list_id' not in alert_type:
+                    list_id = alert_list_manager.get_or_create_list(alert_type['name'])
+                else:
+                    list_id = alert_list_manager.get_list(alert_type['openalpr_list_id'])
+
+                if list_id is None:
+                    logger.warn("List does not exist %s (%d).  Skipping" % (alert_type['name'], alert_type['openalpr_list_id']))
+
                 retry = 0
                 total_attempts = 5
                 success = False
 
-                while retry < total_attempts:
+                while retry < total_attempts and list_id is not None:
 
                     try:
                         retry += 1
@@ -162,14 +177,18 @@ if __name__ == "__main__":
                             base_url += '/'
 
                         upload_url = base_url + 'api/alert-group-import-csv/'
+                        if 'api_key' in config_data:
+                            upload_url += '?api_key=' + config_data['api_key']
+                        else:
+                            upload_url += '?company_id=' + config_data['company_id']
 
                         with open(config_data['temp_csv_file'], 'rb') as f:
                             postargs = {
                                 'name': ('', 'import'),
-                                'company_id': ('', config_data['company_id']),
-                                'pk': ('', str( alert_type['openalpr_list_id'] )),
+                                'pk': ('', str( list_id )),
                                 'files': f,
                             }
+
                             r = requests.post(upload_url, verify=False, files=postargs)
 
                             logger.info("HTTP Import response: %s" % (r.content))
@@ -201,12 +220,17 @@ if __name__ == "__main__":
             send_email(config_data, "OpenALPR CSV Import Unknown Error", "Encountered unknown error processing CSV Import\n" + traceback.format_exc())
 
 
+    exit_status = 0
+
     if len(failed_uploads) > 0:
         all_failures = ", ".join(failed_uploads)
         send_email(config_data, "OpenALPR CSV Import Failure (%d)" % (len(failed_uploads)), "The following services failed to upload: " + all_failures)
+        exit_status = 1
 
     elif config_data['send_email_on_success'] == True:
         send_email(config_data, "OpenALPR CSV Import Success", "Import completed successfully")
 
 
     logger.info("Import complete")
+
+    sys.exit(exit_status)

@@ -6,6 +6,9 @@ server_base_url: http://localhost:9001
 hotlist_parser: ny_state
 company_id: 1234
 
+# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+
 temp_csv_file: /tmp/nyimport.csv
 temp_dat_file: /tmp/nyhotlist.dat
 
@@ -60,37 +63,30 @@ skip_list:
 alert_types:
   - name: Stolen Vehicle
     parse_code: V
-    openalpr_list_id: 8
     match_strategy: exact
 
   - name: Missing Person
     parse_code: M
-    openalpr_list_id: 9
     match_strategy: exact
 
   - name: Stolen Plate
     parse_code: P
-    openalpr_list_id: 10
     match_strategy: exact
 
   - name: Stolen Canadian Plate
     parse_code: R
-    openalpr_list_id: 11
     match_strategy: exact
 
   - name: Sex Offender
     parse_code: S
-    openalpr_list_id: 12
     match_strategy: exact
 
   - name: Possible Terrorist
     parse_code: T
-    openalpr_list_id: 13
     match_strategy: exact
 
   - name: Wanted Person
     parse_code: W
-    openalpr_list_id: 14
     match_strategy: exact
 
 car_types:
