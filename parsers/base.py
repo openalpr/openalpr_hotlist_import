@@ -36,8 +36,9 @@ class BaseParser(object):
 
                     # The user has configured a restriction on states.  ONLY import alerts that have the correct state code
                     if 'state_import' in self.config_obj and len(self.config_obj['state_import']) > 0:
-                        if line_content['state'].upper() not in self.config_obj['state_import']:
-                            continue
+                        if 'state' in line_content: # If no state is returned from parser, allow it
+                            if line_content['state'].upper() not in self.config_obj['state_import']:
+                                continue
 
                     # Skip particular alerts that are generating false positives
                     if 'skip_list' in self.config_obj and len(self.config_obj['skip_list']) > 0:
