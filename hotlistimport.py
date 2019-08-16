@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
                 copyfile(hotlist_path, config_data['temp_dat_file'])
 
-            hotlistparser = factory.get_parser(config_data)
+            hotlistparser = factory.get_parser(config_data, alert_type)
 
             logger.info("processing alert list for " + alert_type['name'])
 

@@ -4,8 +4,12 @@ from .ny_state import NyStateParser
 from .fl_state import FlStateParser
 from .simple import SimpleParser
 
-def get_parser(config_obj):
-    parser_name = config_obj['hotlist_parser']
+def get_parser(config_obj, alert_type):
+
+    if 'hotlist_parser' in alert_type:
+        parser_name = alert_type['hotlist_parser']
+    else:
+        parser_name = config_obj['hotlist_parser']
 
     if parser_name == 'ca_doj_clew':
         return CaClewParser(config_obj)
