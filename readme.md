@@ -1,63 +1,93 @@
-openalpr_hotlist_import
+OpenALPR Hotlist Import
 ----------------------------
 
-This script automatically imports a law enforcement "hotlist" into OpenALPR alert lists.  It is configured as a daily cron job or Windows Task.
+Automatically import a law enforcement "hotlist" into 
+OpenALPR alert lists using a cron job or Windows Task.
 
 Installation:
 --------------
 
 **Ubuntu Linux**
 
-1. Download the `.deb` package from this repository's [release page](https://github.com/openalpr/openalpr_hotlist_import/releases)
-2. Install the package `sudo dpkg -i openalpr-hotlist_*.deb && sudo apt-get install -f`
+1. Download the `.deb` package from this repository's 
+[release page](https://github.com/openalpr/openalpr_hotlist_import/releases)
+2. Install the package 
+`sudo dpkg -i openalpr-hotlist_*.deb && sudo apt-get install -f`
 
 **Windows 10**
 
-1. Download the Miniconda3 v4.5.1 [installer](https://repo.anaconda.com/miniconda/Miniconda3-4.5.1-Windows-x86_64.exe)
+1. Download the Miniconda3 v4.5.1 
+[installer](https://repo.anaconda.com/miniconda/Miniconda3-4.5.1-Windows-x86_64.exe)
 2. Run the `.exe` and follow the prompts to install Python 3.6
-3. Clone this repository  `git clone https://github.com/openalpr/openalpr_hotlist_import.git` (or click Download ZIP if you don't have git installed)
-    
+3. Clone this repository  
+`git clone https://github.com/openalpr/openalpr_hotlist_import.git` (or 
+click Download ZIP if you don't have git installed)
 
 How it Works:
 --------------
 
-The import script downloads a data file from the URLs configured in each alert_types->hotlist_url.  The data files are expected to be in the following format:
+The `hotlistimport.py` script loads a `*.dat` file from disk or 
+downloads it from a URL. The parser reads each line in the file and 
+creates a CSV of alert entries to be uploaded to the OpenALPR webserver 
+(either cloud on on-premise)
 
-    6FXU585 CA0420150407
-    ^^^^^^^
-    LICENSE
-           ^
-           WHITE SPACE DELIMITER (1 CHAR)
-            ^^
-            STATE (2 CHAR)
-              ^^
-              COUNTY CODE (2 CHAR)
-                                  ^^^^^^^^
-                                  DATE OF LOSS (YYYYMMDD)
+Currently supported formats include
 
-This is the data format used in California.  Other law enforcement databases may be different.
+1. California DOJ CLEW
+2. Florida state
+3. New York state
+4. Pennsylvania PSP
 
-Each file will be parsed and uploaded to the OpenALPR web server to a particular OpenALPR List ID. 
+If your state's hotlist is not on the above list, you can either write
+a parser which inherits from `parsers.BaseParser` or send OpenALPR a 
+50-100 row example from your hotlist (plate numbers can be altered if 
+needed for data privacy). Then we can write a new parser for you.
 
 Configuration
 ---------------
 
-Copy the configuration file in /etc/openalpr/hotlist.yaml.sample to /etc/openalpr/hotlist.yaml
+1. Make a copy of the example configuration file `hotlist.yaml.sample`. 
+If you installed the deb package on Linux, it is located in the
+`/etc/openalpr` folder. On Windows, check the `config` folder where you 
+cloned/downloaded the repository. 
+2. Provide the required fields in your YAML file 
 
-Edit the hotlist.yaml file to use your own company_id, alert list configuration (name, and hotlist_url), and other parameters.
+ * The `hotlist_path` where your `.dat` file is located (either 
+on disk or a URL). If your file comes in a zip archive, specify 
+ the folder name with the `.zip` extension and the script will 
+ automatically extract the contents 
+ * Set the `server_base_url` for the OpenALPR webserver where you want the 
+ alerts to upload. For instance, use http://localhost:9001 for an 
+ on-premise server or https://cloud.openalpr.com for Cloud Stream plans
+ * The alerts will automatically be created based on the `name` provided 
+ for each item in the `alert_types` list 
+ * Use your own value for `company_id` and `api_key`. Both can be found 
+ on your cloud [account page](https://cloud.openalpr.com/account/my_account) 
+ * Set the `hotlist_parser` to match your state's format
+ * Provide paths for `temp_dat_file`, `temp_csv_file`, and `log_file`
 
-The SMTP configuration parameters, if configured, will send an e-mail on success or failure every time the script is run.
+3.  Configure additional optional YAML fields
 
-The state_import parameter (if configured) will ignore plate alerts for states other than those on the list.  To import all plates, remove this configuration.
-
-The skip_list will ignore any plate numbers on that list.
-
-The alerts will automatically be created based on the "name" provided on the alert list
+ * SMTP configuration parameters (if specified) will send an e-mail 
+ on success or failure every time the script is run
+ * The `state_import` parameter (if specified) will ignore plate alerts 
+ for states other than those on the list.  To import all plates, remove 
+ this configuration
+ * The `skip_list` will ignore any plate numbers on that list
 
 Running the script
 --------------------
 
-After installation, the script is configured to automatically run.  To test it manually, run the following command:
+After installation on Linux, the script is configured to automatically 
+run. To test it manually, run the following command:
 
     python /usr/share/openalpr-hotlist/hotlistimport.py -f /etc/openalpr/hotlist.yaml
 
+On Windows, follow these additional steps to automatically run the script
+
+1. Modify any necessary file paths in the template batch file `hotlistimport.bat`
+2. Test by double clicking the batch file. If all your configuration 
+parameters in the YAML are correct, you should see the new alert lists 
+in your webserver
+3. After a successful test, add the batch file to Windows Task Scheduler.
+For help, see this [tutorial](https://www.thewindowsclub.com/how-to-schedule-batch-file-run-automatically-windows-7)
