@@ -1,16 +1,22 @@
 openalpr_hotlist_import
 ----------------------------
 
-This script automatically imports a "hotlist" into OpenALPR alert lists.  It is configured as a nightly cron job on the OpenALPR webserver.
+This script automatically imports a law enforcement "hotlist" into OpenALPR alert lists.  It is configured as a daily cron job or Windows Task.
 
 Installation:
 --------------
 
-To install, install the .deb package onto the webserver:
+**Ubuntu Linux**
 
-    sudo dpkg -i openalpr_hotlist_import.py
-    sudo apt-get install -f
+1. Download the `.deb` package from this repository's [release page](https://github.com/openalpr/openalpr_hotlist_import/releases)
+2. Install the package `sudo dpkg -i openalpr-hotlist_*.deb && sudo apt-get install -f`
 
+**Windows 10**
+
+1. Download the Miniconda3 v4.5.1 [installer](https://repo.anaconda.com/miniconda/Miniconda3-4.5.1-Windows-x86_64.exe)
+2. Run the `.exe` and follow the prompts to install Python 3.6
+3. Clone this repository  `git clone https://github.com/openalpr/openalpr_hotlist_import.git` (or click Download ZIP if you don't have git installed)
+    
 
 How it Works:
 --------------
