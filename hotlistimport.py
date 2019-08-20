@@ -128,13 +128,26 @@ if __name__ == "__main__":
             # Copy the file to a temporary file to start working with it
             if hotlist_path.lower().startswith('http://') or hotlist_path.lower().startswith('https://'):
                 # This is a URL, try to download it
-                urllib.urlretrieve (hotlist_path, config_data['temp_dat_file'])
+                urllib.urlretrieve(hotlist_path, config_data['temp_dat_file'])
             else:
-                if not os.path.isfile(hotlist_path):
-                    logger.error("Could not find hotlist file: %s" % (hotlist_path))
-                    sys.exit(1)
-
-                copyfile(hotlist_path, config_data['temp_dat_file'])
+                folder_path = os.path.dirname(hotlist_path)
+                if folder_path.endswith(".zip"):
+                    with zipfile.ZipFile(folder_path, "r") as f:
+                        content = {name: f.read(name) for name in f.namelist()}
+                    zip_name = os.path.dirname(hotlist_path).split(os.sep)[-1].split('.')[0]
+                    dat_file = os.path.join(zip_name, os.path.basename(hotlist_path))
+                    if dat_file not in content:
+                        logging.error("File %s does not exist in zip archive %s" % (os.path.basename(hotlist_path), folder_path))
+                        sys.exit(1)
+                    lines = [l for l in content[dat_file].decode("utf-8").split(os.linesep) if l != ""]
+                    with open(config_data["temp_dat_file"], "w") as f:
+                        for l in lines:
+                            f.write("%s%s" % (l, os.linesep))
+                elif not os.path.isfile(hotlist_path):
+                        logger.error("Could not find hotlist file: %s" % (hotlist_path))
+                        sys.exit(1)
+                else:
+                    copyfile(hotlist_path, config_data['temp_dat_file'])
 
             hotlistparser = factory.get_parser(config_data, alert_type)
 
