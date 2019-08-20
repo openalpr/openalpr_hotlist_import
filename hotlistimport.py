@@ -1,21 +1,25 @@
 #!/usr/bin/python
 
 from argparse import ArgumentParser
-import yaml
-import os
+from email.mime.text import MIMEText
+import json
 import logging
+from logging.handlers import RotatingFileHandler
+import os
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from shutil import copyfile
+import smtplib
 import sys
 import time
-import json
-from logging.handlers import RotatingFileHandler
-import requests
-import urllib
-import smtplib
-from email.mime.text import MIMEText
 import traceback
-from shutil import copyfile
+import urllib
+import warnings
+import yaml
+import zipfile
 from parsers import factory
 from print_alert_lists import AlertListManager
+
 
 def send_email(config_obj, subject, message):
     if 'smtp_server' not in config_obj or config_obj['smtp_server'] is None or config_obj['smtp_server'].strip() == '':
@@ -51,6 +55,7 @@ def send_email(config_obj, subject, message):
     except:
         logger.exception("Exception sending e-mail")
 
+
 def get_color(config_obj, color):
     if color in config_obj['car_colors']:
         return config_obj['car_colors'][color]
@@ -58,12 +63,11 @@ def get_color(config_obj, color):
     return color
 
 
-
 if __name__ == "__main__":
 
     parser = ArgumentParser(description='OpenALPR Hotlist Parser')
 
-    parser.add_argument( dest="config_file", action="store", metavar='config_file',
+    parser.add_argument(dest="config_file", action="store", metavar='config_file',
                         help="Config file used for OpenALPR Hotlist import")
 
     parser.add_argument('-f', '--foreground', action='store_true', default=False,
@@ -72,19 +76,16 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--skip_upload', action='store_true', default=False,
                         help="Skip uploading CSVs to the server, useful for testing parse")
 
-    # parser.add_argument( "-l", "--log_file", dest="log_file", action="store", type=str, default=None,
-    #                   help="Optional field -- Location to write to log" )
-
     options = parser.parse_args()
 
+    options.config_file = os.path.realpath(options.config_file)
     if not os.path.isfile(options.config_file):
-        print ("Config file does not exist")
+        print("Config file does not exist")
         sys.exit(1)
 
     with open(options.config_file, 'r') as confin:
         # config_data = yaml.load(confin, Loader=yaml.FullLoader) # Uncomment to fix for PyYaml 5.x+
         config_data = yaml.load(confin)
-
 
     if options.foreground or 'log_file' not in config_data or config_data['log_file'] == None or len(config_data['log_file']) <= 0:
 
@@ -159,7 +160,7 @@ if __name__ == "__main__":
                     list_id = alert_list_manager.get_list(alert_type['openalpr_list_id'])
 
                 if list_id is None:
-                    logger.warn("List does not exist %s (%d).  Skipping" % (alert_type['name'], alert_type['openalpr_list_id']))
+                    logger.warning("List does not exist %s (%d).  Skipping" % (alert_type['name'], alert_type['openalpr_list_id']))
 
                 retry = 0
                 total_attempts = 5
@@ -186,7 +187,7 @@ if __name__ == "__main__":
                         with open(config_data['temp_csv_file'], 'rb') as f:
                             postargs = {
                                 'name': ('', 'import'),
-                                'pk': ('', str( list_id )),
+                                'pk': ('', str(list_id)),
                                 'files': f,
                             }
 
