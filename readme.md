@@ -52,28 +52,28 @@ If you installed the deb package on Linux, it is located in the
 cloned/downloaded the repository. 
 2. Provide the required fields in your YAML file 
 
- * The `hotlist_path` where your `.dat` file is located (either 
+    1. The `hotlist_path` where your `.dat` file is located (either 
 on disk or a URL). If your file comes in a zip archive, specify 
  the folder name with the `.zip` extension and the script will 
  automatically extract the contents 
- * Set the `server_base_url` for the OpenALPR webserver where you want the 
+    2. Set the `server_base_url` for the OpenALPR webserver where you want the 
  alerts to upload. For instance, use http://localhost:9001 for an 
  on-premise server or https://cloud.openalpr.com for Cloud Stream plans
- * The alerts will automatically be created based on the `name` provided 
+    3. The alerts will automatically be created based on the `name` provided 
  for each item in the `alert_types` list 
- * Use your own value for `company_id` and `api_key`. Both can be found 
+    4. Use your own value for `company_id` and `api_key`. Both can be found 
  on your cloud [account page](https://cloud.openalpr.com/account/my_account) 
- * Set the `hotlist_parser` to match your state's format
- * Provide paths for `temp_dat_file`, `temp_csv_file`, and `log_file`
+    5. Set the `hotlist_parser` to match your state's format
+    6. Provide paths for `temp_dat_file`, `temp_csv_file`, and `log_file`
 
 3.  Configure additional optional YAML fields
 
- * SMTP configuration parameters (if specified) will send an e-mail 
+    1. SMTP configuration parameters (if specified) will send an e-mail 
  on success or failure every time the script is run
- * The `state_import` parameter (if specified) will ignore plate alerts 
+    2. The `state_import` parameter (if specified) will ignore plate alerts 
  for states other than those on the list.  To import all plates, remove 
  this configuration
- * The `skip_list` will ignore any plate numbers on that list
+    3. The `skip_list` will ignore any plate numbers on that list
 
 Running the script
 --------------------
