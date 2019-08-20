@@ -108,16 +108,14 @@ if __name__ == "__main__":
 
         logger.addHandler(handler)
 
-
     logger.info("Starting import")
     logger.info("using config:\n" + json.dumps(config_data, indent=2))
-
 
     # Iterate through the list multiple times for each alert type
     # e.g., stolen vehicles, etc.
 
     failed_uploads = []
-
+    warnings.simplefilter('ignore', InsecureRequestWarning)
     for alert_type in config_data['alert_types']:
         try:
 
