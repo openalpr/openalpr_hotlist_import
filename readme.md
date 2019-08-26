@@ -34,11 +34,14 @@ creates a CSV of alert entries to be uploaded to the OpenALPR webserver
 Currently supported formats include
 
 1. California DOJ CLEW
-2. Florida state
-3. New York state
+2. Florida State
+3. New York State
 4. Pennsylvania PSP
+5. Mississippi State
+6. Alabama State
 
-If your state's hotlist is not on the above list, you can either write
+If your state's hotlist is not on the above list, it's possible another format 
+will work -- they tend to be very similar.  If it's not supported, you can either write
 a parser which inherits from `parsers.BaseParser` or send OpenALPR a 
 50-100 row example from your hotlist (plate numbers can be altered if 
 needed for data privacy). Then we can write a new parser for you.
