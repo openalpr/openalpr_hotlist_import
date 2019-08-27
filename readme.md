@@ -89,5 +89,6 @@ On Windows, follow these additional steps to automatically run the script
 2. Test by double clicking the batch file. If all your configuration 
 parameters in the YAML are correct, you should see the new alert lists 
 in your webserver
-3. After a successful test, add the batch file to Windows Task Scheduler.
-For help, see this [tutorial](https://www.thewindowsclub.com/how-to-schedule-batch-file-run-automatically-windows-7)
+3. After a successful test, remove the `pause` line from the batch file
+and add it to Windows Task Scheduler. For help, see this 
+[tutorial](https://www.thewindowsclub.com/how-to-schedule-batch-file-run-automatically-windows-7)
