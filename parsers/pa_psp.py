@@ -29,6 +29,22 @@ class PaPspParser(BaseParser):
 
         LICENSE_PLATE_STATE_START = 37
         LICENSE_PLATE_STATE_END = 39
+        TAG_DATE_START = 39
+
+        VEHICLE_YEAR_START = 45
+        MAKE_START = 49
+        MODEL_START = 53
+        COLOR_START = 58
+
+        tag_date = raw_line[TAG_DATE_START:TAG_DATE_START+4].strip()
+        vehicle_year = raw_line[VEHICLE_YEAR_START:VEHICLE_YEAR_START+4].strip()
+        vehicle_make = raw_line[MAKE_START:MAKE_START+4].strip()
+        vehicle_model = raw_line[MODEL_START:MODEL_START+3].strip()
+        vehicle_color = raw_line[COLOR_START:].strip()
+
+        vehicle_description = "%s %s %s %s" % (vehicle_color, vehicle_year, vehicle_make, vehicle_model)
+        vehicle_description = vehicle_description.strip()
+
 
         list_type = raw_line[LIST_TYPE_START:LIST_TYPE_END].strip()
         incident_date = raw_line[INCIDENT_DATE_START:INCIDENT_DATE_END].strip()
@@ -44,10 +60,10 @@ class PaPspParser(BaseParser):
 
 
         # Stolen vehicle, Green Honda Passenger Car (State)
-        description = '%s - %s (%s)' % (list_name, incident_date, state)
+        description = '%s - %s (%s) %s' % (list_name, incident_date, state, vehicle_description)
 
         # Remove double spaces for empty stuff
-        description = re.sub(' +', ' ', description)
+        description = re.sub(' +', ' ', description.strip())
 
 
 
