@@ -6,6 +6,7 @@ import json
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+import platform
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from shutil import copyfile
@@ -19,6 +20,9 @@ import yaml
 import zipfile
 from parsers import factory
 from print_alert_lists import AlertListManager
+
+if platform.system().lower().find('windows') == 0:
+    WINDOWS = True
 
 
 def send_email(config_obj, subject, message):
@@ -145,9 +149,14 @@ if __name__ == "__main__":
                         else:
                             dat_file = dat_file_alt
                     lines = [l for l in content[dat_file].decode("utf-8").split(os.linesep) if l != ""]
-                    with open(config_data["temp_dat_file"], "w") as f:
-                        for l in lines:
-                            f.write("%s%s" % (l, os.linesep))
+                    if WINDOWS:
+                        with open(config_data["temp_dat_file"], "w") as f:
+                            for l in lines:
+                                f.write("{}\r".format(l))
+                    else:
+                        with open(config_data["temp_dat_file"], "w") as f:
+                            for l in lines:
+                                f.write("{}\n".format(l))
                 elif not os.path.isfile(hotlist_path):
                         logger.error("Could not find hotlist file: %s" % (hotlist_path))
                         sys.exit(1)
