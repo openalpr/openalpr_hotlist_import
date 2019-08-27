@@ -135,10 +135,15 @@ if __name__ == "__main__":
                     with zipfile.ZipFile(folder_path, "r") as f:
                         content = {name: f.read(name) for name in f.namelist()}
                     zip_name = os.path.dirname(hotlist_path).split(os.sep)[-1].split('.')[0]
-                    dat_file = os.path.join(zip_name, os.path.basename(hotlist_path))
+                    dat_file = os.path.basename(hotlist_path)
                     if dat_file not in content:
-                        logging.error("File %s does not exist in zip archive %s" % (os.path.basename(hotlist_path), folder_path))
-                        sys.exit(1)
+                        dat_file_alt = os.path.join(zip_name, os.path.basename(hotlist_path))
+                        if dat_file_alt not in content:
+                            logging.error("Neither {} nor {} exist in zip archive {}".format(
+                                dat_file, dat_file_alt, folder_path))
+                            sys.exit(1)
+                        else:
+                            dat_file = dat_file_alt
                     lines = [l for l in content[dat_file].decode("utf-8").split(os.linesep) if l != ""]
                     with open(config_data["temp_dat_file"], "w") as f:
                         for l in lines:
