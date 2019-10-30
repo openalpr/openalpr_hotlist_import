@@ -40,3 +40,17 @@ class AlStateParser(BaseParser):
         }
 
         return alert_data
+
+
+    def get_default_lists(self):
+        return [
+            {
+            'name': 'Stolen Vehicles',
+            'parse_code': 'Stolen Vehicle or Vehicle Part'
+            }
+        ]
+
+
+    def get_example_format(self):
+        return "Taghere1,,V000000000,CHEV,,RED,1985,Stolen Vehicle or Vehicle Part,WA"
+

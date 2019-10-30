@@ -18,3 +18,11 @@ class SimpleParser(BaseParser):
             'list_type': alert_config['name'],
             'description': description
         }
+
+    def get_default_lists(self):
+        return []
+
+
+    def get_example_format(self):
+        return "ABC123"
+

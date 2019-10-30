@@ -54,4 +54,10 @@ class BaseParser(object):
                     outcsv.write("%s,%s,%s\n" % (line_content['plate'], line_content['description'], alert_type['match_strategy']))
 
                 
+    # Return a list of the default list names and parse codes for this hotlist
+    def get_default_lists(self):
+        return []
 
+    # Return an example line demonstrating what this hotlist format looks like
+    def get_example_format(self):
+        return ""

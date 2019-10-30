@@ -40,3 +40,24 @@ class CaClewParser(BaseParser):
             'description': description
             #'vehicle_other_info': vehicle_other_info
         }
+
+
+    def get_default_lists(self):
+        return [
+            {
+            'name': 'Stolen Vehicles',
+            'parse_code': 'svs.tbl'
+            },
+            {
+            'name': 'Felony Vehicles',
+            'parse_code': 'sfr.tbl'
+            },
+            {
+            'name': 'Stolen License Plates',
+            'parse_code': 'slr.tbl'
+            }
+        ]
+
+
+    def get_example_format(self):
+        return "ABC1234 CA1220190515"

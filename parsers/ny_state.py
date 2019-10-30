@@ -101,3 +101,44 @@ class NyStateParser(BaseParser):
             #'color': color,
             #'vehicle_other_info': vehicle_other_info
         }
+
+
+
+
+    def get_default_lists(self):
+        return [
+            {
+            'name': 'Stolen Vehicle',
+            'parse_code': 'V'
+            },
+            {
+            'name': 'Missing Person',
+            'parse_code': 'M'
+            },
+            {
+            'name': 'Stolen Plate',
+            'parse_code': 'P'
+            },
+            {
+            'name': 'Stolen Canadian Plate',
+            'parse_code': 'R'
+            },
+            {
+            'name': 'Sex Offender',
+            'parse_code': 'S'
+            },
+            {
+            'name': 'Possible Terrorist',
+            'parse_code': 'T'
+            },
+            {
+            'name': 'Wanted Person',
+            'parse_code': 'W'
+            }
+        ]
+
+
+
+    def get_example_format(self):
+        return "ABC1234   NYPASXBUICWH"
+

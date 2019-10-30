@@ -73,3 +73,65 @@ class PaPspParser(BaseParser):
             'list_type': list_type,
             'description': description
         }
+
+
+    def get_default_lists(self):
+        return [
+            {
+            'name': 'Amber Alert',
+            'parse_code': 'A'
+            },
+            {
+            'name': 'Felony',
+            'parse_code': 'F'
+            },
+            {
+            'name': 'Wanted Person',
+            'parse_code': 'W'
+            },
+            {
+            'name': 'Stolen Vehicle',
+            'parse_code': 'V'
+            },
+            {
+            'name': 'Stolen Plate',
+            'parse_code': 'P'
+            },
+            {
+            'name': 'Missing Person',
+            'parse_code': 'M'
+            },
+            {
+            'name': 'Supervised Release',
+            'parse_code': 'C'
+            },
+            {
+            'name': 'Protection Order',
+            'parse_code': 'H'
+            },
+            {
+            'name': 'Protective Interest',
+            'parse_code': 'K'
+            },
+            {
+            'name': 'Violent Person',
+            'parse_code': 'L'
+            },
+            {
+            'name': 'Stolen Canadian Vehicle',
+            'parse_code': 'R'
+            },
+            {
+            'name': 'Gang/Terrorist Member',
+            'parse_code': 'T'
+            },
+            {
+            'name': 'Sex Offender',
+            'parse_code': 'X'
+            },
+        ]
+
+
+    def get_example_format(self):
+        return "V123456789LA057020020190509AB123456  CA2009MC2009YAMACYLMCBLK"
+
