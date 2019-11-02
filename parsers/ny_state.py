@@ -10,8 +10,12 @@ VEHICLE_INFO_START = 16
 
 
 class NyStateParser(BaseParser):
+
     def __init__(self, config_obj):
         super(NyStateParser, self).__init__(config_obj)
+
+    def get_parser_name(self):
+        return "New York State"
 
     def get_color(self, color):
         if color in self.config_obj['car_colors']:

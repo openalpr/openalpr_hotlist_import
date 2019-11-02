@@ -7,6 +7,9 @@ class AlStateParser(BaseParser):
     def __init__(self, config_obj):
         super(AlStateParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "Alabama State"
+
     def parse_hotlist_line(self, raw_line, alert_config):
         # Skip the first (header) line
         # if self.line_count <= 1:

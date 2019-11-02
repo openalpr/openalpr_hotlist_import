@@ -9,6 +9,21 @@ class BaseParser(object):
         self.dup_filter = {}
         self.line_count = 0
 
+    def set_config(self, conf):
+        """
+        Update the config
+        :param conf:
+        :return:
+        """
+        self.config_obj = conf
+
+    def get_parser_name(self):
+        """
+        Return human-readable parser name
+        :return:
+        """
+        raise NotImplementedError()
+
     def parse_hotlist_line(self, raw_line, alert_config):
         # This function must be implemented in the subclass doing the parsing
         raise NotImplementedError()

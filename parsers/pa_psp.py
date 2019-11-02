@@ -22,8 +22,12 @@ COLOR_START = 58
 
 
 class PaPspParser(BaseParser):
+
     def __init__(self, config_obj):
         super(PaPspParser, self).__init__(config_obj)
+
+    def get_parser_name(self):
+        return "Pennsylvania PSP"
 
     def parse_hotlist_line(self, raw_line, alert_config):
         # Example:

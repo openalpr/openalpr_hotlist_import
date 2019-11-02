@@ -3,8 +3,12 @@ import re
 
 
 class CaClewParser(BaseParser):
+
     def __init__(self, config_obj):
         super(CaClewParser, self).__init__(config_obj)
+
+    def get_parser_name(self):
+        return "California DOJ CLEW"
 
     def parse_hotlist_line(self, raw_line, alert_config):
         # Example:

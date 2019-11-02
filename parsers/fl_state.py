@@ -3,8 +3,12 @@ import re
 
 
 class FlStateParser(BaseParser):
+
     def __init__(self, config_obj):
         super(FlStateParser, self).__init__(config_obj)
+
+    def get_parser_name(self):
+        return "Florida State"
 
     def parse_hotlist_line(self, raw_line, alert_config):
         # Skip the first (header) line
