@@ -1,11 +1,21 @@
 from .base import BaseParser
-import sys
 import re
 
+
+PLATE_FIELDS_START = 0
+STATE_START = 10
+VEHICLE_TYPE_START = 12
+LIST_TYPE_START = 15
+VEHICLE_INFO_START = 16
+
+
 class NyStateParser(BaseParser):
+
     def __init__(self, config_obj):
         super(NyStateParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "New York State"
 
     def get_color(self, color):
         if color in self.config_obj['car_colors']:
@@ -33,13 +43,6 @@ class NyStateParser(BaseParser):
         if self.line_count <= 1:
             return None
 
-        PLATE_FIELDS_START = 0
-        STATE_START = 10
-        VEHICLE_TYPE_START = 12
-        LIST_TYPE_START = 15
-        VEHICLE_INFO_START = 16
-
-
         plate_number = raw_line[PLATE_FIELDS_START:STATE_START].strip()
         state = raw_line[STATE_START:VEHICLE_TYPE_START].strip()
         vehicle_type = raw_line[VEHICLE_TYPE_START:LIST_TYPE_START].strip()
@@ -52,7 +55,7 @@ class NyStateParser(BaseParser):
         if len(vehicle_other_info) > 1:
 
             make_start = 0
-            make_end= len(vehicle_other_info)
+            make_end = len(vehicle_other_info)
             if '/' in vehicle_other_info:
                 color_both = vehicle_other_info[-7:].split('/')
 
@@ -70,14 +73,14 @@ class NyStateParser(BaseParser):
                     make_end = len(vehicle_other_info) - 3
                 else:
                     pass
-                    #print "UNKNOWN COLOR: " + color_candidate
+                    # print "UNKNOWN COLOR: " + color_candidate
 
             make = vehicle_other_info[make_start:make_end]
             if make in self.config_obj['car_makes']:
                 make = self.config_obj['car_makes'][make]
             else:
                 pass
-                #print "UNKNOWN MAKE: " + make
+                # print "UNKNOWN MAKE: " + make
 
         list_name = alert_config['name']
 
@@ -96,49 +99,43 @@ class NyStateParser(BaseParser):
             'state': state,
             'list_type': list_type,
             'description': description
-            #'vehicle_type': vehicle_type,
-            #'make': make,
-            #'color': color,
-            #'vehicle_other_info': vehicle_other_info
+            # 'vehicle_type': vehicle_type,
+            # 'make': make,
+            # 'color': color,
+            # 'vehicle_other_info': vehicle_other_info
         }
-
-
-
 
     def get_default_lists(self):
         return [
             {
-            'name': 'Stolen Vehicle',
-            'parse_code': 'V'
+                'name': 'Stolen Vehicle',
+                'parse_code': 'V'
             },
             {
-            'name': 'Missing Person',
-            'parse_code': 'M'
+                'name': 'Missing Person',
+                'parse_code': 'M'
             },
             {
-            'name': 'Stolen Plate',
-            'parse_code': 'P'
+                'name': 'Stolen Plate',
+                'parse_code': 'P'
             },
             {
-            'name': 'Stolen Canadian Plate',
-            'parse_code': 'R'
+                'name': 'Stolen Canadian Plate',
+                'parse_code': 'R'
             },
             {
-            'name': 'Sex Offender',
-            'parse_code': 'S'
+                'name': 'Sex Offender',
+                'parse_code': 'S'
             },
             {
-            'name': 'Possible Terrorist',
-            'parse_code': 'T'
+                'name': 'Possible Terrorist',
+                'parse_code': 'T'
             },
             {
-            'name': 'Wanted Person',
-            'parse_code': 'W'
+                'name': 'Wanted Person',
+                'parse_code': 'W'
             }
         ]
 
-
-
     def get_example_format(self):
         return "ABC1234   NYPASXBUICWH"
-

@@ -5,8 +5,8 @@ from .fl_state import FlStateParser
 from .al_state import AlStateParser
 from .simple import SimpleParser
 
-def get_parser(config_obj, alert_type):
 
+def get_parser(config_obj, alert_type):
     if 'hotlist_parser' in alert_type:
         parser_name = alert_type['hotlist_parser']
     else:
