@@ -21,8 +21,8 @@ import zipfile
 from parsers import factory
 from print_alert_lists import AlertListManager
 
-if platform.system().lower().find('windows') == 0:
-    WINDOWS = True
+
+WINDOWS = platform.system().lower().find('windows') == 0
 
 
 def send_email(config_obj, subject, message):
@@ -30,7 +30,7 @@ def send_email(config_obj, subject, message):
         return
 
     try:
-        logger.info("Sending e-mail: %s" % (subject))
+        logger.info("Sending e-mail: %s" % subject)
         smtp_server = config_obj['smtp_server'].strip()
         smtp_port = config_obj['smtp_port']
         smtp_username = config_obj['smtp_username'].strip()
@@ -41,9 +41,9 @@ def send_email(config_obj, subject, message):
         smtp_sender = config_obj['smtp_sender'].strip()
 
         if smtp_port == 25:
-            smtpObj = smtplib.SMTP(smtp_server, smtp_port, smtp_domain, timeout=45)
+            smtp_obj = smtplib.SMTP(smtp_server, smtp_port, smtp_domain, timeout=45)
         else:
-            smtpObj = smtplib.SMTP_SSL(smtp_server, smtp_port, smtp_domain, timeout=45)
+            smtp_obj = smtplib.SMTP_SSL(smtp_server, smtp_port, smtp_domain, timeout=45)
 
         msg = MIMEText(message, 'html', 'utf-8')
         msg['Subject'] = subject
@@ -51,13 +51,13 @@ def send_email(config_obj, subject, message):
         msg['To'] = ", ".join(smtp_recipients)
 
         if len(smtp_username) > 0:
-            smtpObj.login(smtp_username, smtp_password)
+            smtp_obj.login(smtp_username, smtp_password)
 
-        smtpObj.sendmail(smtp_sender, smtp_recipients, msg.as_string())
-        smtpObj.close()
+        smtp_obj.sendmail(smtp_sender, smtp_recipients, msg.as_string())
+        smtp_obj.close()
         logger.info("E-mail sent")
-    except:
-        logger.exception("Exception sending e-mail")
+    except Exception as er:
+        logger.exception("Exception sending e-mail - {}".format(er))
 
 
 def get_color(config_obj, color):
@@ -91,7 +91,8 @@ if __name__ == "__main__":
         # config_data = yaml.load(confin, Loader=yaml.FullLoader) # Uncomment to fix for PyYaml 5.x+
         config_data = yaml.load(confin)
 
-    if options.foreground or 'log_file' not in config_data or config_data['log_file'] == None or len(config_data['log_file']) <= 0:
+    if options.foreground or 'log_file' not in config_data or config_data['log_file'] is None or len(
+            config_data['log_file']) <= 0:
 
         logger = logging.getLogger('HotlistImport Log')
         logger.setLevel(logging.DEBUG)
@@ -148,7 +149,7 @@ if __name__ == "__main__":
                             sys.exit(1)
                         else:
                             dat_file = dat_file_alt
-                    lines = [l for l in content[dat_file].decode("utf-8").split(os.linesep) if l != ""]
+                    lines = [line for line in content[dat_file].decode("utf-8").split(os.linesep) if line]
                     if WINDOWS:
                         with open(config_data["temp_dat_file"], "w") as f:
                             for l in lines:
@@ -158,8 +159,8 @@ if __name__ == "__main__":
                             for l in lines:
                                 f.write("{}\n".format(l))
                 elif not os.path.isfile(hotlist_path):
-                        logger.error("Could not find hotlist file: %s" % (hotlist_path))
-                        sys.exit(1)
+                    logger.error("Could not find hotlist file: %s" % hotlist_path)
+                    sys.exit(1)
                 else:
                     copyfile(hotlist_path, config_data['temp_dat_file'])
 
@@ -174,9 +175,11 @@ if __name__ == "__main__":
             if not options.skip_upload:
 
                 if 'api_key' in config_data:
-                    alert_list_manager = AlertListManager(config_data['server_base_url'], api_key=config_data['api_key'])
+                    alert_list_manager = AlertListManager(config_data['server_base_url'],
+                                                          api_key=config_data['api_key'])
                 else:
-                    alert_list_manager = AlertListManager(config_data['server_base_url'], company_id=config_data['company_id'])
+                    alert_list_manager = AlertListManager(config_data['server_base_url'],
+                                                          company_id=config_data['company_id'])
 
                 # if they don't specify a list ID explicitly, then create it
                 if 'openalpr_list_id' not in alert_type:
@@ -185,7 +188,8 @@ if __name__ == "__main__":
                     list_id = alert_list_manager.get_list(alert_type['openalpr_list_id'])
 
                 if list_id is None:
-                    logger.warning("List does not exist %s (%d).  Skipping" % (alert_type['name'], alert_type['openalpr_list_id']))
+                    logger.warning(
+                        "List does not exist %s (%d).  Skipping" % (alert_type['name'], alert_type['openalpr_list_id']))
 
                 retry = 0
                 total_attempts = 5
@@ -196,7 +200,7 @@ if __name__ == "__main__":
                     try:
                         retry += 1
 
-                        logger.info("Starting upload for alert type %s (Attempt #%d)" % (alert_type['name'], retry) )
+                        logger.info("Starting upload for alert type %s (Attempt #%d)" % (alert_type['name'], retry))
 
                         # The CSV has been written, now let's push it to OpenALPR
                         base_url = config_data['server_base_url']
@@ -218,20 +222,18 @@ if __name__ == "__main__":
 
                             r = requests.post(upload_url, verify=False, files=postargs)
 
-                            logger.info("HTTP Import response: %s" % (r.content))
+                            logger.info("HTTP Import response: %s" % r.content)
 
                             if r.status_code != 200:
-                                logger.info("Non 200 Response: %d" % (r.status_code))
+                                logger.info("Non 200 Response: %d" % r.status_code)
                                 raise Exception("Non 200 response code")
-                                continue
-
 
                         success = True
                         break
 
-                    except:
+                    except Exception as e:
                         retry_seconds = 30
-                        logger.exception("Caught exception, waiting %d seconds to retry..." % (retry_seconds))
+                        logger.exception("Caught exception %s, waiting %d seconds to retry..." % (e, retry_seconds))
                         time.sleep(retry_seconds)
 
                 if not success:
@@ -242,21 +244,21 @@ if __name__ == "__main__":
             logger.info("Detected keyboard interrupt, exiting")
             sys.exit(1)
 
-        except:
-            logger.exception("Caught exception")
-            send_email(config_data, "OpenALPR CSV Import Unknown Error", "Encountered unknown error processing CSV Import\n" + traceback.format_exc())
-
+        except Exception as e:
+            logger.exception("Caught exception - {}".format(e))
+            send_email(config_data, "OpenALPR CSV Import Unknown Error",
+                       "Encountered unknown error processing CSV Import\n" + traceback.format_exc())
 
     exit_status = 0
 
     if len(failed_uploads) > 0:
         all_failures = ", ".join(failed_uploads)
-        send_email(config_data, "OpenALPR CSV Import Failure (%d)" % (len(failed_uploads)), "The following services failed to upload: " + all_failures)
+        send_email(config_data, "OpenALPR CSV Import Failure (%d)" % (len(failed_uploads)),
+                   "The following services failed to upload: " + all_failures)
         exit_status = 1
 
-    elif config_data['send_email_on_success'] == True:
+    elif config_data['send_email_on_success']:
         send_email(config_data, "OpenALPR CSV Import Success", "Import completed successfully")
-
 
     logger.info("Import complete")
 
