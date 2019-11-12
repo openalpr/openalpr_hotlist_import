@@ -53,17 +53,17 @@ class BaseParser(object):
 
                     # The user has configured a restriction on states.
                     # ONLY import alerts that have the correct state code
-                    if 'state_import' in self.config_obj and len(self.config_obj['state_import']) > 0:
+                    if self.config_obj.get('state_import'):
                         if 'state' in line_content:  # If no state is returned from parser, allow it
                             if line_content['state'].upper() not in self.config_obj['state_import']:
                                 continue
 
                     # Skip particular alerts that are generating false positives
-                    if 'skip_list' in self.config_obj and len(self.config_obj['skip_list']) > 0:
+                    if self.config_obj.get('skip_list'):
                         if str(line_content['plate']).upper() in self.config_obj['skip_list']:
                             continue
 
-                    if line_content['plate'] in self.dup_filter:
+                    if line_content.get('plate') in self.dup_filter:
                         self.logger.info("Skipping duplicate plate %s for list %s" %
                                          (line_content['plate'], line_content['list_type']))
                         continue
