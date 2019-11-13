@@ -68,7 +68,7 @@ class NyStateParser(BaseParser):
                 make_end = len(vehicle_other_info) - 7
             else:
                 color_candidate = vehicle_other_info[-3:]
-                if color_candidate in self.config_obj['car_colors']:
+                if color_candidate in self.config_obj.get('car_colors', {}):
                     color = self.config_obj['car_colors'][color_candidate]
                     make_end = len(vehicle_other_info) - 3
                 else:
@@ -76,7 +76,7 @@ class NyStateParser(BaseParser):
                     # print "UNKNOWN COLOR: " + color_candidate
 
             make = vehicle_other_info[make_start:make_end]
-            if make in self.config_obj['car_makes']:
+            if make in self.config_obj.get('car_makes', {}):
                 make = self.config_obj['car_makes'][make]
             else:
                 pass

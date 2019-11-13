@@ -26,19 +26,19 @@ WINDOWS = platform.system().lower().find('windows') == 0
 
 
 def send_email(config_obj, subject, message, logger):
-    if 'smtp_server' not in config_obj or config_obj['smtp_server'] is None or config_obj['smtp_server'].strip() == '':
+    if not config_obj.get('smtp_server'):
         return
 
     try:
         logger.info("Sending e-mail: %s" % subject)
         smtp_server = config_obj['smtp_server'].strip()
-        smtp_port = config_obj['smtp_port']
-        smtp_username = config_obj['smtp_username'].strip()
-        smtp_password = config_obj['smtp_password'].strip()
-        smtp_domain = config_obj['smtp_domain'].strip()
+        smtp_port = config_obj.get('smtp_port', 80)
+        smtp_username = config_obj.get('smtp_username', '').strip()
+        smtp_password = config_obj.get('smtp_password', '').strip()
+        smtp_domain = config_obj.get('smtp_domain', '').strip()
 
-        smtp_recipients = [config_obj['smtp_recipient'].strip()]
-        smtp_sender = config_obj['smtp_sender'].strip()
+        smtp_recipients = [config_obj.get('smtp_recipient', '').strip()]
+        smtp_sender = config_obj.get('smtp_sender', '').strip()
 
         if smtp_port == 25:
             smtp_obj = smtplib.SMTP(smtp_server, smtp_port, smtp_domain, timeout=45)
@@ -61,9 +61,8 @@ def send_email(config_obj, subject, message, logger):
 
 
 def get_color(config_obj, color):
-    if color in config_obj['car_colors']:
+    if color in config_obj.get('car_colors', {}):
         return config_obj['car_colors'][color]
-
     return color
 
 
@@ -72,36 +71,30 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
         # config_data = yaml.load(confin, Loader=yaml.FullLoader) # Uncomment to fix for PyYaml 5.x+
         conf_data = yaml.load(conf)
 
-    if foreground or 'log_file' not in conf_data or conf_data['log_file'] is None or len(conf_data['log_file']) <= 0:
-        logger = logging.getLogger('HotlistImport Log')
-        logger.setLevel(logging.DEBUG)
+    # Setup the logging
+    logger = logging.getLogger('HotlistImport Log')
+    logger.setLevel(logging.DEBUG)
+    if foreground or not conf_data.get('log_file'):
         handler = logging.StreamHandler()
         logger.addHandler(handler)
     else:
-        # Setup the logging
-        logger = logging.getLogger("HotlistImport Log")
-        logger.setLevel(logging.DEBUG)
-
         # add a rotating file handler
-        handler = RotatingFileHandler(conf_data['log_file'], maxBytes=conf_data['log_max_size_mb'] * 1024 * 1024,
-                                      backupCount=conf_data['log_archives'])
+        handler = RotatingFileHandler(conf_data['log_file'],
+                                      maxBytes=conf_data.get('log_max_size_mb', 100) * 1024 * 1024,
+                                      backupCount=conf_data.get('log_archives', 5))
         fmt = logging.Formatter("%(asctime)-15s: %(message)s", datefmt='%Y-%m-%dT%H:%M:%S')
         handler.setFormatter(fmt)
         logger.addHandler(handler)
 
-    logger.info("Starting import")
-    logger.info("using config:\n" + json.dumps(conf_data, indent=2))
+    logger.info("Starting import using config: \n" + json.dumps(conf_data, indent=2))
 
     # Iterate through the list multiple times for each alert type
     # e.g., stolen vehicles, etc.
     failed_uploads = []
     warnings.simplefilter('ignore', InsecureRequestWarning)
-    for alert_type in conf_data['alert_types']:
+    for alert_type in conf_data.get('alert_types', []):
         try:
-            if 'hotlist_path' in alert_type:
-                hotlist_path = alert_type['hotlist_path']
-            else:
-                hotlist_path = conf_data['hotlist_path']
+            hotlist_path = alert_type['hotlist_path'] if 'hotlist_path' in alert_type else conf_data['hotlist_path']
 
             # First get the hotlist data (either from the network or a local file)
             # Copy the file to a temporary file to start working with it
@@ -123,15 +116,9 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                             sys.exit(1)
                         else:
                             dat_file = dat_file_alt
-                    lines = [line for line in content[dat_file].decode("utf-8").split(os.linesep) if line]
-                    if WINDOWS:
-                        with open(conf_data["temp_dat_file"], "w") as f:
-                            for l in lines:
-                                f.write("{}\r".format(l))
-                    else:
-                        with open(conf_data["temp_dat_file"], "w") as f:
-                            for l in lines:
-                                f.write("{}\n".format(l))
+                    lines = [l.strip() for l in content[dat_file].decode("utf-8").split(os.linesep) if l.strip()]
+                    with open(conf_data["temp_dat_file"], "w") as f:
+                        f.write(('\r' if WINDOWS else '\n').join(lines))
                 elif not os.path.isfile(hotlist_path):
                     logger.error("Could not find hotlist file: %s" % hotlist_path)
                     sys.exit(1)
@@ -140,17 +127,15 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
 
             hotlistparser = factory.get_parser(conf_data, alert_type)
 
-            logger.info("processing alert list for " + alert_type['name'])
+            logger.info("processing alert list for " + alert_type.get('name', ''))
 
             hotlistparser.parse(alert_type)
 
             logger.info("Wrote temp CSV %s" % (conf_data['temp_csv_file']))
 
             if not skip_upload:
-
                 if 'api_key' in conf_data:
-                    alert_list_manager = AlertListManager(conf_data['server_base_url'],
-                                                          api_key=conf_data['api_key'])
+                    alert_list_manager = AlertListManager(conf_data['server_base_url'], api_key=conf_data['api_key'])
                 else:
                     alert_list_manager = AlertListManager(conf_data['server_base_url'],
                                                           company_id=conf_data['company_id'])
@@ -228,7 +213,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
         send_email(conf_data, "OpenALPR CSV Import Failure (%d)" % (len(failed_uploads)),
                    "The following services failed to upload: " + all_failures, logger)
         exit_status = 1
-    elif conf_data['send_email_on_success']:
+    elif conf_data.get('send_email_on_success'):
         send_email(conf_data, "OpenALPR CSV Import Success", "Import completed successfully", logger)
 
     logger.info("Import complete")
