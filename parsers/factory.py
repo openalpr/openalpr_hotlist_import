@@ -5,6 +5,8 @@ from .fl_state import FlStateParser
 from .al_state import AlStateParser
 from .simple import SimpleParser
 from .co_ccic import CoCCICParser
+from .ncic import NcicParser
+
 
 
 def get_parser(config_obj, alert_type):
@@ -27,6 +29,8 @@ def get_parser(config_obj, alert_type):
         return SimpleParser(config_obj)
     elif parser_name == 'co_ccic':
         return CoCCICParser(config_obj)
+    elif parser_name == 'ncic':
+        return NcicParser(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))
