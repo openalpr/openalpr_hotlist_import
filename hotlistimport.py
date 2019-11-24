@@ -234,7 +234,6 @@ if __name__ == "__main__":
                         help="Skip uploading CSVs to the server, useful for testing parse")
 
     options = parser.parse_args()
-    print(a)
 
     options.config_file = os.path.realpath(options.config_file)
     if not os.path.isfile(options.config_file):
