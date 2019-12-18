@@ -6,6 +6,8 @@ class NcicParser(BaseParser):
     def __init__(self, config_obj):
         super(NcicParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "NCIC"
 
     def parse_hotlist_line(self, raw_line, alert_config):
         # Example:

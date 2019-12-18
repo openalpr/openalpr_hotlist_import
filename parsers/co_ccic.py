@@ -6,6 +6,8 @@ class CoCCICParser(BaseParser):
     def __init__(self, config_obj):
         super(CoCCICParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "Colorado CCIC"
 
     def get_color(self, color):
         if color in self.config_obj['car_colors']:

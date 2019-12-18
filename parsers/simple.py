@@ -5,6 +5,9 @@ class SimpleParser(BaseParser):
     def __init__(self, config_obj):
         super(SimpleParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "Simple"
+
     def parse_hotlist_line(self, raw_line, alert_config):
         # Example:
         # plate
