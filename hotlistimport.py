@@ -87,6 +87,8 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
         logger.addHandler(handler)
 
     logger.info("Starting import using config: \n" + json.dumps(conf_data, indent=2))
+    if 'cloud.openalpr.com' in conf_data['server_base_url'] and conf_data['server_base_url'].split(':')[0] != 'https':
+        logger.warning('Cloud webserver should be prefixed with HTTPS')
 
     # Iterate through the list multiple times for each alert type
     # e.g., stolen vehicles, etc.
