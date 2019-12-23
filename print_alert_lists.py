@@ -27,7 +27,7 @@ class AlertListManager:
         r = requests.get(list_url, verify=False)
 
         if not r.ok:
-            raise Exception(f"Unable to request alert data from web server (status code {r.status_code})")
+            raise Exception("Unable to request alert data from web server (status code %d)" % (r.status_code))
 
         data_obj = json.loads(r.content)
         self.alert_lists = data_obj['results']
