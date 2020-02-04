@@ -104,11 +104,30 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                 # This is a URL, try to download it
                 urllib.urlretrieve(hotlist_path, conf_data['temp_dat_file'])
             else:
-                folder_path = os.path.dirname(hotlist_path)
-                if folder_path.endswith(".zip"):
+
+
+                # If it's a zip file, extract it first
+                if zipfile.is_zipfile(hotlist_path):
+
+                    with zipfile.ZipFile(hotlist_path, 'r') as zip_file:
+                        all_files = zip_file.namelist()
+
+                        if len(all_files) == 1:
+                            # Just process the one file and write to output
+                            content = zip_file.read(all_files[0])
+
+                            lines = [l for l in content.decode("utf-8").split(os.linesep) if l != ""]
+                            with open(conf_data['temp_dat_file'], 'w') as f:
+                                for l in lines:
+                                    f.write("%s%s" % (l, os.linesep))
+                        else:
+                            logger.info("The specified zip file contains multiple files.  Must specify the file in the path (e.g., c:\\hotlists\\thefile.zip\\fileinside")
+
+                elif '.zip' in hotlist_path:
+                    folder_path = os.path.dirname(hotlist_path)
                     with zipfile.ZipFile(folder_path, "r") as f:
                         content = {name: f.read(name) for name in f.namelist()}
-                    zip_name = str(os.path.dirname(hotlist_path).split(os.sep)[-1]).split('.')[0]
+                    zip_name = os.path.dirname(hotlist_path).split(os.sep)[-1].split('.')[0]
                     dat_file = os.path.basename(hotlist_path)
                     if dat_file not in content:
                         dat_file_alt = os.path.join(zip_name, os.path.basename(hotlist_path))
@@ -118,12 +137,16 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                             sys.exit(1)
                         else:
                             dat_file = dat_file_alt
-                    lines = [l.strip() for l in content[dat_file].decode("utf-8").split(os.linesep) if l.strip()]
-                    with open(conf_data["temp_dat_file"], "w") as f:
-                        f.write(('\r' if WINDOWS else '\n').join(lines))
+                    lines = [l for l in content[dat_file].decode("utf-8").split(os.linesep) if l != ""]
+                    with open(conf_data['temp_dat_file'], 'w') as f:
+                        for l in lines:
+                            f.write("%s%s" % (l, os.linesep))
+
+
                 elif not os.path.isfile(hotlist_path):
-                    logger.error("Could not find hotlist file: %s" % hotlist_path)
+                    logger.error("Could not find hotlist file: %s" % (hotlist_path))
                     sys.exit(1)
+
                 else:
                     copyfile(hotlist_path, conf_data['temp_dat_file'])
 
