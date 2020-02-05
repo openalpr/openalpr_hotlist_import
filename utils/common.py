@@ -13,7 +13,8 @@ import sys
 import datetime
 import operator
 
-from crontab import CronTab
+if platform.system() != 'Windows':
+    from crontab import CronTab
 
 from gui_settings import BAT_FILE, TASK_NAME, LINUX_CRON_FILE
 
