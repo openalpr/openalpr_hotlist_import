@@ -2,3 +2,7 @@
 *.pyc
 debian/usr
 debian/etc
+build/
+venv/
+venv3/
+out/
