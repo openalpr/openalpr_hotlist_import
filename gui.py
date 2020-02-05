@@ -174,10 +174,8 @@ class OpenALPRHotListImporterApp(QWidget):
             show_error_dialog(parent=self, msg="Please input correct values")
 
     def __generate_config_file(self, target_dir=ROOT_DIR):
-        if self._is_parser_changed():
-            result_name = "custom"
-        else:
-            result_name = self._cur_parser.__class__.__module__.split('.')[-1]
+
+        result_name = self._cur_parser.__class__.__module__.split('.')[-1]
         result_file = os.path.join(target_dir, f"{result_name}.yaml")
 
         lines = [
