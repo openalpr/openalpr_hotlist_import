@@ -68,9 +68,9 @@ def set_cron_job(conf_file, autorun_time):
         return
     if os.path.exists(BAT_FILE):
         os.remove(BAT_FILE)
-    py_file = f'{os.path.join(_cur_dir, os.pardir, "openalpr_hotlist_import", "hotlistimport.py")}'
+    py_file = f'{os.path.join(_cur_dir, os.pardir, "hotlistimport.py")}'
     with open(BAT_FILE, 'w') as f:
-        f.write(f'{sys.executable} {py_file} {conf_file}\r')
+        f.write(f'"{sys.executable}" "{py_file}" "{conf_file}"{os.linesep}')
     # Check if already exists
     if TASK_NAME in os.popen("schtasks.exe").read():
         subprocess.Popen(["schtasks.exe", "/delete", "/tn", TASK_NAME, "/f"])
