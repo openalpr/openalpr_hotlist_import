@@ -17,6 +17,8 @@ from utils.ui import validate_line_edit, show_error_dialog, show_info_dialog
 from utils.widgets import ParserItemWidget, LogDialog, TestResultDialog
 
 
+_cur_dir = os.path.dirname(os.path.realpath(__file__))
+
 class OpenALPRHotListImporterApp(QWidget):
 
     def __init__(self, parent=None):
