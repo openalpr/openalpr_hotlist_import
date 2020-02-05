@@ -228,8 +228,8 @@ class OpenALPRHotListImporterApp(QWidget):
         #     widget.rect()
         # )
 
+def main():
 
-if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # app.setStyleSheet(qdarkstyle.load_stylesheet_pyside2())
@@ -238,3 +238,6 @@ if __name__ == '__main__':
 
     form.show()
     app.exec_()
+
+if __name__ == '__main__':
+    main()
