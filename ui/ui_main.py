@@ -343,11 +343,6 @@ class Ui_OpenALPRHotListImporter(object):
         brush4.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.ToolTipBase, brush4)
         palette.setBrush(QPalette.Active, QPalette.ToolTipText, brush)
-        brush5 = QBrush(QColor(0, 0, 0, 128))
-        brush5.setStyle(Qt.NoBrush)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Active, QPalette.PlaceholderText, brush5)
-#endif
         palette.setBrush(QPalette.Inactive, QPalette.WindowText, brush)
         palette.setBrush(QPalette.Inactive, QPalette.Button, brush1)
         palette.setBrush(QPalette.Inactive, QPalette.Light, brush1)
@@ -363,11 +358,6 @@ class Ui_OpenALPRHotListImporter(object):
         palette.setBrush(QPalette.Inactive, QPalette.AlternateBase, brush1)
         palette.setBrush(QPalette.Inactive, QPalette.ToolTipBase, brush4)
         palette.setBrush(QPalette.Inactive, QPalette.ToolTipText, brush)
-        brush6 = QBrush(QColor(0, 0, 0, 128))
-        brush6.setStyle(Qt.NoBrush)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush6)
-#endif
         palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush2)
         palette.setBrush(QPalette.Disabled, QPalette.Button, brush1)
         palette.setBrush(QPalette.Disabled, QPalette.Light, brush1)
@@ -383,16 +373,11 @@ class Ui_OpenALPRHotListImporter(object):
         palette.setBrush(QPalette.Disabled, QPalette.AlternateBase, brush1)
         palette.setBrush(QPalette.Disabled, QPalette.ToolTipBase, brush4)
         palette.setBrush(QPalette.Disabled, QPalette.ToolTipText, brush)
-        brush7 = QBrush(QColor(0, 0, 0, 128))
-        brush7.setStyle(Qt.NoBrush)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush7)
-#endif
         self.scrollParsers.setPalette(palette)
         self.scrollParsers.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1258, 359))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1258, 364))
         self.scrollParsersLayout = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.scrollParsersLayout.setObjectName(u"scrollParsersLayout")
         self.scrollParsers.setWidget(self.scrollAreaWidgetContents_2)
@@ -417,6 +402,11 @@ class Ui_OpenALPRHotListImporter(object):
         self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_6.addItem(self.horizontalSpacer_6)
+
+        self.chkUpload = QCheckBox(OpenALPRHotListImporter)
+        self.chkUpload.setObjectName(u"chkUpload")
+
+        self.horizontalLayout_6.addWidget(self.chkUpload)
 
         self.btnTest = QPushButton(OpenALPRHotListImporter)
         self.btnTest.setObjectName(u"btnTest")
@@ -499,6 +489,7 @@ class Ui_OpenALPRHotListImporter(object):
         self.txtExampleFormat.setPlaceholderText("")
         self.btnAddParser.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Add &New Parser Item", None))
         self.btnViewLog.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"View Log", None))
+        self.chkUpload.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Upload to Web Server", None))
         self.btnTest.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Test", None))
         self.btnSave.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Save", None))
     # retranslateUi
