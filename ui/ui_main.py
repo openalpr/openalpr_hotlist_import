@@ -3,17 +3,18 @@
 ################################################################################
 ## Form generated from reading UI file 'main.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.14.0
+## Created by: Qt User Interface Compiler version 5.14.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide2.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
     QRect, QSize, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QFont,
+from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QFontDatabase, QIcon, QLinearGradient, QPalette, QPainter, QPixmap,
     QRadialGradient)
 from PySide2.QtWidgets import *
+
 
 class Ui_OpenALPRHotListImporter(object):
     def setupUi(self, OpenALPRHotListImporter):
@@ -459,7 +460,7 @@ class Ui_OpenALPRHotListImporter(object):
         self.btnBrowse.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Browse", None))
         self.label_3.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"OpenALPR Web &Server", None))
 #if QT_CONFIG(tooltip)
-        self.txtWebServer.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"OpenALPR Web Server", None))
+        self.txtWebServer.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"The destination address for the OpenALPR web server whose alert lists you wish to update.  Example: https://cloud.openalpr.com", None))
 #endif // QT_CONFIG(tooltip)
         self.txtWebServer.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"https://cloud.openalpr.com", None))
         self.btnHelpUrl.setText("")
@@ -471,23 +472,23 @@ class Ui_OpenALPRHotListImporter(object):
         self.label_7.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Hotlist &Parser", None))
         self.label.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Company &ID", None))
 #if QT_CONFIG(tooltip)
-        self.txtCompanyID.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"Your Company ID", None))
+        self.txtCompanyID.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"The Company ID on the OpenALPR web server.  This can be found on the My Account page: https://cloud.openalpr.com/account/my_account", None))
 #endif // QT_CONFIG(tooltip)
         self.btnHelpCompanyID.setText("")
         self.label_2.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"API &Key", None))
 #if QT_CONFIG(tooltip)
-        self.txtAPIKey.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"API Key from openALPR Cloud Server", None))
+        self.txtAPIKey.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"The API key used to authenticate with the OpenALPR web server.  This can be found on the My Account page: https://cloud.openalpr.com/account/my_account", None))
 #endif // QT_CONFIG(tooltip)
         self.btnHelpAPIKey.setText("")
         self.label_5.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"State &Import", None))
 #if QT_CONFIG(tooltip)
-        self.txtStateImport.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"State Import List, separated by comma(,)", None))
+        self.txtStateImport.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"List of state license plates (comma separated) to import from the alert list.  Leave blank to import all states.  Example: ca,or,nv,az would limit the import to only plates on the hotlist that correspond do those states.", None))
 #endif // QT_CONFIG(tooltip)
         self.txtStateImport.setPlaceholderText("")
         self.btnHelpStateImport.setText("")
         self.label_6.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Plates to &Skip", None))
 #if QT_CONFIG(tooltip)
-        self.txtSkipPlates.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"Skip Plates List, separated by comma(,)", None))
+        self.txtSkipPlates.setToolTip(QCoreApplication.translate("OpenALPRHotListImporter", u"A comma separated list of plates to skip from the alert list.  Example: 000,1111,ABC123 would permanently ignore those plates from import.", None))
 #endif // QT_CONFIG(tooltip)
         self.txtSkipPlates.setPlaceholderText("")
         self.btnHelpPlatesToSkip.setText("")

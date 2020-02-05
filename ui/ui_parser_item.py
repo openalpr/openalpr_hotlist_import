@@ -3,17 +3,18 @@
 ################################################################################
 ## Form generated from reading UI file 'parser_item.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.14.0
+## Created by: Qt User Interface Compiler version 5.14.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide2.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
     QRect, QSize, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QFont,
+from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QFontDatabase, QIcon, QLinearGradient, QPalette, QPainter, QPixmap,
     QRadialGradient)
 from PySide2.QtWidgets import *
+
 
 class Ui_ParserItem(object):
     def setupUi(self, ParserItem):
@@ -193,12 +194,12 @@ class Ui_ParserItem(object):
         ParserItem.setWindowTitle(QCoreApplication.translate("ParserItem", u"OpenALPR Hotlist Importer", None))
         self.label.setText(QCoreApplication.translate("ParserItem", u"List &Name", None))
 #if QT_CONFIG(tooltip)
-        self.txtName.setToolTip(QCoreApplication.translate("ParserItem", u"Parser Name", None))
+        self.txtName.setToolTip(QCoreApplication.translate("ParserItem", u"The name of the alert list that will be pushed to the OpenALPR Web Server", None))
 #endif // QT_CONFIG(tooltip)
         self.btnHelpName.setText("")
         self.label_2.setText(QCoreApplication.translate("ParserItem", u"Parse &Code", None))
 #if QT_CONFIG(tooltip)
-        self.txtCode.setToolTip(QCoreApplication.translate("ParserItem", u"Parser Code", None))
+        self.txtCode.setToolTip(QCoreApplication.translate("ParserItem", u"A special keyword that the hotlist parser uses to identify this alert list type in the input hotlist data.", None))
 #endif // QT_CONFIG(tooltip)
         self.btnHelpCode.setText("")
         self.label_4.setText(QCoreApplication.translate("ParserItem", u"Match &Strategy", None))
@@ -206,7 +207,7 @@ class Ui_ParserItem(object):
         self.comboMatchStrategy.setItemText(1, QCoreApplication.translate("ParserItem", u"Lenient", None))
 
 #if QT_CONFIG(tooltip)
-        self.chkOverride.setToolTip(QCoreApplication.translate("ParserItem", u"Check if override the hotlist path", None))
+        self.chkOverride.setToolTip(QCoreApplication.translate("ParserItem", u"Check to use a different hotlist file than the one defined in the general \"Hotlist Location\"", None))
 #endif // QT_CONFIG(tooltip)
         self.chkOverride.setText(QCoreApplication.translate("ParserItem", u"Override", None))
         self.btnHelpOverride.setText("")
