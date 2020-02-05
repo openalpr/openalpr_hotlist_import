@@ -153,7 +153,7 @@ class OpenALPRHotListImporterApp(QWidget):
     def _on_btn_test(self):
         if self.is_valid():
             conf_file = self.__generate_config_file(target_dir=tempfile.gettempdir())
-            args = ["hotlistimport.py", conf_file, "--skip_upload",  "--foreground"]
+            args = [os.path.join(_cur_dir, "hotlistimport.py"), conf_file, "--skip_upload",  "--foreground"]
             self._test_result_dlg.clear(f"{sys.executable} {' '.join(args)}\n{'=' * 30}")
             self._test_process.start(sys.executable, args)
             self._test_result_dlg.show()
