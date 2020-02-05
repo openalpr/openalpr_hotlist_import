@@ -194,7 +194,7 @@ class OpenALPRHotListImporterApp(QWidget):
         ]
         state_import = self.ui.txtStateImport.text().strip()
         if state_import:
-            lines.append('"state_import:"')
+            lines.append('state_import:')
             for s in state_import.split(','):
                 lines.append(f'  - {s}')
         skip_plates = self.ui.txtSkipPlates.text().strip()
