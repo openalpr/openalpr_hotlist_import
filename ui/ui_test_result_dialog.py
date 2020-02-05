@@ -36,6 +36,7 @@ class Ui_TestResultDialog(object):
         self.txtContent = QLabel(self.scrollAreaWidgetContents)
         self.txtContent.setObjectName(u"txtContent")
         self.txtContent.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.txtContent.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
 
         self.verticalLayout_2.addWidget(self.txtContent)
 
