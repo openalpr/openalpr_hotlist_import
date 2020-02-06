@@ -22,6 +22,7 @@ Installation:
 3. Clone this repository  
 `git clone https://github.com/openalpr/openalpr_hotlist_import.git` (or 
 click Download ZIP if you don't have git installed)
+4. Open Anaconda Prompt and run `pip install pyyaml`
 
 How it Works:
 --------------
