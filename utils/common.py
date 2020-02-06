@@ -16,7 +16,7 @@ import operator
 if platform.system() != 'Windows':
     from crontab import CronTab
 
-from gui_settings import BAT_FILE, TASK_NAME, LINUX_CRON_FILE
+import gui_settings
 
 _cur_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -66,16 +66,16 @@ def read_log():
 def set_cron_job(conf_file, autorun_time):
     if platform.system() != 'Windows':
         return
-    if os.path.exists(BAT_FILE):
-        os.remove(BAT_FILE)
+    if os.path.exists(gui_settings.BAT_FILE):
+        os.remove(gui_settings.BAT_FILE)
     py_file = f'{os.path.join(_cur_dir, os.pardir, "hotlistimport.py")}'
-    with open(BAT_FILE, 'w') as f:
+    with open(gui_settings.BAT_FILE, 'w') as f:
         f.write(f'"{sys.executable}" "{py_file}" "{conf_file}"{os.linesep}')
     # Check if already exists
-    if TASK_NAME in os.popen("schtasks.exe").read():
-        subprocess.Popen(["schtasks.exe", "/delete", "/tn", TASK_NAME, "/f"])
+    if gui_settings.TASK_NAME in os.popen("schtasks.exe").read():
+        subprocess.Popen(["schtasks.exe", "/delete", "/tn", gui_settings.TASK_NAME, "/f"])
 
-    cmd = ["schtasks.exe", "/create", "/tn", TASK_NAME, "/st", autorun_time, "/sc", "daily", "/tr", BAT_FILE]
+    cmd = ["schtasks.exe", "/create", "/tn", gui_settings.TASK_NAME, "/st", autorun_time, "/sc", "daily", "/tr", gui_settings.BAT_FILE]
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = p.communicate()
     logger.info(f'Created schedule:\n\tout: `{stdout}`, \n\terror: `{stderr}`')
@@ -83,8 +83,8 @@ def set_cron_job(conf_file, autorun_time):
 
 
 def get_cron_setting():
-    if os.path.isfile(LINUX_CRON_FILE):
-        line = open(LINUX_CRON_FILE).read().strip()
+    if os.path.isfile(gui_settings.LINUX_CRON_FILE):
+        line = open(gui_settings.LINUX_CRON_FILE).read().strip()
         cron_str = ' '.join(line.split()[:5])
         entry = CronTab(cron_str)
         next_time = datetime.datetime.now() + datetime.timedelta(seconds=math.ceil(entry.next()))

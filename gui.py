@@ -9,7 +9,8 @@ from PySide2 import QtCore
 from PySide2.QtCore import QTime, Qt, QPoint
 from PySide2.QtWidgets import QApplication, QWidget, QFileDialog, QLabel, QToolTip
 
-from gui_settings import WIDTH, HEIGHT, ROOT_DIR
+import gui_settings
+
 from ui.ui_main import Ui_OpenALPRHotListImporter
 import ui.ui_resources
 
@@ -24,7 +25,7 @@ class OpenALPRHotListImporterApp(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        self.setFixedSize(WIDTH, HEIGHT)
+        self.setFixedSize(gui_settings.WIDTH, gui_settings.HEIGHT)
         self.ui = Ui_OpenALPRHotListImporter()
         self.ui.setupUi(self)
 
@@ -58,6 +59,12 @@ class OpenALPRHotListImporterApp(QWidget):
 
     def _initialize(self):
         if platform.system() == 'Linux':
+
+            if os.geteuid() != 0:
+
+                show_error_dialog(parent=self, msg="You must run with root privileges in order to save any configuration")
+
+
             self.ui.chkAutoRun.setEnabled(False)
             self.ui.timeAutoRun.setEnabled(False)
             cron_val = get_cron_setting()
@@ -155,7 +162,8 @@ class OpenALPRHotListImporterApp(QWidget):
 
     def _on_btn_test(self):
         if self.is_valid():
-            conf_file = self.__generate_config_file(target_dir=tempfile.gettempdir())
+            temp_config_file = os.path.join(tempfile.gettempdir(), 'test_hotlist.yaml')
+            conf_file = self.__generate_config_file(temp_config_file)
             args = [os.path.join(_cur_dir, "hotlistimport.py"), conf_file, "--foreground"]
             if not self.ui.chkUpload.isChecked():
                 args.append("--skip_upload")
@@ -168,7 +176,7 @@ class OpenALPRHotListImporterApp(QWidget):
 
     def _on_btn_save(self):
         if self.is_valid():
-            conf_file = self.__generate_config_file(target_dir=ROOT_DIR)
+            conf_file = self.__generate_config_file(gui_settings.CONFIG_FILE)
             msg = f"Config file is saved as {conf_file}"
             if self.ui.chkAutoRun.isChecked():
                 autorun_time = self.ui.timeAutoRun.text()
@@ -178,10 +186,10 @@ class OpenALPRHotListImporterApp(QWidget):
         else:
             show_error_dialog(parent=self, msg="Please input correct values")
 
-    def __generate_config_file(self, target_dir=ROOT_DIR):
+    def __generate_config_file(self, target_path):
 
         result_name = self._cur_parser.__class__.__module__.split('.')[-1]
-        result_file = os.path.join(target_dir, f"{result_name}.yaml")
+        result_file = target_path
 
         lines = [
             f"server_base_url: {self.ui.txtWebServer.text()}",
@@ -191,7 +199,7 @@ class OpenALPRHotListImporterApp(QWidget):
             f"hotlist_path: {self.ui.txtHotlistLocation.text()}",
             f"temp_dat_file: {tempfile.gettempdir()}/hotlistimport.dat",
             f"temp_csv_file: {tempfile.gettempdir()}/hotlistimport.csv",
-            f"log_file: {os.path.expanduser('~/.alpr/alpr_hotlist_importer.log')}",
+            f"log_file: {gui_settings.LOG_FILE}",
             "log_archives: 5",
             "log_max_size_mb: 100",
         ]

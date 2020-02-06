@@ -1,14 +1,26 @@
 import os
+import platform
 
 WIDTH = 1280
 HEIGHT = 720
 
 TASK_NAME = "openALPRHotlistImporter"
 
-ROOT_DIR = os.path.expanduser('~/.alpr')
-os.makedirs(ROOT_DIR, exist_ok=True)
+if platform.system() == 'Windows':
+    # Windows 
+    ROOT_DIR = os.path.expanduser('~/.alpr')
+    os.makedirs(ROOT_DIR, exist_ok=True)
 
-BAT_FILE = os.path.join(ROOT_DIR, 'alpr.bat')
+    CONFIG_FILE = os.path.join(ROOT_DIR, 'hotlist.yaml')
+    LOG_FILE = os.path.join(ROOT_DIR, 'openalpr_hotlist_import.log')
+    #os.path.expanduser('~/.alpr/alpr_hotlist_importer.log')
+    BAT_FILE = os.path.join(ROOT_DIR, 'alpr.bat')
+
+else:
+    # Linux
+
+    CONFIG_FILE = '/etc/openalpr/hotlist.yaml'
+    LOG_FILE = '/var/log/openalpr_hotlist_import.log'
 
 LINUX_CRON_FILE = '/etc/cron.d/openalpr-hotlist'
 
