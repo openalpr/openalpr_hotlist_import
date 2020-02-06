@@ -20,19 +20,21 @@ class Ui_ParserItem(object):
     def setupUi(self, ParserItem):
         if ParserItem.objectName():
             ParserItem.setObjectName(u"ParserItem")
-        ParserItem.resize(1105, 100)
+        ParserItem.resize(1105, 125)
         sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(ParserItem.sizePolicy().hasHeightForWidth())
         ParserItem.setSizePolicy(sizePolicy)
-        ParserItem.setMinimumSize(QSize(0, 100))
-        ParserItem.setMaximumSize(QSize(2000, 100))
+        ParserItem.setMinimumSize(QSize(0, 125))
+        ParserItem.setMaximumSize(QSize(2000, 125))
         font = QFont()
         font.setPointSize(12)
         ParserItem.setFont(font)
         self.horizontalLayout_4 = QHBoxLayout(ParserItem)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
         self.frame = QFrame(ParserItem)
         self.frame.setObjectName(u"frame")
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -170,7 +172,14 @@ class Ui_ParserItem(object):
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
 
 
-        self.horizontalLayout_4.addWidget(self.frame)
+        self.verticalLayout.addWidget(self.frame)
+
+        self.verticalSpacer = QSpacerItem(15, 5, QSizePolicy.Minimum, QSizePolicy.MinimumExpanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+
+        self.horizontalLayout_4.addLayout(self.verticalLayout)
 
 #if QT_CONFIG(shortcut)
         self.label.setBuddy(self.txtName)
