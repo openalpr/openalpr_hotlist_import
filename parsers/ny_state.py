@@ -6,7 +6,50 @@ PLATE_FIELDS_START = 0
 STATE_START = 10
 VEHICLE_TYPE_START = 12
 LIST_TYPE_START = 15
-VEHICLE_INFO_START = 16
+VEHICLE_MAKE_START = 16
+VEHICLE_COLOR_START = 20
+
+car_types = {
+    'PC': 'Passenger Car',
+    'TL': 'Trailer'
+}
+
+car_makes = {
+    "FORD": "Ford",
+    "DODG": "Dodge",
+    "TOYT": "Toyota",
+    "CHEV": "Chevrolet",
+    "NISS": "Nissan",
+    "BUIC": "Buick",
+    "HOND": "Honda",
+    "GMC": "GMC",
+    "CADI": "Cadillac",
+    "KIA": "Kia",
+    "SUBA": "Subaru",
+    "JEEP": "Jeep",
+    "PONT": "Pontiac",
+    "INFI": "Infinit",
+    "ACUR": "Acura",
+    "SUZI": "Suzuki",
+    "MITS": "Mitsubishi",
+    "HYUN": "Hyundai",
+    "LINC": "Lincoln",
+    "VOLV": "Volvo"
+}
+
+car_colors = {
+    "WHI": "White",
+    "RED": "Red",
+    "GLD": "Gold",
+    "GRN": "Green",
+    "YEL": "Yellow",
+    "BLK": "Black",
+    "SIL": "Silver",
+    "GRY": "Gray",
+    "ONG": "Orange",
+    "BLU": "Blue",
+    "TAN": "Tan"
+}
 
 
 class NyStateParser(BaseParser):
@@ -18,8 +61,8 @@ class NyStateParser(BaseParser):
         return "New York State"
 
     def get_color(self, color):
-        if color in self.config_obj['car_colors']:
-            return self.config_obj['car_colors'][color]
+        if color in car_colors:
+            return car_colors[color]
 
         return color
 
@@ -48,16 +91,16 @@ class NyStateParser(BaseParser):
         vehicle_type = raw_line[VEHICLE_TYPE_START:LIST_TYPE_START].strip()
 
         list_type = raw_line[LIST_TYPE_START].strip()
-        vehicle_other_info = raw_line[VEHICLE_INFO_START:].strip()
+        make = raw_line[VEHICLE_MAKE_START:VEHICLE_COLOR_START].strip()
+        color = raw_line[VEHICLE_COLOR_START:].strip()
 
-        color = ''
-        make = ''
-        if len(vehicle_other_info) > 1:
+        if len(make) > 1:
+            if make in car_makes:
+                make = car_makes[make]
+        if len(color) > 1:
 
-            make_start = 0
-            make_end = len(vehicle_other_info)
-            if '/' in vehicle_other_info:
-                color_both = vehicle_other_info[-7:].split('/')
+            if '/' in color:
+                color_both = color[-7:].split('/')
 
                 # If the car is "WHI/WHI" just say "White"
                 if color_both[0] != color_both[1]:
@@ -65,22 +108,15 @@ class NyStateParser(BaseParser):
                 else:
                     color = self.get_color(color_both[0])
 
-                make_end = len(vehicle_other_info) - 7
             else:
-                color_candidate = vehicle_other_info[-3:]
-                if color_candidate in self.config_obj.get('car_colors', {}):
-                    color = self.config_obj['car_colors'][color_candidate]
-                    make_end = len(vehicle_other_info) - 3
+                color_candidate = color[-3:]
+                if color_candidate in car_colors:
+                    color = car_colors[color_candidate]
                 else:
                     pass
                     # print "UNKNOWN COLOR: " + color_candidate
 
-            make = vehicle_other_info[make_start:make_end]
-            if make in self.config_obj.get('car_makes', {}):
-                make = self.config_obj['car_makes'][make]
-            else:
-                pass
-                # print "UNKNOWN MAKE: " + make
+
 
         list_name = alert_config['name']
 
