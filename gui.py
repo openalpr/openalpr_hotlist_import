@@ -11,6 +11,7 @@ from PySide2.QtWidgets import QApplication, QWidget, QFileDialog, QLabel, QToolT
 
 from gui_settings import WIDTH, HEIGHT, ROOT_DIR
 from ui.ui_main import Ui_OpenALPRHotListImporter
+import ui.ui_resources
 
 from utils.common import get_cron_setting, get_all_parsers, read_log, set_cron_job
 from utils.ui import validate_line_edit, show_error_dialog, show_info_dialog

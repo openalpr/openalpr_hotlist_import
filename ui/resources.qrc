@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/help-icon.ico</file>
+    </qresource>
+</RCC>
+

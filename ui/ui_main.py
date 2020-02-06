@@ -83,8 +83,7 @@ class Ui_OpenALPRHotListImporter(object):
 
         self.btnHelpUrl = QToolButton(OpenALPRHotListImporter)
         self.btnHelpUrl.setObjectName(u"btnHelpUrl")
-        icon = QIcon()
-        icon.addFile(u"ui/help-icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon = QIcon(QIcon.fromTheme(u":resources/help-icon.ico"))
         self.btnHelpUrl.setIcon(icon)
         self.btnHelpUrl.setIconSize(QSize(22, 22))
 

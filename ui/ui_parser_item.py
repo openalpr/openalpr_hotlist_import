@@ -66,8 +66,7 @@ class Ui_ParserItem(object):
 
         self.btnHelpName = QToolButton(self.frame)
         self.btnHelpName.setObjectName(u"btnHelpName")
-        icon = QIcon()
-        icon.addFile(u"ui/help-icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon = QIcon(QIcon.fromTheme(u":resources/help-icon.ico"))
         self.btnHelpName.setIcon(icon)
         self.btnHelpName.setIconSize(QSize(22, 22))
 

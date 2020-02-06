@@ -94,10 +94,9 @@
               <property name="text">
                <string/>
               </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>help-icon.ico</normaloff>help-icon.ico</iconset>
-              </property>
+               <property name="icon">
+                <iconset theme=":resources/help-icon.ico"/>
+               </property>
               <property name="iconSize">
                <size>
                 <width>22</width>
@@ -155,10 +154,9 @@
               <property name="text">
                <string/>
               </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>help-icon.ico</normaloff>help-icon.ico</iconset>
-              </property>
+               <property name="icon">
+                <iconset theme=":resources/help-icon.ico"/>
+               </property>
               <property name="iconSize">
                <size>
                 <width>22</width>
@@ -238,10 +236,9 @@
               <property name="text">
                <string/>
               </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>help-icon.ico</normaloff>help-icon.ico</iconset>
-              </property>
+               <property name="icon">
+                <iconset theme=":resources/help-icon.ico"/>
+               </property>
               <property name="iconSize">
                <size>
                 <width>22</width>
