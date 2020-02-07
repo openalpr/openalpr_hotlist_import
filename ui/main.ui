@@ -186,7 +186,7 @@
            </property>
            <property name="icon">
             <iconset theme=":resources/help-icon.ico">
-	    </iconset>
+             <normaloff>:resources/help-icon.ico</normaloff>:resources/help-icon.ico</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -353,7 +353,7 @@
            </property>
            <property name="icon">
             <iconset theme=":resources/help-icon.ico">
-             </iconset>
+             <normaloff>:resources/help-icon.ico</normaloff>:resources/help-icon.ico</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -408,7 +408,7 @@
            </property>
            <property name="icon">
             <iconset theme=":resources/help-icon.ico">
-             </iconset>
+             <normaloff>:resources/help-icon.ico</normaloff>:resources/help-icon.ico</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -475,7 +475,7 @@
            </property>
            <property name="icon">
             <iconset theme=":resources/help-icon.ico">
-             </iconset>
+             <normaloff>:resources/help-icon.ico</normaloff>:resources/help-icon.ico</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -522,7 +522,7 @@
            </property>
            <property name="icon">
             <iconset theme=":resources/help-icon.ico">
-             </iconset>
+             <normaloff>:resources/help-icon.ico</normaloff>:resources/help-icon.ico</iconset>
            </property>
            <property name="iconSize">
             <size>

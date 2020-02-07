@@ -68,7 +68,13 @@ class Ui_ParserItem(object):
 
         self.btnHelpName = QToolButton(self.frame)
         self.btnHelpName.setObjectName(u"btnHelpName")
-        icon = QIcon(QIcon.fromTheme(u":resources/help-icon.ico"))
+        icon = QIcon()
+        iconThemeName = u":resources/help-icon.ico"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon = QIcon.fromTheme(iconThemeName)
+        else:
+            icon.addFile(u":resources/help-icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        
         self.btnHelpName.setIcon(icon)
         self.btnHelpName.setIconSize(QSize(22, 22))
 
@@ -93,7 +99,14 @@ class Ui_ParserItem(object):
 
         self.btnHelpCode = QToolButton(self.frame)
         self.btnHelpCode.setObjectName(u"btnHelpCode")
-        self.btnHelpCode.setIcon(icon)
+        icon1 = QIcon()
+        iconThemeName = u":resources/help-icon.ico"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon1 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon1.addFile(u":resources/help-icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        
+        self.btnHelpCode.setIcon(icon1)
         self.btnHelpCode.setIconSize(QSize(22, 22))
 
         self.horizontalLayout.addWidget(self.btnHelpCode)
