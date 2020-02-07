@@ -4,6 +4,8 @@ OpenALPR Hotlist Import
 Automatically import a law enforcement "hotlist" into 
 OpenALPR alert lists using a cron job or Windows Task.
 
+![Hotlist Import GUI](https://www.openalpr.com/images/demoscreens/openalpr_hotlist_import.png "Hotlist GUI Image")
+
 Installation:
 --------------
 
@@ -14,14 +16,10 @@ Installation:
 2. Install the package 
 `sudo dpkg -i openalpr-hotlist_*.deb && sudo apt-get install -f`
 
-**Windows 10**
+**Windows**
 
-1. Download the Miniconda3 v4.5.1 
-[installer](https://repo.anaconda.com/miniconda/Miniconda3-4.5.1-Windows-x86_64.exe)
-2. Run the `.exe` and follow the prompts to install Python 3.6
-3. Clone this repository  
-`git clone https://github.com/openalpr/openalpr_hotlist_import.git` (or 
-click Download ZIP if you don't have git installed)
+1. Download the installer on the Releases page
+2. Click on Start and search for "Hotlist".  Click on teh OpenALPR Hotlist Import icon.
 
 How it Works:
 --------------
