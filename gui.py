@@ -23,11 +23,11 @@ _cur_dir = os.path.dirname(os.path.realpath(__file__))
 
 class OpenALPRHotListImporterApp(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, scale_ratio=1.0, parent=None):
         QWidget.__init__(self, parent)
-        self.setFixedSize(gui_settings.WIDTH, gui_settings.HEIGHT)
         self.ui = Ui_OpenALPRHotListImporter()
         self.ui.setupUi(self)
+        self.resize(gui_settings.WIDTH*scale_ratio, gui_settings.HEIGHT*scale_ratio)
 
         # Connect signals
         self.ui.comboHotlistLocation.currentIndexChanged.connect(self._on_hotlist_location_changed)
@@ -243,9 +243,11 @@ def main():
 
     app = QApplication(sys.argv)
 
+    screen = app.primaryScreen()
+    scale_ratio = screen.logicalDotsPerInch() / screen.physicalDotsPerInch()
     # app.setStyleSheet(qdarkstyle.load_stylesheet_pyside2())
 
-    form = OpenALPRHotListImporterApp()
+    form = OpenALPRHotListImporterApp(scale_ratio=scale_ratio)
 
     form.show()
     app.exec_()

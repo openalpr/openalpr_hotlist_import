@@ -18,8 +18,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>1280</width>
-    <height>720</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -127,7 +127,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":resources/help-icon.ico"/>
+            <iconset theme=":resources/help-icon.ico">
+	    </iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -293,7 +294,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":resources/help-icon.ico"/>
+            <iconset theme=":resources/help-icon.ico">
+             </iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -347,7 +349,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":resources/help-icon.ico"/>
+            <iconset theme=":resources/help-icon.ico">
+             </iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -413,7 +416,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":resources/help-icon.ico"/>
+            <iconset theme=":resources/help-icon.ico">
+             </iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -459,7 +463,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":resources/help-icon.ico"/>
+            <iconset theme=":resources/help-icon.ico">
+             </iconset>
            </property>
            <property name="iconSize">
             <size>

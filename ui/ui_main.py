@@ -26,7 +26,7 @@ class Ui_OpenALPRHotListImporter(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(OpenALPRHotListImporter.sizePolicy().hasHeightForWidth())
         OpenALPRHotListImporter.setSizePolicy(sizePolicy)
-        OpenALPRHotListImporter.setMaximumSize(QSize(1280, 720))
+        OpenALPRHotListImporter.setMaximumSize(QSize(16777215, 16777215))
         font = QFont()
         font.setPointSize(12)
         OpenALPRHotListImporter.setFont(font)
