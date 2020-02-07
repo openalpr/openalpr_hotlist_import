@@ -1,3 +1,9 @@
+openalpr-hotlistimport (1.1.2-1) unstable; urgency=low
+  
+  * GUI support
+
+ -- Matt Hill <matthill@openalpr.com>  Fri, 7 Feb 2020 00:00:00 +0000
+
 openalpr-hotlistimport (1.1.1-1) unstable; urgency=low
   
   * New states
