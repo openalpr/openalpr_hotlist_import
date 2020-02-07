@@ -276,7 +276,7 @@ def main():
     os.environ['QT_AUTO_SCREEN_SCALE_FACTOR'] = '1'
     app = QApplication(sys.argv)
     form = OpenALPRHotListImporterApp()
-    form.show()
+    form.showMaximized()
     app.exec_()
 
 if __name__ == '__main__':
