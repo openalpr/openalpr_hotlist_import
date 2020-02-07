@@ -16,7 +16,7 @@ import gui_settings
 from ui.ui_main import Ui_OpenALPRHotListImporter
 import ui.ui_resources
 
-from utils.common import get_cron_setting, get_all_parsers, read_log, set_cron_job
+from utils.common import get_cron_setting, get_all_parsers, read_log, set_cron_job, remove_old_crons
 from utils.ui import validate_line_edit, show_error_dialog, show_info_dialog
 from utils.widgets import ParserItemWidget, LogDialog, TestResultDialog
 
@@ -209,6 +209,7 @@ class OpenALPRHotListImporterApp(QWidget):
         if self.is_valid():
             conf_file = self.__generate_config_file(gui_settings.CONFIG_FILE)
             msg = f"Config file is saved as {conf_file}"
+            remove_old_crons()
             if self.ui.chkAutoRun.isChecked():
                 autorun_time = self.ui.timeAutoRun.text()
                 set_cron_job(conf_file, autorun_time)
