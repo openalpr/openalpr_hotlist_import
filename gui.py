@@ -1,9 +1,11 @@
+from datetime import datetime
 import os
 import platform
 # import qdarkstyle
 import sys
 import tempfile
 from functools import partial
+import yaml
 
 from PySide2 import QtCore
 from PySide2.QtCore import QTime, Qt, QPoint
@@ -72,6 +74,35 @@ class OpenALPRHotListImporterApp(QWidget):
                 self.ui.timeAutoRun.setTime(QTime(cron_val.hour, cron_val.minute))
         for p in self.parsers:
             self.ui.comboParser.addItem(p.get_parser_name())
+        
+        # Populate UI with YAML data
+        if os.path.isfile(gui_settings.CONFIG_FILE):
+            with open(gui_settings.CONFIG_FILE, 'r') as stream:
+                config_data = yaml.load(stream)
+            try:
+                self.ui.txtCompanyID.setText(config_data['company_id'])
+                self.ui.txtAPIKey.setText(config_data['api_key'])
+                self.ui.txtHotlistLocation.setText(config_data['hotlist_path'])
+                self.ui.txtWebServer.setText(config_data['server_base_url'])
+                parser_idx = [i for i, p in enumerate(self.parsers) 
+                              if p.__class__.__module__.split('.')[-1] == config_data['hotlist_parser']][0]
+                self.ui.comboParser.setCurrentIndex(parser_idx)
+                if platform.system() == 'Windows':
+                    tasks = os.popen("schtasks.exe").read()
+                    if gui_settings.TASK_NAME in tasks:
+                        openalpr_task = [t for t in tasks.splitlines() if gui_settings.TASK_NAME in t]
+                        if len(openalpr_task) == 0:
+                            raise RuntimeError(f'Could not locate {gui_settings.TASK_NAME} in scheduled tasks')
+                        time_str = ''.join(openalpr_task[0].split()[2:4])
+                        scheduled_time = datetime.strptime(time_str, '%I:%M:%S%p')
+                        self.ui.chkAutoRun.setChecked(True)
+                        self.ui.timeAutoRun.setTime(QTime(scheduled_time.hour, scheduled_time.minute))
+                if 'state_import' in config_data:
+                    self.ui.txtStateImport.setText(','.join([s for s in config_data['state_import']]))
+                if 'skip_list' in config_data:
+                    self.ui.txtSkipPlates.setText(','.join([p for p in config_data['skip_list']]))
+            except KeyError as exc:
+                raise RuntimeError(f'Malformed YAML missing {exc} key')
 
     def _on_hotlist_location_changed(self):
         if self.ui.comboHotlistLocation.currentText() == "FILE":
