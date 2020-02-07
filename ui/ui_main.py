@@ -32,6 +32,34 @@ class Ui_OpenALPRHotListImporter(object):
         OpenALPRHotListImporter.setFont(font)
         self.verticalLayout_2 = QVBoxLayout(OpenALPRHotListImporter)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.label_9 = QLabel(OpenALPRHotListImporter)
+        self.label_9.setObjectName(u"label_9")
+        font1 = QFont()
+        font1.setPointSize(22)
+        self.label_9.setFont(font1)
+        self.label_9.setScaledContents(False)
+
+        self.horizontalLayout_18.addWidget(self.label_9)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_18.addItem(self.horizontalSpacer)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 90, QSizePolicy.Minimum, QSizePolicy.Maximum)
+
+        self.horizontalLayout_18.addItem(self.verticalSpacer_4)
+
+        self.lblLogo = QLabel(OpenALPRHotListImporter)
+        self.lblLogo.setObjectName(u"lblLogo")
+        self.lblLogo.setPixmap(QPixmap(u":resources/logo.svg"))
+
+        self.horizontalLayout_18.addWidget(self.lblLogo)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_18)
+
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.verticalLayout_4 = QVBoxLayout()
@@ -83,7 +111,13 @@ class Ui_OpenALPRHotListImporter(object):
 
         self.btnHelpUrl = QToolButton(OpenALPRHotListImporter)
         self.btnHelpUrl.setObjectName(u"btnHelpUrl")
-        icon = QIcon(QIcon.fromTheme(u":resources/help-icon.ico"))
+        icon = QIcon()
+        iconThemeName = u":resources/help-icon.ico"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon = QIcon.fromTheme(iconThemeName)
+        else:
+            icon.addFile(u":resources/help-icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        
         self.btnHelpUrl.setIcon(icon)
         self.btnHelpUrl.setIconSize(QSize(22, 22))
 
@@ -376,7 +410,7 @@ class Ui_OpenALPRHotListImporter(object):
         self.scrollParsers.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1258, 364))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1258, 266))
         self.scrollParsersLayout = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.scrollParsersLayout.setObjectName(u"scrollParsersLayout")
         self.scrollParsers.setWidget(self.scrollAreaWidgetContents_2)
@@ -442,6 +476,8 @@ class Ui_OpenALPRHotListImporter(object):
 
     def retranslateUi(self, OpenALPRHotListImporter):
         OpenALPRHotListImporter.setWindowTitle(QCoreApplication.translate("OpenALPRHotListImporter", u"OpenALPR Hotlist Importer", None))
+        self.label_9.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Automated Hotlist Import", None))
+        self.lblLogo.setText("")
         self.label_4.setText(QCoreApplication.translate("OpenALPRHotListImporter", u"Hotlist &Location", None))
         self.comboHotlistLocation.setItemText(0, QCoreApplication.translate("OpenALPRHotListImporter", u"FILE", None))
         self.comboHotlistLocation.setItemText(1, QCoreApplication.translate("OpenALPRHotListImporter", u"URL", None))
