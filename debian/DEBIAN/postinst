@@ -4,5 +4,10 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
+case "$1" in
+    configure)
+	pip3 install PySide2==5.14.1
+	;;
+esac
 
 db_stop

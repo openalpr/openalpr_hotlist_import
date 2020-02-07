@@ -19,6 +19,15 @@ cp $CUR_DIR/print_alert_lists.py debian/usr/share/openalpr-hotlist/
 cp $CUR_DIR/parsers/*.py debian/usr/share/openalpr-hotlist/parsers/
 cp $CUR_DIR/config/hotlist.yaml.sample debian/etc/openalpr/hotlist.yaml.sample
 cp $CUR_DIR/deploy/openalpr-hotlistimport.cron  debian/etc/cron.d/openalpr-hotlist
+
+# Copy GUI components
+mkdir -p debian/usr/share/openalpr-hotlist/ui
+mkdir -p debian/usr/share/openalpr-hotlist/utils
+cp $CUR_DIR/gui.py debian/usr/share/openalpr-hotlist/
+cp $CUR_DIR/gui_settings.py debian/usr/share/openalpr-hotlist/
+cp $CUR_DIR/ui/*.py debian/usr/share/openalpr-hotlist/ui/
+cp $CUR_DIR/utils/*.py debian/usr/share/openalpr-hotlist/utils/
+cp $CUR_DIR/utils/logging.ini debian/usr/share/openalpr-hotlist/utils/
 chmod 644 debian/etc/cron.d/openalpr-hotlist
 
 # Insert the git hash into settings.py

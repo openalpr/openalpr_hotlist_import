@@ -1,10 +1,14 @@
 from .base import BaseParser
 import re
 
+
 class AlStateParser(BaseParser):
+
     def __init__(self, config_obj):
         super(AlStateParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "Alabama State"
 
     def parse_hotlist_line(self, raw_line, alert_config):
         # Skip the first (header) line
@@ -15,7 +19,7 @@ class AlStateParser(BaseParser):
         list_type = columns[7].strip().upper()
         plate_number = columns[0].strip()
         state = columns[8].strip()
-        ori = columns[2].strip()
+        # ori = columns[2].strip()
         make = columns[3].strip()
         model = columns[4].strip()
         color = columns[5].strip()
@@ -40,3 +44,14 @@ class AlStateParser(BaseParser):
         }
 
         return alert_data
+
+    def get_default_lists(self):
+        return [
+            {
+                'name': 'Stolen Vehicles',
+                'parse_code': 'Stolen Vehicle or Vehicle Part'
+            }
+        ]
+
+    def get_example_format(self):
+        return "Taghere1,,V000000000,CHEV,,RED,1985,Stolen Vehicle or Vehicle Part,WA"

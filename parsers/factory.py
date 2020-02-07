@@ -4,9 +4,12 @@ from .ny_state import NyStateParser
 from .fl_state import FlStateParser
 from .al_state import AlStateParser
 from .simple import SimpleParser
+from .co_ccic import CoCCICParser
+from .ncic import NcicParser
+
+
 
 def get_parser(config_obj, alert_type):
-
     if 'hotlist_parser' in alert_type:
         parser_name = alert_type['hotlist_parser']
     else:
@@ -24,6 +27,10 @@ def get_parser(config_obj, alert_type):
         return AlStateParser(config_obj)
     elif parser_name == 'simple':
         return SimpleParser(config_obj)
+    elif parser_name == 'co_ccic':
+        return CoCCICParser(config_obj)
+    elif parser_name == 'ncic':
+        return NcicParser(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))

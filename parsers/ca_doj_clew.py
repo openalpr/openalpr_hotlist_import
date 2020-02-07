@@ -3,15 +3,18 @@ import re
 
 
 class CaClewParser(BaseParser):
+
     def __init__(self, config_obj):
         super(CaClewParser, self).__init__(config_obj)
 
+    def get_parser_name(self):
+        return "California DOJ CLEW"
 
     def parse_hotlist_line(self, raw_line, alert_config):
         # Example:
         # plate     state/vehicle type  alert_list-vehicle-color
         # 0         ILPC VMELRYEL/BLK
-        #pieces = raw_line.split()
+        # pieces = raw_line.split()
 
         # Skip the last (footer) line
         if raw_line.startswith('TOTAL RECORD'):
@@ -26,7 +29,6 @@ class CaClewParser(BaseParser):
         county_code = raw_line[10:12]
         date_of_loss = raw_line[12:].strip()
 
-
         # Stolen vehicle, Green Honda Passenger Car (State)
         description = '%s State: %s County: %s Lost on: %s' % (alert_config['name'], state, county_code, date_of_loss)
 
@@ -38,5 +40,24 @@ class CaClewParser(BaseParser):
             'state': state,
             'list_type': alert_config['name'],
             'description': description
-            #'vehicle_other_info': vehicle_other_info
+            # 'vehicle_other_info': vehicle_other_info
         }
+
+    def get_default_lists(self):
+        return [
+            {
+                'name': 'Stolen Vehicles',
+                'parse_code': 'svs.tbl'
+            },
+            {
+                'name': 'Felony Vehicles',
+                'parse_code': 'sfr.tbl'
+            },
+            {
+                'name': 'Stolen License Plates',
+                'parse_code': 'slr.tbl'
+            }
+        ]
+
+    def get_example_format(self):
+        return "ABC1234 CA1220190515"
