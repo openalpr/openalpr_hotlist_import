@@ -18,7 +18,7 @@ Installation:
 
 **Windows**
 
-1. Download the installer on the Releases page
+1. Download the installer on the [release page](https://github.com/openalpr/openalpr_hotlist_import/releases)
 2. Click on Start and search for "Hotlist".  Click on teh OpenALPR Hotlist Import icon.
 
 How it Works:
