@@ -190,6 +190,7 @@ class OpenALPRHotListImporterApp(QWidget):
 
     def _on_test_data_ready(self):
         self._test_result_dlg.append_result(self._test_process.readAllStandardOutput().data().decode())
+        self._test_result_dlg.show_bottom()
 
     def _on_btn_test(self):
         if self.is_valid():
