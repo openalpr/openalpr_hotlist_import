@@ -8,7 +8,7 @@ TASK_NAME = "openALPRHotlistImporter"
 
 if platform.system() == 'Windows':
     # Windows 
-    ROOT_DIR = os.path.expanduser('~/.alpr')
+    ROOT_DIR = os.path.join(os.path.expanduser('~'), '.alpr')
     os.makedirs(ROOT_DIR, exist_ok=True)
 
     CONFIG_FILE = os.path.join(ROOT_DIR, 'hotlist.yaml')
