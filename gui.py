@@ -241,14 +241,9 @@ class OpenALPRHotListImporterApp(QWidget):
 
 def main():
 
+    os.environ['QT_AUTO_SCREEN_SCALE_FACTOR'] = '1'
     app = QApplication(sys.argv)
-
-    screen = app.primaryScreen()
-    scale_ratio = screen.logicalDotsPerInch() / screen.physicalDotsPerInch()
-    # app.setStyleSheet(qdarkstyle.load_stylesheet_pyside2())
-
-    form = OpenALPRHotListImporterApp(scale_ratio=scale_ratio)
-
+    form = OpenALPRHotListImporterApp()
     form.show()
     app.exec_()
 
