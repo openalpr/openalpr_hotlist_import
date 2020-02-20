@@ -25,7 +25,21 @@ class BaseParser(object):
         raise NotImplementedError()
 
     def parse_hotlist_line(self, raw_line, alert_config):
-        # This function must be implemented in the subclass doing the parsing
+        """Must be implemented in the subclass doing the parsing
+
+        :param str raw_line: Plain text line from the hotlist file
+        :param dict alert_config: Containing the following keys
+            * name: For display in the webserver
+            * match_strategy: Either exact or lenient
+            * parse_code (optional): May be used depending on state's format
+            * openalpr_list_id (optional): To match an existing list on the webserver
+            * hotlist_path (optional): Override the default path
+        :return dict or None: Containing the following keys
+            * plate: License plate number
+            * list_type: Identifier similar to parse code or alert type
+            * description: For display in webserver
+            * state (optional): Two letter ISO code
+        """
         raise NotImplementedError()
 
     def parse(self, alert_type):
