@@ -185,7 +185,7 @@ class KsStateParser(BaseParser):
         # Determine list type
         matches = self.regex['format1_list_type'].search(raw_line)
         if matches is not None and len(matches.groups()) == 1:
-            list_type = matches.group(1)
+            list_type = re.sub('\s+[A-Z]$', '', matches.group(1).strip())
         else:
             raise ValueError('Format 2: no matches found for list type')
 
@@ -201,7 +201,7 @@ class KsStateParser(BaseParser):
             'description': description}
 
     def _parse_format3(self, raw_line):
-        """Slash formatted date and dashes between most fields"""
+        """Warrants - slash formatted date and dashes between most fields"""
         # Get plate and state
         plate_number, state = self.get_plate_info(raw_line)
 
@@ -211,7 +211,7 @@ class KsStateParser(BaseParser):
         if len(vehicle_and_list) != 1:
             vehicle_and_list = self.regex['format3_split_alt'].findall(without_date.strip())
         vehicle_and_list = vehicle_and_list[0]
-        vehicle_info, *comments_list = re.split('\s+', vehicle_and_list)
+        vehicle_info, *comments_list = re.split('\s+', re.sub('\s*-\s*', '-', vehicle_and_list))
         if vehicle_info.isnumeric():
             year, make, color = ('', ) * 3
         else:
@@ -219,14 +219,26 @@ class KsStateParser(BaseParser):
 
         # Find list name (if provided)
         list_codes = {
-            'ROD': 'ROD',
+            'ALCOHOLICWAR': 'Alcoholic Warrant',
+            'ALLERGIESWAR': 'Allergies Warrant',
+            'ARMED/DANGPOI': 'Armed/Dangerous Person of Interest',
+            'ARMED/DANGWAR': 'Armed/Dangerous Warrant',
+            'ARMED/DANGWNT': 'Armed/Dangerous Warrant',
+            'DRUGABUSEWAR': 'Drug Abuse Warrant',
+            'ESCAPERSKWAR': 'Escape Risk Warrant',
+            'OTHERWAR': 'Warrant',
+            'POI': 'Person of Interest',
+            'VIOLTENDPOI': 'Violent Tendencies Person of Interest',
+            'VIOLTENDWAR': 'Violent Tendencies Warrant',
             'WAR': 'Warrant',
-            'VIOL TEND WAR': 'Violent Tendencies Warrant',
-            'ARMED/DANG WAR': 'Armed/Dangerous Warrant'}
-        comments = ' '.join(comments_list)
+            'WNT': 'Warrant'}
+        comments = ' '.join(comments_list).split(':')[0]
         if '-' in comments:
-            code = ' '.join(comments.split('-')[:-1]).strip()
-            list_type = list_codes.get(code, code)
+            if 'MISSING-PERSON' in comments:
+                list_type = 'Missing Person'  # Only one with a "-" in the list type
+            else:
+                code = re.split('(?<=[A-Z])-[A-Z]', comments)[0].strip()
+                list_type = list_codes[re.sub('\s', '', code)]
         else:
             list_type = 'Generic'
 
@@ -274,7 +286,7 @@ class KsStateParser(BaseParser):
         # Determine list type
         matches = self.regex['format5_list_type'].search(re.sub('/', '', raw_line))
         if matches is not None and len(matches.groups()) == 1:
-            list_type = matches.group(1)
+            list_type = matches.group(1).strip()
         else:
             raise ValueError('Format 5: no matches found for list type')
 
@@ -334,19 +346,28 @@ class KsStateParser(BaseParser):
 
     def get_default_lists(self):
         list_types = [
-            'Protective Order',
-            'Stolen Plate',
-            'Candian Entry',
             'Stolen Vehicle',
+            'Stolen Plate',
+            'Missing Person',
+            'Protective Order',
+            'Canadian Entry',
             'Gang/Terrorist Org',
             'Warrant',
             'Suspended Or Revoked Registration',
-            'Missing Person',
             'Supervised Release',
             'Suspended',
             'Registered Offender',
             'Generic',
-            'Armed/Dangerous Warrant']
+            'Armed/Dangerous Warrant',
+            'Violent Tendencies Warrant',
+            'Person Of Interest',
+            'Drug Abuse Warrant',
+            'Violent Tendencies Person Of Interest',
+            'Alcoholic Warrant',
+            'Armed/Dangerous Person Of Interest',
+            'Escape Risk Warrant',
+            'Allergies Warrant',
+        ]
         return [{'name': n} for n in list_types]
 
     def get_example_format(self):
