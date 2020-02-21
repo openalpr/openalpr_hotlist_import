@@ -6,7 +6,7 @@ from .al_state import AlStateParser
 from .simple import SimpleParser
 from .co_ccic import CoCCICParser
 from .ncic import NcicParser
-
+from .kansas_state import KsStateParser
 
 
 def get_parser(config_obj, alert_type):
@@ -31,6 +31,8 @@ def get_parser(config_obj, alert_type):
         return CoCCICParser(config_obj)
     elif parser_name == 'ncic':
         return NcicParser(config_obj)
+    elif parser_name == 'ks_state':
+        return KsStateParser(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))

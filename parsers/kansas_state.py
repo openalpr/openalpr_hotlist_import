@@ -175,17 +175,23 @@ class KsStateParser(BaseParser):
         if any([is_header, no_plate, dummy_plate, empty_line]):
             return None
 
-        # Determine which format the current line follows
+        # Parse current line based on format
         if 'CANADIAN ENTRY' in raw_line:
-            return self._parse_format1(raw_line)
+            parsed = self._parse_format1(raw_line)
         elif '!' in raw_line or '- check' in raw_line.lower():
-            return self._parse_format2(raw_line)
+            parsed = self._parse_format2(raw_line)
         elif self.regex['format3_line'].search(raw_line):
-            return self._parse_format3(raw_line)
+            parsed = self._parse_format3(raw_line)
         elif '#4 Suspended' in raw_line and self.regex['plate_start'].match(raw_line):
-            return self._parse_format4(raw_line)
+            parsed = self._parse_format4(raw_line)
         elif '#8' in raw_line and self.regex['plate_start'].match(raw_line):
-            return self._parse_format5(raw_line)
+            parsed = self._parse_format5(raw_line)
+        else:
+            return None
+
+        # Check if the list type matches this alert configuration
+        if parsed['list_type'] == alert_config['name']:
+            return parsed
         else:
             return None
 
