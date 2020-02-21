@@ -136,7 +136,13 @@ class KsStateParser(BaseParser):
         # Skip the header lines and empty plate numbers
         is_header = self.line_count <= 3
         no_plate = self.regex['empty_plate'].match(raw_line)
-        dummy_plate = raw_line.lower().startswith('platenumks')
+        dummy_starts = ('unknown', 'none', 'notag', 'platenumks', 'k-state', 'not\s?availa', 'temp', '60[\s-]+day')
+        clean_line = raw_line.strip().lower()
+        dummy_plate = False
+        for start in dummy_starts:
+            if re.match(start, clean_line):
+                dummy_plate = True
+                break
         empty_line = len(raw_line.strip()) == 0
         if any([is_header, no_plate, dummy_plate, empty_line]):
             return None
