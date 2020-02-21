@@ -51,13 +51,14 @@ class KsStateParser(BaseParser):
     def __init__(self, config_obj):
         super(KsStateParser, self).__init__(config_obj)
         self.regex = {
-            'format1_list_type': re.compile('#[0-9]{1}\s([A-Z\s/]+)\s?.*[!-]{1}'),
-            'format5_list_type': re.compile('#[0-9]{1}\s(.+)\s[0-9]{8}'),
+            'format1_list_type': re.compile('#[0-9]\s([A-Z\s/]+)\s?.*[!-]'),
+            'format5_list_type': re.compile('#[0-9]\s(.+)[0-9]{8}'),
             'valid_year': re.compile('[0-9]{4}'),
-            'format3_line': re.compile('#[0-9]{1}[^\s]+'),
+            'format3_line': re.compile('#[0-9][A-Z\s]*[0-9]{2}/[0-9]{2}/[0-9]{4}'),
             'format3_split': re.compile('^[A-Z-\s]{2,}([0-9]{4}.*)'),
             'format3_split_alt': re.compile('^[A-Z-\s]{2,}-([A-Z]{3,}.*)'),  # When vehicle year is not provided
-            'empty_plate': re.compile('^[^-0-9a-zA-Z]+#')}
+            'empty_plate': re.compile('^[^-0-9a-zA-Z]+#'),
+            'plate_start': re.compile('[\w\s]+-?[\w\s]+[A-Z\s]*#[0-9]+')}
 
     def get_parser_name(self):
         return "Kansas State"
@@ -125,9 +126,9 @@ class KsStateParser(BaseParser):
 
             1) plate[ ]state"CANADIAN ENTRY - CHECK" bodytypeCode [yearMakeColor]stateAgencyORI date
             2) plate state"#"# listName! [message - "Check"] bodytypeCode [yearMakeColor]StateAgencyORI date
-            3) plate state"#"#@@date@@-@@-@@[ ][year]-[make]-[model]-[color]@####### [listName-]comments
-            4) plate state"#"# listName bodytypeName "Lg" # county
-            5) plate state"#"# listName date [year] make model bodytypeCode color "KSRO" "KS"#######
+            3) plate state"#"#[@@]slashFormatDate@@-@@-@@[ ][year]-[make]-[model]-[color]@####### [listName-]comments
+            4) plate state"#4 Suspended" bodytypeName "Lg" # county
+            5) plate [state]"#8" listName date [year] make model bodytypeCode color "KSRO" "KS"#######
 
         :param dict alert_config: Configuration details for the particular alert list
         :return dict: Plate number, state, list type, and description
@@ -147,12 +148,11 @@ class KsStateParser(BaseParser):
             return self._parse_format2(raw_line)
         elif self.regex['format3_line'].search(raw_line):
             return self._parse_format3(raw_line)
-        elif '#4 Suspended' in raw_line and raw_line.count('-') <= 1:
+        elif '#4 Suspended' in raw_line and self.regex['plate_start'].match(raw_line):
             return self._parse_format4(raw_line)
-        elif '#' in raw_line and raw_line.count('-') <= 1:
+        elif '#8' in raw_line and self.regex['plate_start'].match(raw_line):
             return self._parse_format5(raw_line)
         else:
-            print(f'Line {self.line_count} does not match known formats')
             return None
 
     def _parse_format1(self, raw_line):
@@ -181,7 +181,7 @@ class KsStateParser(BaseParser):
         if matches is not None and len(matches.groups()) == 1:
             list_type = matches.group(1)
         else:
-            raise ValueError('Format 1: no matches found for list type')
+            raise ValueError('Format 2: no matches found for list type')
 
         # Split up vehicle attributes
         bodytype_code, vehicle_info = raw_line.split(' ')[-3:-1]
@@ -195,7 +195,7 @@ class KsStateParser(BaseParser):
             'description': description}
 
     def _parse_format3(self, raw_line):
-        """Dashes between most fields"""
+        """Slash formatted date and dashes between most fields"""
         # Get plate and state
         plate_number, state = self.get_plate_info(raw_line)
 
@@ -266,11 +266,11 @@ class KsStateParser(BaseParser):
         plate_number, state = self.get_plate_info(raw_line)
 
         # Determine list type
-        matches = self.regex['format5_list_type'].search(raw_line)
+        matches = self.regex['format5_list_type'].search(re.sub('/', '', raw_line))
         if matches is not None and len(matches.groups()) == 1:
             list_type = matches.group(1)
         else:
-            raise ValueError('Format 1: no matches found for list type')
+            raise ValueError('Format 5: no matches found for list type')
 
         # Split up vehicle attributes
         bodytype_code, vehicle_info = raw_line.split(' ')[-3:-1]
