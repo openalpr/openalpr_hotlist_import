@@ -333,7 +333,21 @@ class KsStateParser(BaseParser):
         return year, make, color
 
     def get_default_lists(self):
-        return []
+        list_types = [
+            'Protective Order',
+            'Stolen Plate',
+            'Candian Entry',
+            'Stolen Vehicle',
+            'Gang/Terrorist Org',
+            'Warrant',
+            'Suspended Or Revoked Registration',
+            'Missing Person',
+            'Supervised Release',
+            'Suspended',
+            'Registered Offender',
+            'Generic',
+            'Armed/Dangerous Warrant']
+        return [{'name': n} for n in list_types]
 
     def get_example_format(self):
-        return ""
+        return 'ABC123 KS#3 STOLEN PLATE! PC 2016CHEVMALSWSILTX0790300 20200122'
