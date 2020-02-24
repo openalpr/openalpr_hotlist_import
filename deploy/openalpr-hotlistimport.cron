@@ -1,1 +1,1 @@
-0 8 * * * root python /usr/share/openalpr-hotlist/hotlistimport.py /etc/openalpr/hotlist.yaml >/dev/null 2>&1
+0 8 * * * root python3 /usr/share/openalpr-hotlist/hotlistimport.py /etc/openalpr/hotlist.yaml >/dev/null 2>&1
