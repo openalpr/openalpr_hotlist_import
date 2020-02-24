@@ -1,3 +1,4 @@
+import sys
 from .ca_doj_clew import CaClewParser
 from .pa_psp import PaPspParser
 from .ny_state import NyStateParser
@@ -6,7 +7,9 @@ from .al_state import AlStateParser
 from .simple import SimpleParser
 from .co_ccic import CoCCICParser
 from .ncic import NcicParser
-from .kansas_state import KsStateParser
+# Some parsers require Python3+
+if sys.hexversion >= 0x3000000:
+    from .kansas_state import KsStateParser
 
 
 def get_parser(config_obj, alert_type):
