@@ -6,7 +6,8 @@ company_id: yourcompanyid
 api_key: a1234b5789c1234d5678a1234b5789c1234d5678
 
 hotlist_parser: mi_state
-hotlist_path: /tmp/FORMATTED-VEHEXTRT.txt
+hotlist_path: /tmp/SECURE-FORMATTED-VEHEXTRT.zip
+hotlist_password: abc123
 
 temp_dat_file: /tmp/hotlistimport.dat
 temp_csv_file: /tmp/hotlistimport.csv

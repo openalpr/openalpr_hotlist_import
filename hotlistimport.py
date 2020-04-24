@@ -17,7 +17,12 @@ import traceback
 import urllib
 import warnings
 import yaml
-import zipfile
+if sys.version_info.major == 3:
+    from pyzipper import is_zipfile as is_zipfile
+    from pyzipper import AESZipFile as zipreader
+elif sys.version_info.major == 2:
+    from zipfile import is_zipfile as is_zipfile
+    from zipfile import ZipFile as zipreader
 from parsers import factory
 from print_alert_lists import AlertListManager
 
@@ -105,16 +110,20 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                 urllib.urlretrieve(hotlist_path, conf_data['temp_dat_file'])
             else:
 
-
                 # If it's a zip file, extract it first
-                if zipfile.is_zipfile(hotlist_path):
+                password = conf_data.get('hotlist_password')
+                if password is not None:
+                    if sys.version_info.major != 3:
+                        raise RuntimeError('Python 3.x is required for handling encrypted zip files')
+                    password = password.encode('utf-8')
+                if is_zipfile(hotlist_path):
 
-                    with zipfile.ZipFile(hotlist_path, 'r') as zip_file:
+                    with zipreader(hotlist_path, 'r') as zip_file:
                         all_files = zip_file.namelist()
 
                         if len(all_files) == 1:
                             # Just process the one file and write to output
-                            content = zip_file.read(all_files[0])
+                            content = zip_file.read(all_files[0], pwd=password)
 
                             lines = [l for l in content.decode("utf-8").split(os.linesep) if l != ""]
                             with open(conf_data['temp_dat_file'], 'w') as f:
@@ -125,8 +134,8 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
 
                 elif '.zip' in hotlist_path:
                     folder_path = os.path.dirname(hotlist_path)
-                    with zipfile.ZipFile(folder_path, "r") as f:
-                        content = {name: f.read(name) for name in f.namelist()}
+                    with zipreader(folder_path, 'r') as f:
+                        content = {name: f.read(name, pwd=password) for name in f.namelist()}
                     zip_name = os.path.dirname(hotlist_path).split(os.sep)[-1].split('.')[0]
                     dat_file = os.path.basename(hotlist_path)
                     if dat_file not in content:
@@ -141,7 +150,6 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                     with open(conf_data['temp_dat_file'], 'w') as f:
                         for l in lines:
                             f.write("%s%s" % (l, os.linesep))
-
 
                 elif not os.path.isfile(hotlist_path):
                     logger.error("Could not find hotlist file: %s" % (hotlist_path))
