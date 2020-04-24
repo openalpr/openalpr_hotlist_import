@@ -7,6 +7,7 @@ from .al_state import AlStateParser
 from .simple import SimpleParser
 from .co_ccic import CoCCICParser
 from .ncic import NcicParser
+from .mi_state import MiStateParser
 # Some parsers require Python3+
 if sys.hexversion >= 0x3000000:
     from .kansas_state import KsStateParser
@@ -36,6 +37,8 @@ def get_parser(config_obj, alert_type):
         return NcicParser(config_obj)
     elif parser_name == 'ks_state':
         return KsStateParser(config_obj)
+    elif parser_name == 'mi_state':
+        return MiStateParser(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))
