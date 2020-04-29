@@ -210,14 +210,14 @@ class MiStateParser(BaseParser):
             'model': slice(53, 56),
             'style': slice(56, 58),
             'color': slice(58, 65),
-            'list_type': slice(65, 100)}
+            'parse_code': slice(65, 100)}
         parsed = {name: raw_line[col_slice].strip() for name, col_slice in slices.items()}
 
         # Check if the list type matches this alert configuration
-        parsed['list_type'] = multiple_replace(
-            text=parsed['list_type'].lower().title(),
+        parsed['parse_code'] = multiple_replace(
+            text=parsed['parse_code'].lower().title(),
             replacements={'Ncic': 'NCIC', 'Mi': 'MI', 'Cpic': 'CPIC'})
-        if parsed['list_type'] != alert_config['name']:
+        if 'parse_code' in alert_config and parsed['parse_code'] != alert_config['parse_code']:
             return None
 
         # Check alternatives for vehicle attribute codes
@@ -239,7 +239,7 @@ class MiStateParser(BaseParser):
         # Format description
         parsed['state'] = parsed['state'].replace('0', 'O')
         description = '%s %s %s %s %s - %s' % (
-            parsed['list_type'],
+            alert_config['name'],
             parsed['vehicle_year'],
             parsed['color'],
             parsed['make'],
@@ -249,7 +249,7 @@ class MiStateParser(BaseParser):
         return {
             'plate': parsed['license_plate'].upper().replace("-", "").replace(" ", ""),
             'state': parsed['state'],
-            'list_type': parsed['list_type'],
+            'list_type': parsed['parse_code'],
             'description': description}
 
     def get_default_lists(self):
@@ -272,7 +272,7 @@ class MiStateParser(BaseParser):
             'Stolen Vehicle NCIC',
             'NCIC',
         ]
-        return [{'name': n} for n in list_types]
+        return [{'name': n, 'parse_code': n} for n in list_types]
 
     def get_example_format(self):
         return "M035777045WIMPD006320200403AHG5263   WI2020PC2003CHEVSUBLLBLK    MISSING PERSON NCIC"

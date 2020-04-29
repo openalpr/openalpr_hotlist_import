@@ -7,7 +7,7 @@ api_key: a1234b5789c1234d5678a1234b5789c1234d5678
 
 hotlist_parser: mi_state
 hotlist_path: /tmp/SECURE-FORMATTED-VEHEXTRT.zip
-hotlist_password: abc123
+hotlist_password: "abc123"
 
 temp_dat_file: /tmp/hotlistimport.dat
 temp_csv_file: /tmp/hotlistimport.csv
@@ -31,52 +31,69 @@ skip_list:
 
 alert_types:
   - name: Missing Person MI
+    parse_code: Missing Person MI
     match_strategy: exact
 
   - name: Stolen Vehicle MI
+    parse_code: Stolen Vehicle MI
     match_strategy: exact
 
   - name: Stolen Plate MI
+    parse_code: Stolen Plate MI
     match_strategy: exact
 
   - name: Wanted Person MI
+    parse_code: Wanted Person MI
     match_strategy: exact
 
   - name: Icle MI
+    parse_code: Icle MI
     match_strategy: exact
 
   - name: Son MI
+    parse_code: Son MI
     match_strategy: exact
 
   - name: Te MI
+    parse_code: Te MI
     match_strategy: exact
 
   - name: Supervised Visit NCIC
+    parse_code: Supervised Visit NCIC
     match_strategy: exact
 
   - name: Protection Order NCIC
+    parse_code: Protection Order NCIC
     match_strategy: exact
 
   - name: CPIC Data Record NCIC
+    parse_code: CPIC Data Record NCIC
     match_strategy: exact
 
   - name: Stolen Plate NCIC
+    parse_code: Stolen Plate NCIC
     match_strategy: exact
 
   - name: Gang Or Suspected Terrorist NCIC
+    parse_code: Gang Or Suspected Terrorist NCIC
     match_strategy: exact
 
   - name: Sex Offender NCIC
+    parse_code: Sex Offender NCIC
     match_strategy: exact
 
   - name: Missing Person NCIC
+    parse_code: Missing Person NCIC
     match_strategy: exact
 
   - name: Wanted Person NCIC
+    parse_code: Wanted Person NCIC
     match_strategy: exact
 
   - name: Stolen Vehicle NCIC
+    parse_code: Stolen Vehicle NCIC
     match_strategy: exact
 
   - name: NCIC
+    parse_code: NCIC
     match_strategy: exact
