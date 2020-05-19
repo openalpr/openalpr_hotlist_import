@@ -125,10 +125,10 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                             # Just process the one file and write to output
                             content = zip_file.read(all_files[0], pwd=password)
 
-                            lines = [l for l in content.decode("utf-8").split(os.linesep) if l != ""]
+                            lines = [l for l in content.decode("utf-8").splitlines() if l != ""]
                             with open(conf_data['temp_dat_file'], 'w') as f:
                                 for l in lines:
-                                    f.write("%s%s" % (l, os.linesep))
+                                    f.write("%s%s" % (l, '\n'))
                         else:
                             logger.info("The specified zip file contains multiple files.  Must specify the file in the path (e.g., c:\\hotlists\\thefile.zip\\fileinside")
 
@@ -146,10 +146,10 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                             sys.exit(1)
                         else:
                             dat_file = dat_file_alt
-                    lines = [l for l in content[dat_file].decode("utf-8").split(os.linesep) if l != ""]
+                    lines = [l for l in content[dat_file].decode("utf-8").splitlines() if l != ""]
                     with open(conf_data['temp_dat_file'], 'w') as f:
                         for l in lines:
-                            f.write("%s%s" % (l, os.linesep))
+                            f.write("%s%s" % (l, '\n'))
 
                 elif not os.path.isfile(hotlist_path):
                     logger.error("Could not find hotlist file: %s" % (hotlist_path))
