@@ -1,13 +1,13 @@
 OpenALPR Hotlist Import
-----------------------------
+-----------------------
 
 Automatically import a law enforcement "hotlist" into 
 OpenALPR alert lists using a cron job or Windows Task
 
 ![Hotlist Import GUI](https://www.openalpr.com/images/demoscreens/openalpr_hotlist_import.png "Hotlist GUI Image")
 
-Installation:
---------------
+Installation
+------------
 
 **Debian Linux**
 
@@ -23,7 +23,7 @@ Installation:
 
 
 Configuration
----------------
+-------------
 
 After opening the GUI, you will need to 
 
