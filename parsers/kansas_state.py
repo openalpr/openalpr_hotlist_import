@@ -190,7 +190,7 @@ class KsStateParser(BaseParser):
             return None
 
         # Check if the list type matches this alert configuration
-        if parsed['list_type'] == alert_config['name']:
+        if parsed['list_type'] == alert_config['parse_code']:
             return parsed
         else:
             return None
@@ -402,7 +402,7 @@ class KsStateParser(BaseParser):
             'Escape Risk Warrant',
             'Allergies Warrant',
         ]
-        return [{'name': n} for n in list_types]
+        return [{'name': n, 'parse_code': n} for n in list_types]
 
     def get_example_format(self):
         return 'ABC123 KS#3 STOLEN PLATE! PC 2016CHEVMALSWSILTX0790300 20200122'

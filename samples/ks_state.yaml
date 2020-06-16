@@ -29,65 +29,86 @@ skip_list:
   - '1'
 
 alert_types:
-  - name: Missing Person
-    match_strategy: exact
-
   - name: Stolen Vehicle
+    parse_code: Stolen Vehicle
     match_strategy: exact
 
   - name: Stolen Plate
+    parse_code: Stolen Plate
     match_strategy: exact
 
-  - name: Gang/Terrorist Org
-    match_strategy: exact
-
-  - name: Registered Offender
+  - name: Missing Person
+    parse_code: Missing Person
     match_strategy: exact
 
   - name: Protective Order
+    parse_code: Protective Order
     match_strategy: exact
 
   - name: Canadian Entry
+    parse_code: Canadian Entry
     match_strategy: exact
 
-  - name: Suspended
-    match_strategy: exact
-
-  - name: Suspended Or Revoked Registration
-    match_strategy: exact
-
-  - name: Supervised Release
+  - name: Gang/Terrorist Org
+    parse_code: Gang/Terrorist Org
     match_strategy: exact
 
   - name: Warrant
+    parse_code: Warrant
     match_strategy: exact
 
-  - name: Armed/Dangerous Warrant
+  - name: Suspended Or Revoked Registration
+    parse_code: Suspended Or Revoked Registration
     match_strategy: exact
 
-  - name: Violent Tendencies Warrant
+  - name: Supervised Release
+    parse_code: Supervised Release
     match_strategy: exact
 
-  - name: Drug Abuse Warrant
+  - name: Suspended
+    parse_code: Suspended
     match_strategy: exact
 
-  - name: Alcoholic Warrant
-    match_strategy: exact
-
-  - name: Escape Risk Warrant
-    match_strategy: exact
-
-  - name: Allergies Warrant
-    match_strategy: exact
-
-  - name: Person Of Interest
-    match_strategy: exact
-
-  - name: Armed/Dangerous Person Of Interest
-    match_strategy: exact
-
-  - name: Violent Tendencies Person Of Interest
+  - name: Registered Offender
+    parse_code: Registered Offender
     match_strategy: exact
 
   - name: Generic
+    parse_code: Generic
+    match_strategy: exact
+
+  - name: Armed/Dangerous Warrant
+    parse_code: Armed/Dangerous Warrant
+    match_strategy: exact
+
+  - name: Violent Tendencies Warrant
+    parse_code: Violent Tendencies Warrant
+    match_strategy: exact
+
+  - name: Person Of Interest
+    parse_code: Person Of Interest
+    match_strategy: exact
+
+  - name: Drug Abuse Warrant
+    parse_code: Drug Abuse Warrant
+    match_strategy: exact
+
+  - name: Violent Tendencies Person Of Interest
+    parse_code: Violent Tendencies Person Of Interest
+    match_strategy: exact
+
+  - name: Alcoholic Warrant
+    parse_code: Alcoholic Warrant
+    match_strategy: exact
+
+  - name: Armed/Dangerous Person Of Interest
+    parse_code: Armed/Dangerous Person Of Interest
+    match_strategy: exact
+
+  - name: Escape Risk Warrant
+    parse_code: Escape Risk Warrant
+    match_strategy: exact
+
+  - name: Allergies Warrant
+    parse_code: Allergies Warrant
     match_strategy: exact
