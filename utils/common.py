@@ -12,6 +12,7 @@ import subprocess
 import sys
 import datetime
 import operator
+from parsers.base import BaseParser
 
 if platform.system() != 'Windows':
     from crontab import CronTab
@@ -45,7 +46,7 @@ def get_all_parsers():
         for member in dir(module):
             handler_class = getattr(module, member)
 
-            if handler_class and inspect.isclass(handler_class):
+            if handler_class and inspect.isclass(handler_class) and issubclass(handler_class, BaseParser):
                 cls = handler_class(config_obj={})
                 try:
                     parser_name = cls.get_parser_name()
