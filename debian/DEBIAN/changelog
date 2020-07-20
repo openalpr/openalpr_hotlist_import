@@ -1,4 +1,4 @@
-openalpr-hotlistimport (1.1.3-20200601091026) unstable; urgency=low
+openalpr-hotlistimport (1.1.3-20200616101457) unstable; urgency=low
 
   * New state parsers: Kansas, Michigan, and Texas
   * Support AES encrypted zip archives on Python 3.x
