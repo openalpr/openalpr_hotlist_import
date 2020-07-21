@@ -10,6 +10,7 @@ from .ncic import NcicParser
 from .mi_state import MiStateParser
 from .tx_tcic import TxTCIC
 from .tx_ncic import TxNCIC
+from .fl_dmv import FlDmv
 # Some parsers require Python3+
 if sys.hexversion >= 0x3000000:
     from .kansas_state import KsStateParser
@@ -45,6 +46,8 @@ def get_parser(config_obj, alert_type):
         return TxTCIC(config_obj)
     elif parser_name == 'tx_ncic':
         return TxNCIC(config_obj)
+    elif parser_name == 'fl_dmv':
+        return FlDmv(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))
