@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from email.mime.text import MIMEText
+from glob import glob
 import json
 import logging
 from logging.handlers import RotatingFileHandler
@@ -69,6 +70,27 @@ def get_color(config_obj, color):
     if color in config_obj.get('car_colors', {}):
         return config_obj['car_colors'][color]
     return color
+
+
+def run_yamls(config_path, foreground=False, skip_upload=False):
+    """Check whether CLI arg is a single YAML path or a directory containing several"""
+    if os.path.isfile(config_path):
+        yamls = [config_path]
+    elif os.path.isdir(config_path):
+        yamls = glob(os.path.join(config_path, '*.yaml'))
+        if len(yamls) == 0:
+            print('Directory does not contain any *.yaml files: %s' % config_path)
+            sys.exit(1)
+    else:
+        print('No such file or directory: %s' % config_path)
+        sys.exit(1)
+    exit_statuses = []
+    for y in yamls:
+        exit_statuses.append(import_hotlist(y, foreground, skip_upload))
+    if all([e == 0 for e in exit_statuses]):
+        return 0
+    else:
+        return 1
 
 
 def import_hotlist(config_file, foreground=False, skip_upload=False):
@@ -269,11 +291,5 @@ if __name__ == "__main__":
     options = parser.parse_args()
 
     options.config_file = os.path.realpath(options.config_file)
-    if not os.path.isfile(options.config_file):
-        print("Config file does not exist")
-        sys.exit(1)
-
-    _exit_status = import_hotlist(config_file=options.config_file, foreground=options.foreground,
-                                  skip_upload=options.skip_upload)
-
+    _exit_status = run_yamls(options.config_file, options.foreground, options.skip_upload)
     sys.exit(_exit_status)
