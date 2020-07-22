@@ -95,8 +95,10 @@ def run_yamls(config_path, foreground=False, skip_upload=False):
 
 def import_hotlist(config_file, foreground=False, skip_upload=False):
     with open(config_file, 'r') as conf:
-        # config_data = yaml.load(confin, Loader=yaml.FullLoader) # Uncomment to fix for PyYaml 5.x+
-        conf_data = yaml.load(conf)
+        if yaml.__version__ >= '5.1':
+            conf_data = yaml.load(conf, Loader=yaml.FullLoader)
+        else:
+            conf_data = yaml.load(conf)
 
     # Setup the logging
     logger = logging.getLogger('HotlistImport Log')
