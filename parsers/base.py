@@ -61,7 +61,9 @@ class BaseParser(object):
                         self.logger.exception("Failed to parse line: %d -- %s, %s" % (self.line_count, line, e))
                         continue
 
-                    # Skip lines that aren't needed
+                    # Skip lines that aren't needed (empty plate will trigger import error on server)
+                    if line_content is not None and line_content['plate'] == '':
+                        continue
                     if line_content is None:
                         continue
 
