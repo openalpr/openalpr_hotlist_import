@@ -102,6 +102,8 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
 
     # Setup the logging
     logger = logging.getLogger('HotlistImport Log')
+    if sys.version_info >= (3, 2) and logger.hasHandlers():
+        logger.handlers.clear()
     logger.setLevel(logging.DEBUG)
     if foreground or not conf_data.get('log_file'):
         handler = logging.StreamHandler()
