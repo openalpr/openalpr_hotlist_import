@@ -1,4 +1,5 @@
 import logging
+from . import codes
 
 
 class BaseParser(object):
@@ -9,6 +10,19 @@ class BaseParser(object):
         self.dup_filter = {}
         self.line_count = 0
 
+    @staticmethod
+    def _get_vehicle(attribute, value):
+        """Safe-get lookup for vehicle attributes in NCIC codes
+
+        :param str attribute: One of type, make, or color
+        :param str value: Raw code to search for in lookup tables
+        :return str: Cleaned value (if found), or the same value passed
+        """
+        if attribute not in ['type', 'make', 'color']:
+            raise NotImplementedError('Expected attribute to be type, make, or color, but received %s' % attribute)
+        mapping = codes['ncic'][attribute + 's']
+        return mapping.get(value, value)
+
     def set_config(self, conf):
         """Update the config"""
         self.config_obj = conf
@@ -16,6 +30,15 @@ class BaseParser(object):
     def get_parser_name(self):
         """Return human-readable parser name"""
         raise NotImplementedError()
+
+    def get_vehicle_color(self, value):
+        return self._get_vehicle('color', value)
+
+    def get_vehicle_make(self, value):
+        return self._get_vehicle('make', value)
+
+    def get_vehicle_type(self, value):
+        return self._get_vehicle('type', value)
 
     def parse_hotlist_line(self, raw_line, alert_config):
         """Must be implemented in the subclass doing the parsing
