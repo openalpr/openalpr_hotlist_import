@@ -51,10 +51,8 @@ class FlStateParser(BaseParser):
             'description': description}
         return alert_data
 
-
     def get_example_format(self):
         return "STOLEN LICENSE PLATE;FL0123456;TALLAHASSEE POLICE DEPARTMENT;11-1234;;P123456789;P554433221;01/03/2019;N;01/01/2019 00:03:00;ABC123;2019;FL;PC;01/06/2019 16:03:04"
-
 
     def get_default_lists(self):
         return [

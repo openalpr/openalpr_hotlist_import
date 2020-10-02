@@ -1,6 +1,6 @@
 from .base import BaseParser
-import sys
 import re
+
 
 class CoCCICParser(BaseParser):
     def __init__(self, config_obj):
@@ -57,9 +57,6 @@ class CoCCICParser(BaseParser):
             #'vehicle_other_info': vehicle_other_info
         }
 
-
-
-
     def get_default_lists(self):
         return [
             {
@@ -104,8 +101,5 @@ class CoCCICParser(BaseParser):
             }
         ]
 
-
-
     def get_example_format(self):
         return "ABC123    COAttempt To Locate     2002 FORD FOC BLK"
-

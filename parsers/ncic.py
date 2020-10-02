@@ -2,6 +2,7 @@ from .base import BaseParser
 import sys
 import re
 
+
 class NcicParser(BaseParser):
     def __init__(self, config_obj):
         super(NcicParser, self).__init__(config_obj)
@@ -75,7 +76,6 @@ class NcicParser(BaseParser):
             'description': description
         }
 
-
     def get_default_lists(self):
         return [
             {
@@ -131,7 +131,6 @@ class NcicParser(BaseParser):
             'parse_code': 'X'
             },
         ]
-
 
     def get_example_format(self):
         return "V123456789LA057020020190509AB123456  CA2009MC2009YAMACYLMCBLK"
