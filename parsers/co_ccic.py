@@ -9,12 +9,6 @@ class CoCCICParser(BaseParser):
     def get_parser_name(self):
         return "Colorado CCIC"
 
-    def get_color(self, color):
-        if color in self.config_obj['car_colors']:
-            return self.config_obj['car_colors'][color]
-
-        return color
-
     def parse_hotlist_line(self, raw_line, alert_config):
 
         # Skip the first (header) line
@@ -26,14 +20,10 @@ class CoCCICParser(BaseParser):
         LIST_TYPE_START = 12
         VEHICLE_INFO_START = 34
 
-
         plate_number = raw_line[PLATE_FIELDS_START:STATE_START].strip()
         state = raw_line[STATE_START:LIST_TYPE_START].strip()
         list_type = raw_line[LIST_TYPE_START:VEHICLE_INFO_START].strip()
-
         vehicle_other_info = raw_line[VEHICLE_INFO_START:].strip()
-
-
         list_name = alert_config['name']
 
         # Only return results that match the "parse_code"
@@ -51,10 +41,6 @@ class CoCCICParser(BaseParser):
             'state': state,
             'list_type': list_type,
             'description': description
-            #'vehicle_type': vehicle_type,
-            #'make': make,
-            #'color': color,
-            #'vehicle_other_info': vehicle_other_info
         }
 
     def get_default_lists(self):

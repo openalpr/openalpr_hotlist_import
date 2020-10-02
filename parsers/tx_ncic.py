@@ -1,140 +1,6 @@
 from .base import BaseParser
 import re
 
-car_types = {
-    '0B': 'Omnibus',
-    '0R': 'Organization',
-    'AM': 'Ambulance',
-    'AP': 'Apportioned',
-    'AQ': 'Antique',
-    'AR': 'Amateur Radio',
-    'AT': 'All-Terrain Vehicle',
-    'BU': 'Bus',
-    'C0': 'Commercial',
-    'CC': 'Consular Corps',
-    'CI': 'City-Owned',
-    'CL': 'Collegiate',
-    'CM': 'Commemorative',
-    'CN': 'Conservation',
-    'CU': 'County-Owned',
-    'DA': 'Drive Away',
-    'DB': 'Dune Buggy',
-    'DL': 'Dealer',
-    'DP': 'Diplomatic',
-    'DU': 'Duplicate',
-    'DV': 'Disabled Veteran',
-    'DX': 'Disabled Persons',
-    'EX': 'Exempt',
-    'FD': 'Fire Department',
-    'FM': 'Farm Vehicle',
-    'HI': 'Hearing Impaired',
-    'IP': 'International Plate',
-    'IT': 'In-Transit (Temporary)',
-    'JJ': 'Judge or Justice',
-    'LE': 'Legislative',
-    'LF': 'Law Enforcement',
-    'MC': 'Motorcycle',
-    'MD': 'Motorcycle Dealer',
-    'MF': 'Manufacturer',
-    'ML': 'Military Vehicle (Canadian)',
-    'MP': 'Moped',
-    'MR': 'Armed Forces Reservist',
-    'MV': 'Military Vehicle (US)',
-    'MY': 'Military (Aircraft)',
-    'NG': 'National Guard',
-    'NP': 'Non-Passenger Civilian Aircraft',
-    'PC': 'Passenger Car',
-    'PE': 'Personalized/Customized',
-    'PF': 'Professions',
-    'PH': 'Doctor',
-    'PP': 'Passenger Civilian Aircraft',
-    'PR': 'Press',
-    'PS': 'Professional Sports Team',
-    'PX': 'Pharmacist',
-    'RE': 'Reciprocal',
-    'RV': 'Rented Vehicle or Trailer',
-    'SC': 'Special Purpose',
-    'SN': 'Snowmobile',
-    'ST': 'State-Owned',
-    'SV': 'School Vehicle',
-    'TK': 'Truck',
-    'TL': 'Trailer',
-    'TM': 'Temporary',
-    'TP': 'Transporter',
-    'TR': 'Semi-truck',
-    'TX': 'Taxi Cab',
-    'US': 'US Government',
-    'VF': 'Veteran',
-    'ZZ': 'ATV and Snowmobiles',
-}
-
-car_makes = {
-    "ACUR": "Acura",
-    "AUDI": "Audi",
-    "BMW": "BMW",
-    "BUIC": "Buick",
-    "CADI": "Cadillac",
-    "CHEV": "Chevrolet",
-    "CHRY": "Chrysler",
-    "DODG": "Dodge",
-    "FORD": "Ford",
-    "GMC": "GMC",
-    "HOND": "Honda",
-    "HYUN": "Hyundai",
-    "INFI": "Infiniti",
-    "ISU": "Isuzu",
-    "JAGU": "Jaguar",
-    "JEEP": "Jeep",
-    "KIA": "Kia",
-    "LEXS": "Lexus",
-    "LINC": "Lincoln",
-    "MAZD": "Mazda",
-    "MITS": "Mitsubishi",
-    "NISS": "Nissan",
-    "PONI": "Pontiac",
-    "PONT": "Pontiac",
-    "STRN": "Saturn",
-    "SUBA": "Subaru",
-    "SUZI": "Suzuki",
-    "TOYT": "Toyota",
-    "VOLV": "Volvo",
-    "VOLK": "Volkswagen"
-}
-
-car_colors = {
-    "AME": "Amethyst Purple",
-    "BGE": "Beige",
-    "BLK": "Black",
-    "BLU": "Blue",
-    "BRO": "Brown",
-    "BRZ": "Bronze",
-    "CAM": "Camouflage",
-    "COM": "Chrome",
-    "CPR": "Copper",
-    "CRM": "Cream",
-    "DBL": "Dark Blue",
-    "DGR": "Dark Green",
-    "GLD": "Gold",
-    "GRN": "Green",
-    "GRY": "Gray",
-    "LAV": "Lavender Purple",
-    "LBL": "Light Blue",
-    "LGR": "Light Green",
-    "MAR": "Maroon",
-    "MVE": "Mauve",
-    "ONG": "Orange",
-    "PLE": "Purple",
-    "PNK": "Pink",
-    "RED": "Red",
-    "SIL": "Silver",
-    "TAN": "Tan",
-    "TEA": "Teal",
-    "TPE": "Taupe",
-    "TRQ": "Turquoise",
-    "WHI": "White",
-    "YEL": "Yellow",
-}
-
 
 class TxNCIC(BaseParser):
 
@@ -143,23 +9,6 @@ class TxNCIC(BaseParser):
 
     def get_parser_name(self):
         return "Texas NCIC"
-
-    @staticmethod
-    def get_vehicle(attribute, value):
-        """Safe-get for vehicle attributes
-
-        :param str attribute: One of type, make, or color
-        :param str value: Raw code to search for in lookup tables
-        :return str: Cleaned value (if found), or the same value passed
-        """
-        if attribute == 'type':
-            return car_types.get(value, value)
-        elif attribute == 'make':
-            return car_makes.get(value, value)
-        elif attribute == 'color':
-            return car_colors.get(value, value)
-        else:
-            raise ValueError('Expected attribute to be type, make, or color, but received %s' % attribute)
 
     def parse_hotlist_line(self, raw_line, alert_config):
         """Handle comma-separated Texas format
@@ -209,19 +58,9 @@ class TxNCIC(BaseParser):
             return None
 
         # Convert vehicle abbreviations
-        make = self.get_vehicle('make', make.replace('0', 'O'))
-        bodytype = self.get_vehicle('type', bodytype)
-        if len(color) > 1:
-            if '/' in color:
-                colors = color.split('/')
-
-                # If the car is "WHI/WHI" just say "White"
-                if colors[0] != colors[1]:
-                    color = self.get_vehicle('color', colors[0]) + "/" + self.get_vehicle('color', colors[1])
-                else:
-                    color = self.get_vehicle('color', colors[0])
-            else:
-                color = self.get_vehicle('color', color)
+        make = self.get_vehicle_make(make.replace('0', 'O'))
+        bodytype = self.get_vehicle_type(bodytype)
+        color = self.get_vehicle_color(color)
 
         # Format description
         description = '%s %s %s %s %s - %s' % (alert_config['name'], vehicle_year, color, make, bodytype, state)

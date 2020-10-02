@@ -2,72 +2,6 @@ from .base import BaseParser
 import re
 
 
-car_makes = {
-    "ACUR": "Acura",
-    "AUDI": "Audi",
-    "BMW": "BMW",
-    "BUIC": "Buick",
-    "CADI": "Cadillac",
-    "CHEV": "Chevrolet",
-    "CHRY": "Chrysler",
-    "DODG": "Dodge",
-    "FORD": "Ford",
-    "GMC": "GMC",
-    "HOND": "Honda",
-    "HYUN": "Hyundai",
-    "INFI": "Infiniti",
-    "ISU": "Isuzu",
-    "JAGU": "Jaguar",
-    "JEEP": "Jeep",
-    "KIA": "Kia",
-    "LEXS": "Lexus",
-    "LINC": "Lincoln",
-    "MITS": "Mitsubishi",
-    "NISS": "Nissan",
-    "PONI": "Pontiac",
-    "PONT": "Pontiac",
-    "SUBA": "Subaru",
-    "SUZI": "Suzuki",
-    "TOYT": "Toyota",
-    "VOLV": "Volvo",
-    "VOLK": "Volkswagen"
-}
-
-car_colors = {
-    "AME": "Amethyst Purple",
-    "BGE": "Beige",
-    "BLK": "Black",
-    "BLU": "Blue",
-    "BRO": "Brown",
-    "BRZ": "Bronze",
-    "CAM": "Camouflage",
-    "COM": "Chrome",
-    "CPR": "Copper",
-    "CRM": "Cream",
-    "DBL": "Dark Blue",
-    "DGR": "Dark Green",
-    "GLD": "Gold",
-    "GRN": "Green",
-    "GRY": "Gray",
-    "LAV": "Lavender Purple",
-    "LBL": "Light Blue",
-    "LGR": "Light Green",
-    "MAR": "Maroon",
-    "MVE": "Mauve",
-    "ONG": "Orange",
-    "PLE": "Purple",
-    "PNK": "Pink",
-    "RED": "Red",
-    "SIL": "Silver",
-    "TAN": "Tan",
-    "TEA": "Teal",
-    "TPE": "Taupe",
-    "TRQ": "Turquoise",
-    "WHI": "White",
-    "YEL": "Yellow",
-}
-
-
 class FlDmv(BaseParser):
 
     def __init__(self, config_obj):
@@ -134,8 +68,8 @@ class FlDmv(BaseParser):
         plate_number = columns[0]
         state = columns[1]
         list_type = re.sub('\s[^A-Z]+$', '', columns[2].upper())
-        vehicle_color = car_colors.get(columns[10], columns[10])
-        vehicle_make = car_makes.get(columns[11], columns[11])
+        vehicle_color = self.get_vehicle_color(columns[10])
+        vehicle_make = self.get_vehicle_make(columns[11])
 
         # Only return results that match the "parse_code"
         if 'parse_code' in alert_config and list_type != alert_config['parse_code'].upper():
@@ -164,14 +98,14 @@ class FlDmv(BaseParser):
         report_info = columns[2].split()
         list_type = ' '.join(report_info[:2])
         if columns[2].endswith(' '):
-            vehicle_color = car_colors.get(report_info[-1], report_info[-1])
+            vehicle_color = self.get_vehicle_color(report_info[-1])
             vehicle_make = ''
         elif '  ' in columns[2]:
             vehicle_color = ''
-            vehicle_make = car_makes.get(report_info[-1], report_info[-1])
+            vehicle_make = self.get_vehicle_make(report_info[-1])
         else:
-            vehicle_color = car_colors.get(report_info[-2], report_info[-2])
-            vehicle_make = car_makes.get(report_info[-1], report_info[-1])
+            vehicle_color = self.get_vehicle_color(report_info[-2])
+            vehicle_make = self.get_vehicle_make(report_info[-1])
 
         # Only return results that match the "parse_code"
         if 'parse_code' in alert_config and list_type != alert_config['parse_code']:
@@ -198,8 +132,8 @@ class FlDmv(BaseParser):
         plate_number = columns[0]
         state = columns[1]
         list_type = re.sub('\s[^A-Z]+$', '', columns[2].upper())
-        vehicle_color = car_colors.get(columns[9], columns[9])
-        vehicle_make = car_makes.get(columns[10], columns[10])
+        vehicle_color = self.get_vehicle_color(columns[9])
+        vehicle_make = self.get_vehicle_make(columns[10])
 
         # Only return results that match the "parse_code"
         if 'parse_code' in alert_config and list_type != alert_config['parse_code'].upper():
@@ -227,8 +161,8 @@ class FlDmv(BaseParser):
         plate_number = columns[0]
         state = columns[1]
         list_type = columns[2].upper()
-        vehicle_color = car_colors.get(columns[12], columns[12])
-        vehicle_make = car_makes.get(columns[13], columns[13])
+        vehicle_color = self.get_vehicle_color(columns[12])
+        vehicle_make = self.get_vehicle_make(columns[13])
 
         # Only return results that match the "parse_code"
         if 'parse_code' in alert_config and list_type != alert_config['parse_code'].upper():

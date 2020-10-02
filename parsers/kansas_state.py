@@ -1,77 +1,11 @@
-from .base import BaseParser
 from collections import OrderedDict
 from datetime import date
 import re
+from . import codes
+from .base import BaseParser
 
-car_types = {
-    'PC': 'Passenger Car',
-    'TL': 'Trailer'
-}
-
-car_makes = {
-    "ACUR": "Acura",
-    "AUDI": "Audi",
-    "BMW": "BMW",
-    "BUIC": "Buick",
-    "CADI": "Cadillac",
-    "CHEV": "Chevrolet",
-    "CHRY": "Chrysler",
-    "DODG": "Dodge",
-    "FORD": "Ford",
-    "GMC": "GMC",
-    "HOND": "Honda",
-    "HYUN": "Hyundai",
-    "INFI": "Infiniti",
-    "ISU": "Isuzu",
-    "JAGU": "Jaguar",
-    "JEEP": "Jeep",
-    "KIA": "Kia",
-    "LEXS": "Lexus",
-    "LINC": "Lincoln",
-    "MITS": "Mitsubishi",
-    "NISS": "Nissan",
-    "PONI": "Pontiac",
-    "PONT": "Pontiac",
-    "SUBA": "Subaru",
-    "SUZI": "Suzuki",
-    "TOYT": "Toyota",
-    "VOLV": "Volvo",
-    "VOLK": "Volkswagen"
-}
-
-car_colors = {
-    "AME": "Amethyst Purple",
-    "BGE": "Beige",
-    "BLK": "Black",
-    "BLU": "Blue",
-    "BRO": "Brown",
-    "BRZ": "Bronze",
-    "CAM": "Camouflage",
-    "COM": "Chrome",
-    "CPR": "Copper",
-    "CRM": "Cream",
-    "DBL": "Dark Blue",
-    "DGR": "Dark Green",
-    "GLD": "Gold",
-    "GRN": "Green",
-    "GRY": "Gray",
-    "LAV": "Lavender Purple",
-    "LBL": "Light Blue",
-    "LGR": "Light Green",
-    "MAR": "Maroon",
-    "MVE": "Mauve",
-    "ONG": "Orange",
-    "PLE": "Purple",
-    "PNK": "Pink",
-    "RED": "Red",
-    "SIL": "Silver",
-    "TAN": "Tan",
-    "TEA": "Teal",
-    "TPE": "Taupe",
-    "TRQ": "Turquoise",
-    "WHI": "White",
-    "YEL": "Yellow",
-}
+car_makes = codes['ncic']['makes']
+car_colors = codes['ncic']['colors']
 
 
 class KsStateParser(BaseParser):
@@ -91,8 +25,11 @@ class KsStateParser(BaseParser):
     def get_parser_name(self):
         return "Kansas State"
 
-    def get_color(self, options, default=''):
-        """Convert color codes
+    def get_vehicle_color(self, options, default=''):
+        """Convert multiple color code options
+
+        Cannot rely on ``BaseParser.get_vehicle_color`` since the logic
+        required by ``self._parse_vehicle_info`` is more complex
 
         :param [str] options: List of keys to check in order of preference. If
             duplicate options are passed, they will be filtered out while
@@ -109,8 +46,11 @@ class KsStateParser(BaseParser):
                 break
         return color
 
-    def get_make(self, options, default=''):
-        """Convert vehicle make codes
+    def get_vehicle_make(self, options, default=''):
+        """Convert multiple vehicle make code options
+
+        Cannot rely on ``BaseParser.get_vehicle_make`` since the logic
+        required by ``self._parse_vehicle_info`` is more complex
 
         :param [str] options: List of keys to check in order of preference. If
             duplicate options are passed, they will be filtered out while
@@ -203,7 +143,7 @@ class KsStateParser(BaseParser):
         # Split up vehicle attributes
         bodytype_code, vehicle_info = raw_line.split(' ')[-3:-1]
         year, make, color = self._parse_vehicle_info(vehicle_info)
-        description = f'{color} {year} {make} {car_types.get(bodytype_code, "")} ({state})'
+        description = f'{color} {year} {make} {self.get_vehicle_type(bodytype_code)} ({state})'
         description = re.sub('\s+', ' ', description.strip())
         return {
             'plate': plate_number.upper().replace("-", "").replace(" ", ""),
@@ -226,7 +166,7 @@ class KsStateParser(BaseParser):
         # Split up vehicle attributes
         bodytype_code, vehicle_info = raw_line.split(' ')[-3:-1]
         year, make, color = self._parse_vehicle_info(vehicle_info)
-        description = f'{color} {year} {make} {car_types.get(bodytype_code, "")} ({state})'
+        description = f'{color} {year} {make} {self.get_vehicle_type(bodytype_code)} ({state})'
         description = re.sub('\s+', ' ', description.strip())
         return {
             'plate': plate_number.upper().replace("-", "").replace(" ", ""),
@@ -327,7 +267,7 @@ class KsStateParser(BaseParser):
         # Split up vehicle attributes
         bodytype_code, vehicle_info = raw_line.split(' ')[-3:-1]
         year, make, color = self._parse_vehicle_info(vehicle_info)
-        description = f'{color} {year} {make} {car_types.get(bodytype_code, "")} ({state})'
+        description = f'{color} {year} {make} {self.get_vehicle_type(bodytype_code)} ({state})'
         description = re.sub('\s+', ' ', description.strip())
         return {
             'plate': plate_number.upper().replace("-", "").replace(" ", ""),
@@ -360,14 +300,14 @@ class KsStateParser(BaseParser):
         # Attempt to match car make/color (check variable length since string has no delimiters)
         min_make_code = min([len(code) for code in car_makes.keys()])
         max_make_code = max([len(code) for code in car_makes.keys()])
-        make = self.get_make([vehicle_info[:min_make_code], vehicle_info[:max_make_code]])
+        make = self.get_vehicle_make([vehicle_info[:min_make_code], vehicle_info[:max_make_code]])
 
         min_color_code = min([len(code) for code in car_colors.keys()])
         max_color_code = max([len(code) for code in car_colors.keys()])
         if '/' in vehicle_info:
             other, color2_code = vehicle_info.split('/')
             color2 = car_colors.get(color2_code, '')
-            color1 = self.get_color([other[-max_color_code:], other[-min_color_code:]])
+            color1 = self.get_vehicle_color([other[-max_color_code:], other[-min_color_code:]])
             if color1 == color2:
                 color = color1
             elif color2 != '':
@@ -375,7 +315,7 @@ class KsStateParser(BaseParser):
             else:
                 color = color1
         else:
-            color = self.get_color([vehicle_info[-min_color_code:], vehicle_info[-max_color_code:]])
+            color = self.get_vehicle_color([vehicle_info[-min_color_code:], vehicle_info[-max_color_code:]])
         return year, make, color
 
     def get_default_lists(self):

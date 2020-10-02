@@ -23,7 +23,6 @@ class NcicParser(BaseParser):
         LIST_TYPE_START = 0
         LIST_TYPE_END = 1
 
-
         INCIDENT_DATE_START = 19
         INCIDENT_DATE_END = 27
 
@@ -41,13 +40,12 @@ class NcicParser(BaseParser):
 
         tag_date = raw_line[TAG_DATE_START:TAG_DATE_START+4].strip()
         vehicle_year = raw_line[VEHICLE_YEAR_START:VEHICLE_YEAR_START+4].strip()
-        vehicle_make = raw_line[MAKE_START:MAKE_START+4].strip()
+        vehicle_make = self.get_vehicle_make(raw_line[MAKE_START:MAKE_START+4].strip())
         vehicle_model = raw_line[MODEL_START:MODEL_START+3].strip()
-        vehicle_color = raw_line[COLOR_START:].strip()
+        vehicle_color = self.get_vehicle_color(raw_line[COLOR_START:].strip())
 
         vehicle_description = "%s %s %s %s" % (vehicle_color, vehicle_year, vehicle_make, vehicle_model)
         vehicle_description = vehicle_description.strip()
-
 
         list_type = raw_line[LIST_TYPE_START:LIST_TYPE_END].strip()
         incident_date = raw_line[INCIDENT_DATE_START:INCIDENT_DATE_END].strip()
@@ -60,15 +58,11 @@ class NcicParser(BaseParser):
 
         list_name = alert_config['name']
 
-
         # Stolen vehicle, Green Honda Passenger Car (State)
         description = '%s - %s (%s) %s' % (list_name, incident_date, state, vehicle_description)
 
         # Remove double spaces for empty stuff
         description = re.sub(' +', ' ', description.strip())
-
-
-
         return {
             'plate': plate_number.upper().replace("-", "").replace(" ", ""),
             'state': state,
@@ -134,4 +128,3 @@ class NcicParser(BaseParser):
 
     def get_example_format(self):
         return "V123456789LA057020020190509AB123456  CA2009MC2009YAMACYLMCBLK"
-

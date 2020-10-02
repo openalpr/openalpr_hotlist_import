@@ -20,9 +20,9 @@ class AlStateParser(BaseParser):
         plate_number = columns[0].strip()
         state = columns[8].strip()
         # ori = columns[2].strip()
-        make = columns[3].strip()
+        make = self.get_vehicle_make(columns[3].strip())
         model = columns[4].strip()
-        color = columns[5].strip()
+        color = self.get_vehicle_color(columns[5].strip())
         year = columns[6].strip()
         list_name = alert_config['name']
 
