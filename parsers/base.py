@@ -32,7 +32,16 @@ class BaseParser(object):
         raise NotImplementedError()
 
     def get_vehicle_color(self, value):
-        return self._get_vehicle('color', value)
+        """Checks for two-tone combinations with slash"""
+        if '/' in value:
+            color_both = value.split('/')
+            if color_both[0] != color_both[1]:
+                color = self._get_vehicle('color', color_both[0]) + '/' + self._get_vehicle('color', color_both[1])
+            else:
+                color = self._get_vehicle('color', color_both[0])
+        else:
+            color = self._get_vehicle('color', value)
+        return color
 
     def get_vehicle_make(self, value):
         return self._get_vehicle('make', value)
