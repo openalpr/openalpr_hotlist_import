@@ -1,0 +1,42 @@
+server_base_url: http://localhost:9001
+
+company_id: yourcompanyid
+
+# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+
+hotlist_parser: il_leads
+hotlist_path: ISPLITH.TXT
+
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
+
+log_file: /var/log/openalpr/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+smtp_server:
+smtp_domain:
+smtp_recipient: 
+smtp_sender: 
+smtp_port: 25
+smtp_username: 
+smtp_password: 
+send_email_on_success: False
+
+skip_list:
+  - '0'
+  - '1'
+
+alert_types:
+  - name: Wanted Person
+    parse_code: WANTED
+    match_strategy: exact
+
+  - name: Missing Person
+    parse_code: MISSING
+    match_strategy: exact
+
+  - name: Stolen Vehicle
+    parse_code: STOLEN
+    match_strategy: exact

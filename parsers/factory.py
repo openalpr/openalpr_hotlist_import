@@ -13,6 +13,7 @@ from .tx_ncic import TxNCIC
 from .fl_dmv import FlDmv
 from .nc_state import NcStateParser
 from .ia_state import IaStateParser
+from .il_leads import IlLeadsParser
 # Some parsers require Python3+
 if sys.hexversion >= 0x3000000:
     from .kansas_state import KsStateParser
@@ -54,6 +55,8 @@ def get_parser(config_obj, alert_type):
         return NcStateParser(config_obj)
     elif parser_name == 'ia_state':
         return IaStateParser(config_obj)
+    elif parser_name == 'il_leads':
+        return IlLeadsParser(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))
