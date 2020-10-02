@@ -10,18 +10,11 @@ class BaseParser(object):
         self.line_count = 0
 
     def set_config(self, conf):
-        """
-        Update the config
-        :param conf:
-        :return:
-        """
+        """Update the config"""
         self.config_obj = conf
 
     def get_parser_name(self):
-        """
-        Return human-readable parser name
-        :return:
-        """
+        """Return human-readable parser name"""
         raise NotImplementedError()
 
     def parse_hotlist_line(self, raw_line, alert_config):
@@ -89,10 +82,10 @@ class BaseParser(object):
                     outcsv.write("%s,%s,%s\n" %
                                  (line_content['plate'], line_content['description'], alert_type['match_strategy']))
 
-    # Return a list of the default list names and parse codes for this hotlist
     def get_default_lists(self):
+        """Return a list of the default list names and parse codes for this hotlist"""
         return []
 
-    # Return an example line demonstrating what this hotlist format looks like
     def get_example_format(self):
+        """Return an example line demonstrating what this hotlist format looks like"""
         return ""
