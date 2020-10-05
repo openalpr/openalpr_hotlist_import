@@ -83,7 +83,7 @@ class CoCCICParser(BaseParser):
             },
             {
             'name': 'CCIC Used in Misdemeanor',
-            'parse_code': 'Used in Misdemeanor o'
+            'parse_code': 'Used in Misdemeanor or'
             }
         ]
 

@@ -1,0 +1,67 @@
+# Configuration for Colorado CCIC import
+
+server_base_url: http://localhost:9001
+
+hotlist_parser: co_ccic
+hotlist_path: /tmp/ccic.txt
+
+# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+company_id: 1234
+
+temp_csv_file: /tmp/ncic.csv
+temp_dat_file: /tmp/ncic.dat
+
+log_file: /tmp/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+smtp_server: 
+smtp_domain: 
+smtp_recipient: 
+smtp_sender: 
+smtp_port: 
+smtp_username: ""
+smtp_password: ""
+send_email_on_success: True
+
+alert_types:
+  - name: CCIC Attempt To Locate
+    parse_code: Attempt To Locate
+    match_strategy: exact
+
+  - name: CCIC Felony Warrant
+    parse_code: Felony Warrant
+    match_strategy: exact
+
+  - name: CCIC Local Warrant
+    parse_code: Local Warrant
+    match_strategy: exact
+
+  - name: CCIC Reported Lost
+    parse_code: Reported Lost
+    match_strategy: exact
+
+  - name: CCIC Sexual Offender
+    parse_code: Sexual Offender
+    match_strategy: exact
+
+  - name: CCIC Stolen/Car Jacking
+    parse_code: Stolen/Car Jacking/Ca
+    match_strategy: exact
+
+  - name: CCIC Stolen Plate
+    parse_code: Stolen Plate
+    match_strategy: exact
+
+  - name: CCIC Stolen Vehicle
+    parse_code: Stolen Vehicle
+    match_strategy: exact
+
+  - name: CCIC Used in Felony
+    parse_code: Used in Felony or By
+    match_strategy: exact
+
+  - name: CCIC Used in Misdemeanor
+    parse_code: Used in Misdemeanor or
+    match_strategy: exact
