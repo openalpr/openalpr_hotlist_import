@@ -1,3 +1,10 @@
+openalpr-hotlistimport (1.2.0-20201005134935) unstable; urgency=low
+
+  * New state parsers: Iowa and Illinois LEADS/SOS
+  * Centralize NCIC codes in base parser
+
+ -- Addison Klinke <addison@openalpr.com>  Mon, 5 Oct 2020 00:00:00 +0000
+
 openalpr-hotlistimport (1.1.4-20200804091631) unstable; urgency=low
 
   * Florida DMV parsers
