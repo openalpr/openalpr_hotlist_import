@@ -8,7 +8,7 @@ class IlSosParser(BaseParser):
         super(IlSosParser, self).__init__(config_obj)
 
     def get_parser_name(self):
-        return 'Iowa State'
+        return 'Illinois SOS'
 
     def parse_hotlist_line(self, raw_line, alert_config):
         """Handle Illinois SOS format
