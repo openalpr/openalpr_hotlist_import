@@ -72,7 +72,7 @@ class IaStateParser(BaseParser):
                 'parse_code': 'SR'
             },
             {
-                'name': 'Protective Order/Interest or Violent Person',
+                'name': 'Protection Order',
                 'parse_code': 'PO'
             },
             {

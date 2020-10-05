@@ -33,7 +33,7 @@ alert_types:
     parse_code: SR
     match_strategy: exact
 
-  - name: Protective Order/Interest or Violent Person
+  - name: Protection Order
     parse_code: PO
     match_strategy: exact
 
