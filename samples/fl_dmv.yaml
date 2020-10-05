@@ -1,42 +1,35 @@
-# Configuration for hotlist import
-
 server_base_url: http://localhost:9001
-company_id: yourcompanyid
 
-# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+# API Key + company ID can be found here: [server_base_url]/account/my_account
+company_id: yourcompanyid
 api_key: a1234b5789c1234d5678a1234b5789c1234d5678
 
 hotlist_parser: fl_dmv
 
 temp_dat_file: /tmp/hotlistimport.dat
 temp_csv_file: /tmp/hotlistimport.csv
+
 log_file: /var/log/openalpr/hotlist.log
 log_archives: 5
 log_max_size_mb: 100
-
-skip_list:
-  - '0'
-  - '00'
-  - '000'
-  - '190'
 
 alert_types:
   - name: DMV Expired License
     parse_code: EXPIRED DRIVER LICENSES
     match_strategy: exact
-    hotlist_path: FlExpiredLicense.txt
+    hotlist_path: FLExpiredLicense.txt
 
   - name: DMV Expired Tag
     parse_code: Expired Tag
     match_strategy: exact
-    hotlist_path: FlExpiredTag.txt
+    hotlist_path: FLExpiredTag.txt
 
   - name: DMV Sanctioned Driver
     parse_code: SUSPENDED/REVOKED/CANCELLED LICENSE
     match_strategy: exact
-    hotlist_path: FlSanctionedDriver.txt
+    hotlist_path: FLSanctionedDriver.txt
 
   - name: DMV Sex Offender
     parse_code: SEXUAL OFFENDERS/PREDATORS
     match_strategy: exact
-    hotlist_path: FlSexOffender.txt
+    hotlist_path: FLSexOffender.txt

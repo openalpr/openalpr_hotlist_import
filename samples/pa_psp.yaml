@@ -1,36 +1,18 @@
-# Configuration for NY Hotlist import
-
-hotlist_path: /tmp/alpr.txt
 server_base_url: http://localhost:9001
 
-company_id: asdfasdf
-
-# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+# API Key + company ID can be found here: [server_base_url]/account/my_account
+company_id: yourcompanyid
 api_key: a1234b5789c1234d5678a1234b5789c1234d5678
 
 hotlist_parser: pa_psp
+hotlist_path: alpr.txt
 
-temp_dat_file: /tmp/paimport.dat
-temp_csv_file: /tmp/paimport.csv
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
 
-log_file: /tmp/pahotlist.log
+log_file: /var/log/openalpr/hotlist.log
 log_archives: 5
 log_max_size_mb: 100
-
-#state_import:
-#  - PA
-#  - NY
-#  - OH
-#  - MD
-
-skip_list:
-  - '0'
-  - '00'
-  - '000'
-  - '190'
-
-send_email_on_success: False
-
 
 alert_types:
   - name: Amber Alert

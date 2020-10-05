@@ -1,65 +1,19 @@
-# Configuration for NY Hotlist import
-
-hotlist_path: /tmp/LPRinfo.dat
 server_base_url: http://localhost:9001
 
-hotlist_parser: ny_state
-company_id: 1234
-
-# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+# API Key + company ID can be found here: [server_base_url]/account/my_account
+company_id: yourcompanyid
 api_key: a1234b5789c1234d5678a1234b5789c1234d5678
 
-temp_csv_file: /tmp/nyimport.csv
-temp_dat_file: /tmp/nyhotlist.dat
+hotlist_parser: ny_state
+hotlist_path: LPRinfo.zip
 
-log_file: /tmp/hotlist.log
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
+
+log_file: /var/log/openalpr/hotlist.log
 log_archives: 5
 log_max_size_mb: 100
 
-smtp_server: 
-smtp_domain: 
-smtp_recipient: 
-smtp_sender: 
-smtp_port: 
-smtp_username: ""
-smtp_password: ""
-send_email_on_success: True
-
-state_import:
-  - NY
-  - NJ
-  - CT
-  - PA
-  - MA
-  - RI
-  - VA
-  - NH
-  - VT
-  - ME
-  - MD
-  - DE
-  - WV
-  - SC
-  - GA
-  - FL
-  - CA
-  - IN
-
-skip_list:
-  - '000'
-  - 'AL45214'
-  - 'WFF384'
-  - 'CET6510'
-  - 'JDP9601'
-  - 'PHH2'      
-  - '999'
-  - 'T506336C'
-  - 'GHJ1925'
-  - 'JEH9579'
-  - 'HEC5937'
-  - 'BP26848'
-  - '5MDG364'
- 
 alert_types:
   - name: Stolen Vehicle
     parse_code: V

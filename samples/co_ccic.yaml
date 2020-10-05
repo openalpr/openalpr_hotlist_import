@@ -1,13 +1,11 @@
-# Configuration for Colorado CCIC import
-
 server_base_url: http://localhost:9001
 
-hotlist_parser: co_ccic
-hotlist_path: /tmp/ccic.txt
-
-# API Key for your user can be found here: https://cloud.openalpr.com/account/my_account
+# API Key + company ID can be found here: [server_base_url]/account/my_account
+company_id: yourcompanyid
 api_key: a1234b5789c1234d5678a1234b5789c1234d5678
-company_id: 1234
+
+hotlist_parser: co_ccic
+hotlist_path: CCICLPR.TXT
 
 temp_csv_file: /tmp/ncic.csv
 temp_dat_file: /tmp/ncic.dat
@@ -15,15 +13,6 @@ temp_dat_file: /tmp/ncic.dat
 log_file: /tmp/hotlist.log
 log_archives: 5
 log_max_size_mb: 100
-
-smtp_server: 
-smtp_domain: 
-smtp_recipient: 
-smtp_sender: 
-smtp_port: 
-smtp_username: ""
-smtp_password: ""
-send_email_on_success: True
 
 alert_types:
   - name: CCIC Attempt To Locate
