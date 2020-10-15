@@ -56,7 +56,7 @@ class IaStateParser(BaseParser):
         bodytype = self.get_vehicle_type(bodytype)
 
         # Format description
-        description = '%s %s (state=%s, ORI=%s, case number=%s)' % (
+        description = '%s %s (state=%s ORI=%s case number=%s)' % (
             alert_config['name'], bodytype, state, ori, case_number)
         description = re.sub(' +', ' ', description)
         return {
