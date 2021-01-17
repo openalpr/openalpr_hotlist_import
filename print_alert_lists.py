@@ -17,7 +17,7 @@ class AlertListManager:
         self.company_id = company_id
         self.api_key = api_key
 
-        list_url = '%s/api/alert-lists/' % self.server_url
+        list_url = '%s/api/v2/alert-lists/' % self.server_url
 
         if self.api_key:
             list_url += '?api_key=' + self.api_key
@@ -30,7 +30,7 @@ class AlertListManager:
             raise Exception("Unable to request alert data from web server (status code %d)" % (r.status_code))
 
         data_obj = json.loads(r.content)
-        self.alert_lists = data_obj['results']
+        self.alert_lists = data_obj
 
     def print_lists(self):
         for result in self.alert_lists:
@@ -49,7 +49,7 @@ class AlertListManager:
 
         # List doesn't already exist, let's create it
 
-        list_url = '%s/api/alert-lists/' % self.server_url
+        list_url = '%s/api/v2/alert-lists/' % self.server_url
 
         if self.api_key:
             list_url += '?api_key=' + self.api_key
