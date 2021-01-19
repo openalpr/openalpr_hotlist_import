@@ -1,5 +1,5 @@
 Package: openalpr-hotlistimport
-Version: 1.2.0-20201005134935
+Version: 1.2.1-20210119085126
 Section: web
 Priority: optional
 Architecture: all
