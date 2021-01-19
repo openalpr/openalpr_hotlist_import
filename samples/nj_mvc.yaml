@@ -1,0 +1,24 @@
+server_base_url: http://localhost:9001
+
+# API Key + company ID can be found here: [server_base_url]/account/my_account
+company_id: yourcompanyid
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+
+hotlist_parser: nj_mvc
+hotlist_path: MVCLPRFILE.zip
+
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
+
+log_file: /var/log/openalpr/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+alert_types:
+  - name: Expired Plate
+    parse_code: E
+    match_strategy: exact
+
+  - name: Suspended Owner
+    parse_code: S
+    match_strategy: exact

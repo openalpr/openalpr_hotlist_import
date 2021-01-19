@@ -7,6 +7,7 @@ from .al_state import AlStateParser
 from .simple import SimpleParser
 from .co_ccic import CoCCICParser
 from .ncic import NcicParser
+from .nj_mvc import NjMvcParser
 from .mi_state import MiStateParser
 from .tx_tcic import TxTCIC
 from .tx_ncic import TxNCIC
@@ -42,6 +43,8 @@ def get_parser(config_obj, alert_type):
         return CoCCICParser(config_obj)
     elif parser_name == 'ncic':
         return NcicParser(config_obj)
+    elif parser_name == 'nj_mvc':
+        return NjMvcParser(config_obj)
     elif parser_name == 'ks_state':
         return KsStateParser(config_obj)
     elif parser_name == 'mi_state':
