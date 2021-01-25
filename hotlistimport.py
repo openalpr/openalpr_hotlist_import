@@ -264,6 +264,8 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
             logger.exception("Caught exception - {}".format(e))
             send_email(conf_data, "OpenALPR CSV Import Unknown Error",
                        "Encountered unknown error processing CSV Import\n" + traceback.format_exc(), logger)
+            exit_status = 1
+            return exit_status
 
     exit_status = 0
 
