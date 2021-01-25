@@ -24,6 +24,8 @@ class AlertListManager:
         else:
             list_url += '?company_id=' + self.company_id
 
+        list_url += '&page_size=5000'
+
         r = requests.get(list_url, verify=False)
 
         if not r.ok:
