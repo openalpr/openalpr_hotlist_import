@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 from email.mime.text import MIMEText
 from glob import glob
+import gzip
 import json
 import logging
 from logging.handlers import RotatingFileHandler
@@ -10,7 +11,7 @@ import os
 import platform
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from shutil import copyfile
+from shutil import copyfile, copyfileobj
 import smtplib
 import sys
 import time
@@ -29,6 +30,26 @@ from print_alert_lists import AlertListManager
 
 
 WINDOWS = platform.system().lower().find('windows') == 0
+
+
+def is_gzip(filepath):
+    """Determine whether file candidate uses gzip compression
+
+    Adapted from https://stackoverflow.com/a/47080739/7446465
+
+    The most reliable method for checking gzip compression appears to be
+    comparing the first two bytes. These should almost always be 1f 8b, and it
+    is highly unlikely an ordinary text file starts with these (since that
+    would be illegal in UTF-8).
+
+    :param str filepath: Full path to file on disk
+    :return bool: Whether or not filepath uses gzip. Returns false if path is
+        not a file for consistency with ``pyzipper.is_zipfile()`` behavior
+    """
+    if not os.path.isfile(filepath):
+        return False
+    with open(filepath, 'rb') as f:
+        return f.read(2) == b'\x1f\x8b'
 
 
 def send_email(config_obj, subject, message, logger):
@@ -131,6 +152,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
 
             # First get the hotlist data (either from the network or a local file)
             # Copy the file to a temporary file to start working with it
+            # TODO logic is getting complicated/repetitive with multiple compression types > abstract into manager class
             if hotlist_path.lower().startswith('http://') or hotlist_path.lower().startswith('https://'):
                 # This is a URL, try to download it
                 urllib.urlretrieve(hotlist_path, conf_data['temp_dat_file'])
@@ -157,6 +179,11 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                                     f.write("%s%s" % (l, '\n'))
                         else:
                             logger.info("The specified zip file contains multiple files.  Must specify the file in the path (e.g., c:\\hotlists\\thefile.zip\\fileinside")
+
+                elif is_gzip(hotlist_path):
+                    with gzip.open(hotlist_path, 'rb') as f_in:
+                        with open(conf_data['temp_dat_file'], 'wb') as f_out:
+                            copyfileobj(f_in, f_out)
 
                 elif '.zip' in hotlist_path:
                     folder_path = os.path.dirname(hotlist_path)
