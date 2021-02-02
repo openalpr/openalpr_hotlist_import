@@ -1,0 +1,19 @@
+server_base_url: http://localhost:9001
+
+# API Key + company ID can be found here: [server_base_url]/account/my_account
+company_id: yourcompanyid
+api_key: a1234b5789c1234d5678a1234b5789c1234d5678
+
+hotlist_parser: simple
+hotlist_path: plate_list.txt
+
+temp_csv_file: /tmp/simple.csv
+temp_dat_file: /tmp/simple.dat
+
+log_file: /tmp/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+alert_types:
+    - name: Simple
+      match_strategy: exact
