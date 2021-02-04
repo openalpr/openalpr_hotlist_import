@@ -8,7 +8,9 @@ import json
 
 
 # https://cloud.openalpr.com/api/alert-lists/
-
+# TODO build all URLs with os.path.join to ensure we don't have any double //
+# TODO update alprweb Django code to accept POST with or without trailing forward slash
+# TODO compatibility option for on-prem webservers which don't support v2 alert API
 
 class AlertListManager:
 

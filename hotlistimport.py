@@ -240,6 +240,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                 total_attempts = 5
                 success = False
 
+                # TODO if CSV has > 250k lines, split into chunks to avoid timeouts
                 while retry < total_attempts and list_id is not None:
                     try:
                         retry += 1
