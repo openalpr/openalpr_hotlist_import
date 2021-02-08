@@ -1,5 +1,5 @@
 import logging
-from . import codes
+from . import codes, fix_state
 
 
 class BaseParser(object):
@@ -55,7 +55,6 @@ class BaseParser(object):
         :param str raw_line: Plain text line from the hotlist file
         :param dict alert_config: Containing the following keys
             * name: For display in the webserver
-            * match_strategy: Either exact or lenient
             * parse_code (optional): May be used depending on state's format
             * openalpr_list_id (optional): To match an existing list on the webserver
             * hotlist_path (optional): Override the default path
@@ -74,7 +73,7 @@ class BaseParser(object):
             with open(self.config_obj['temp_dat_file'], 'r') as conffile:
 
                 # Write the header
-                outcsv.write("Plate Number,Description,Match Strategy\n")
+                outcsv.write("Plate Number,Description,State/Province\n")
 
                 self.line_count = 0
                 for line in conffile:
@@ -99,6 +98,10 @@ class BaseParser(object):
                             if line_content['state'].upper() not in self.config_obj['state_import']:
                                 continue
 
+                    # Convert the state codes (e.g., "MO" -> us-mo)
+                    if 'state' in line_content:
+                        line_content['state'] = fix_state(line_content['state'], self.logger)
+
                     # Skip particular alerts that are generating false positives
                     if self.config_obj.get('skip_list'):
                         if str(line_content['plate']).upper() in self.config_obj['skip_list']:
@@ -112,7 +115,7 @@ class BaseParser(object):
                     self.dup_filter[line_content['plate']] = True
                     # Write this line to the CSV
                     outcsv.write("%s,%s,%s\n" %
-                                 (line_content['plate'], line_content['description'], alert_type['match_strategy']))
+                                 (line_content['plate'], line_content['description'], line_content['state']))
 
     def get_default_lists(self):
         """Return a list of the default list names and parse codes for this hotlist"""

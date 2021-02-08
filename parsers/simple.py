@@ -19,6 +19,7 @@ class SimpleParser(BaseParser):
         return {
             'plate': plate_number.upper().replace("-", "").replace(" ", ""),
             'list_type': alert_config['name'],
+            'state': '',
             'description': description
         }
 

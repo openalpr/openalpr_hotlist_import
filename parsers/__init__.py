@@ -133,3 +133,120 @@ codes = {
         }
     }
 }
+
+
+STATE_CODES = [
+            "ca-ab",
+            "ca-bc",
+            "ca-mb",
+            "ca-nb",
+            "ca-nl",
+            "ca-ns",
+            "ca-on",
+            "ca-pe",
+            "ca-qc",
+            "ca-sk",
+            "mx-agu",
+            "mx-bcn",
+            "mx-bcs",
+            "mx-cam",
+            "mx-chh",
+            "mx-chp",
+            "mx-cmx",
+            "mx-coa",
+            "mx-col",
+            "mx-dur",
+            "mx-gro",
+            "mx-gua",
+            "mx-hid",
+            "mx-jal",
+            "mx-mex",
+            "mx-mic",
+            "mx-mor",
+            "mx-nay",
+            "mx-nle",
+            "mx-oax",
+            "mx-ona",
+            "mx-pue",
+            "mx-que",
+            "mx-roo",
+            "mx-sin",
+            "mx-slp",
+            "mx-son",
+            "mx-tab",
+            "mx-tam",
+            "mx-tla",
+            "mx-ver",
+            "mx-yuc",
+            "mx-zac",
+            "us-ak",
+            "us-al",
+            "us-ar",
+            "us-az",
+            "us-ca",
+            "us-co",
+            "us-ct",
+            "us-dc",
+            "us-de",
+            "us-fl",
+            "us-ga",
+            "us-hi",
+            "us-ia",
+            "us-id",
+            "us-il",
+            "us-in",
+            "us-ks",
+            "us-ky",
+            "us-la",
+            "us-ma",
+            "us-md",
+            "us-me",
+            "us-mi",
+            "us-mn",
+            "us-mo",
+            "us-ms",
+            "us-mt",
+            "us-nc",
+            "us-nd",
+            "us-ne",
+            "us-nh",
+            "us-nj",
+            "us-nm",
+            "us-nv",
+            "us-ny",
+            "us-oh",
+            "us-ok",
+            "us-or",
+            "us-pa",
+            "us-pr",
+            "us-ri",
+            "us-sc",
+            "us-sd",
+            "us-tn",
+            "us-tx",
+            "us-ut",
+            "us-va",
+            "us-vt",
+            "us-wa",
+            "us-wi",
+            "us-wv",
+            "us-wy"
+            ]
+
+state_map = {}
+for code in STATE_CODES:
+    region_code = code.split('-')[-1]
+    state_map[region_code] = code
+
+def fix_state(state_code, logger=None):
+    # Some states swap in zeros for o
+    state_code = state_code.replace("0", "O").lower()
+
+    if state_code in state_map:
+        return state_map[state_code]
+
+    if logger is not None:
+        # Cannot parse state code
+        logger.warn("Cannot find state code {state_code}")
+
+    return ''
