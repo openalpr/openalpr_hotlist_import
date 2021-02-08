@@ -107,3 +107,8 @@ class IaStateParser(BaseParser):
 
     def get_example_format(self):
         return 'BMAC272   ,2020,TK,ON,R004163992,CNVP,ON3251500'
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'BMAC272', 'state': 'ON'}
+               ]

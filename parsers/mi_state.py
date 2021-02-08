@@ -113,3 +113,8 @@ class MiStateParser(BaseParser):
 
     def get_example_format(self):
         return "M035777045WIMPD006320200403AHG5263   WI2020PC2003CHEVSUBLLBLK    MISSING PERSON NCIC"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'AHG5263', 'state': 'WI'}
+               ]

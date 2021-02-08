@@ -89,3 +89,8 @@ class NjMvcParser(BaseParser):
 
     def get_example_format(self):
         return "S                          ABC123    NJ      1985NIS SEN04BLUE"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'ABC123', 'state': 'NJ'}
+               ]

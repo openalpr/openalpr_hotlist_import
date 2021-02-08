@@ -71,3 +71,8 @@ class IlSosParser(BaseParser):
 
     def get_example_format(self):
         return '15386VDE ILFMREVOKED DOT/032910 EXP/0721'
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': '15386VDE', 'state': 'IL'}
+               ]

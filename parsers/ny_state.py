@@ -98,3 +98,8 @@ class NyStateParser(BaseParser):
 
     def get_example_format(self):
         return "ABC1234   NYPASXBUICWH"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'ABC1234', 'state': 'NY'}
+               ]

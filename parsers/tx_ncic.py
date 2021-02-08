@@ -121,3 +121,8 @@ class TxNCIC(BaseParser):
 
     def get_example_format(self):
         return "C165399977,0H0671200,20200124,GGX6728,0H,2021,2009,D0DG,CHA,4D,GRY"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'GGX6728', 'state': '0H'}
+               ]

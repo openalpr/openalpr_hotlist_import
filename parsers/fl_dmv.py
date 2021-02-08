@@ -14,6 +14,12 @@ class FlDmv(BaseParser):
         """There are really 4 different formats, this is just expired licenses"""
         return "Y83YPH,FL,EXPIRED DRIVER LICENSES - ,G650510522640,05/14/2018,M,W,68,75,2016,WHI,NISS,7/9/2020 6:55:57 PM"
 
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'parse_code': 'EXPIRED DRIVER LICENSES', 'plate': 'Y83YPH', 'state': 'FL'}
+               ]
+
+
     def get_default_lists(self):
         return [
             {

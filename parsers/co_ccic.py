@@ -89,3 +89,8 @@ class CoCCICParser(BaseParser):
 
     def get_example_format(self):
         return "ABC123    COAttempt To Locate     2002 FORD FOC BLK"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'ABC123', 'state': 'CO'}
+               ]

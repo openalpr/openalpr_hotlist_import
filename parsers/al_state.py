@@ -55,3 +55,8 @@ class AlStateParser(BaseParser):
 
     def get_example_format(self):
         return "Taghere1,,V000000000,CHEV,,RED,1985,Stolen Vehicle or Vehicle Part,WA"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'TAGHERE1', 'state': 'WA'}
+               ]

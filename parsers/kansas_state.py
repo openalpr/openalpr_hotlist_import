@@ -346,3 +346,8 @@ class KsStateParser(BaseParser):
 
     def get_example_format(self):
         return 'ABC123 KS#3 STOLEN PLATE! PC 2016CHEVMALSWSILTX0790300 20200122'
+
+    def get_example_tests(self):
+        # TODO: Make this work
+        return [
+               ]
