@@ -264,7 +264,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                                 'files': f,
                             }
 
-                            r = requests.post(upload_url, verify=False, files=postargs)
+                            r = requests.post(upload_url, verify=False, files=postargs, data={'async': True})
 
                             logger.info("HTTP Import response: %s" % r.content)
 
