@@ -247,6 +247,6 @@ def fix_state(state_code, logger=None):
 
     if logger is not None:
         # Cannot parse state code
-        logger.warn("Cannot find state code {state_code}")
+        logger.warn("Cannot find state code " + str(state_code))
 
     return ''
