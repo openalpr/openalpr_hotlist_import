@@ -94,7 +94,7 @@ class BaseParser(object):
                     # The user has configured a restriction on states.
                     # ONLY import alerts that have the correct state code
                     if self.config_obj.get('state_import'):
-                        if 'state' in line_content:  # If no state is returned from parser, allow it
+                        if 'state' in line_content and line_content['state'] != '':  # If no state is returned from parser, allow it
                             if line_content['state'].upper() not in self.config_obj['state_import']:
                                 continue
 

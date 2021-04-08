@@ -239,6 +239,9 @@ for code in STATE_CODES:
     state_map[region_code] = code
 
 def fix_state(state_code, logger=None):
+    if state_code == '':
+        return ''
+
     # Some states swap in zeros for o
     state_code = state_code.replace("0", "O").lower()
 
