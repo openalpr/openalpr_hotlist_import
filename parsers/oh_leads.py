@@ -1,5 +1,6 @@
 from .base import BaseParser
 import re
+import datetime
 
 class OhLeadsParser(BaseParser):
 
@@ -73,9 +74,12 @@ class OhLeadsParser(BaseParser):
 
             parse_code = " ".join(columns[9:]).strip()
 
+        expiration_datetime = datetime.datetime.strptime(expiration_date, '%m/%d/%Y')
+        today = datetime.datetime.now() + datetime.timedelta(days=1)
 
-
-
+        if expiration_datetime < today:
+            # Skip this entry because the expiration date has passed
+            return None
 
 
         if plate_number == '':
