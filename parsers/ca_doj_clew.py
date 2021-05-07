@@ -61,3 +61,10 @@ class CaClewParser(BaseParser):
 
     def get_example_format(self):
         return "ABC1234 CA1220190515"
+
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'ABC1234', 'state': 'CA', 'description': 'test State: CA County: 12 Lost on: 20190515'}
+               ]
+

@@ -128,3 +128,8 @@ class NcicParser(BaseParser):
 
     def get_example_format(self):
         return "V123456789LA057020020190509AB123456  CA2009MC2009YAMACYLMCBLK"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': 'AB123456', 'state': 'CA'}
+               ]

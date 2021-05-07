@@ -16,6 +16,7 @@ from .nc_state import NcStateParser
 from .ia_state import IaStateParser
 from .il_leads import IlLeadsParser
 from .il_sos import IlSosParser
+from .oh_leads import OhLeadsParser
 from .ct_collect import CtCollectParser
 
 # Some parsers require Python3+
@@ -59,6 +60,8 @@ def get_parser(config_obj, alert_type):
         return FlDmv(config_obj)
     elif parser_name == 'nc_state':
         return NcStateParser(config_obj)
+    elif parser_name == 'oh_leads':
+        return OhLeadsParser(config_obj)
     elif parser_name == 'ia_state':
         return IaStateParser(config_obj)
     elif parser_name == 'il_leads':

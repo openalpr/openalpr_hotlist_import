@@ -119,3 +119,8 @@ class IlLeadsParser(BaseParser):
 
     def get_example_format(self):
         return '660JEM  WIPCSTOLEN VYR/05 VMA/DODG VMO/MAG VST/4D VCO/RED     DOT/010315 LDS/V16A0661'
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': '660JEM', 'state': 'WI'}
+               ]

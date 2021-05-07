@@ -108,3 +108,8 @@ class TxTCIC(BaseParser):
 
     def get_example_format(self):
         return "TW1026325915,17MFM5,TX,2009,FORD,TK,PK,WHI"
+
+    def get_example_tests(self):
+        return [
+                {'raw_line': self.get_example_format(), 'plate': '17MFM5', 'state': 'TX'}
+               ]
