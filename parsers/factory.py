@@ -16,6 +16,8 @@ from .nc_state import NcStateParser
 from .ia_state import IaStateParser
 from .il_leads import IlLeadsParser
 from .il_sos import IlSosParser
+from .ct_collect import CtCollectParser
+
 # Some parsers require Python3+
 if sys.hexversion >= 0x3000000:
     from .kansas_state import KsStateParser
@@ -63,6 +65,8 @@ def get_parser(config_obj, alert_type):
         return IlLeadsParser(config_obj)
     elif parser_name == 'il_sos':
         return IlSosParser(config_obj)
+    elif parser_name == 'ct_collect':
+        return CtCollectParser(config_obj)
 
     else:
         print("Unable to find parser named %s" % (parser_name))
