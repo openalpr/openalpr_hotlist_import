@@ -44,16 +44,16 @@ class CtCollectParser(BaseParser):
   # <field name="RegistartionStatus" from="208" to="209" />
   # </record>
 
-        plate_number = raw_line[0:8].strip()
-        plate_class_name = raw_line[8:38].strip()
-        make = raw_line[38:68].strip()
-        model = raw_line[68:98].strip()
-        style = raw_line[98:128].strip()
-        color = raw_line[128:158].strip()
-        year = raw_line[158:162].strip()
-        vehicle_usage = raw_line[162:192].strip()
-        reg_exp = raw_line[192:200].strip()
-        reg_status = raw_line[200:202].strip()
+        plate_number = raw_line[0:8].strip().replace(",","").replace(";","")
+        plate_class_name = raw_line[8:38].strip().replace(",","").replace(";","")
+        make = raw_line[38:68].strip().replace(",","").replace(";","")
+        model = raw_line[68:98].strip().replace(",","").replace(";","")
+        style = raw_line[98:128].strip().replace(",","").replace(";","")
+        color = raw_line[128:158].strip().replace(",","").replace(";","")
+        year = raw_line[158:162].strip().replace(",","").replace(";","")
+        vehicle_usage = raw_line[162:192].strip().replace(",","").replace(";","")
+        reg_exp = raw_line[192:200].strip().replace(",","").replace(";","")
+        reg_status = raw_line[200:202].strip().replace(",","").replace(";","")
         state = 'CT'
 
 
