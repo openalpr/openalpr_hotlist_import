@@ -28,9 +28,20 @@ class AlertListManager:
 
         list_url += '&page_size=5000'
 
-        r = requests.get(list_url, verify=False)
+        retries = 0
+        success = False
+        while retries < 5:
+            r = requests.get(list_url, verify=False)
 
-        if not r.ok:
+            if not r.ok:
+                retries += 1
+                time.sleep(3.0)
+                continue
+
+            success = True
+            break
+
+        if not success:
             raise Exception("Unable to request alert data from web server (status code %d)" % (r.status_code))
 
         data_obj = json.loads(r.content)
