@@ -4,6 +4,7 @@ from .pa_psp import PaPspParser
 from .ny_state import NyStateParser
 from .fl_state import FlStateParser
 from .al_state import AlStateParser
+from .ks_topeka import KsTopekaParser
 from .simple import SimpleParser
 from .co_ccic import CoCCICParser
 from .ncic import NcicParser
@@ -50,6 +51,8 @@ def get_parser(config_obj, alert_type):
         return NjMvcParser(config_obj)
     elif parser_name == 'ks_state':
         return KsStateParser(config_obj)
+    elif parser_name == 'ks_topeka':
+        return KsTopekaParser(config_obj)
     elif parser_name == 'mi_state':
         return MiStateParser(config_obj)
     elif parser_name == 'tx_tcic':
