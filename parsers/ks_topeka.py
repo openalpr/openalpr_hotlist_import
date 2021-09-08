@@ -1,7 +1,6 @@
-import logging
+import re
 
 from .base import BaseParser
-import re
 
 
 class KsTopekaParser(BaseParser):
@@ -26,8 +25,6 @@ class KsTopekaParser(BaseParser):
         model = columns[9].strip()
         color = self.get_vehicle_color(columns[11].strip())
         list_name = alert_config['name']
-        #
-
 
         vehicle_info = "%s %s %s %s" % (color, year, make, model)
         vehicle_info = vehicle_info.strip()
