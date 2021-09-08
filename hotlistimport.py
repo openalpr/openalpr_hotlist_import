@@ -16,15 +16,16 @@ import smtplib
 import sys
 import time
 import traceback
-import urllib
 import warnings
 import yaml
 if sys.version_info.major == 3:
     from pyzipper import is_zipfile as is_zipfile
     from pyzipper import AESZipFile as zipreader
+    from urllib import request as url_lib
 elif sys.version_info.major == 2:
     from zipfile import is_zipfile as is_zipfile
     from zipfile import ZipFile as zipreader
+    import urllib as url_lib
 from parsers import factory
 from print_alert_lists import AlertListManager
 
@@ -155,7 +156,8 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
             # TODO logic is getting complicated/repetitive with multiple compression types > abstract into manager class
             if hotlist_path.lower().startswith('http://') or hotlist_path.lower().startswith('https://'):
                 # This is a URL, try to download it
-                urllib.urlretrieve(hotlist_path, conf_data['temp_dat_file'])
+                url_lib.urlretrieve(hotlist_path, conf_data['temp_dat_file'])
+
             else:
 
                 # If it's a zip file, extract it first
