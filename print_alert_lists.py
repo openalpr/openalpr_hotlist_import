@@ -5,6 +5,7 @@ import yaml
 import os
 import sys
 import json
+import time
 
 
 # https://cloud.openalpr.com/api/alert-lists/
