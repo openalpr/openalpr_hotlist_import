@@ -1,3 +1,14 @@
+openalpr-hotlistimport (1.2.2-20210927183502) unstable; urgency=low
+
+  * Add New Jersey MVC parser
+  * Add Ohio LEADS parser
+  * Add Indiana DMV parser
+  * Add Connecticut COLLECT parser
+  * Add Kansas Topeka PD parser
+  * Adds basic support for GZIP hostlist paths
+
+ -- Hermann Steidel <hsteidel@rekor.ai>  Tue, 27 Sept 2021 00:00:00 +0000
+
 openalpr-hotlistimport (1.2.1-20210119085126) unstable; urgency=low
 
   * Add New Jersey MVC parser
