@@ -1,4 +1,10 @@
-openalpr-hotlistimport (1.2.2-20210927183502) unstable; urgency=low
+openalpr-hotlistimport (1.2.3-20211028155619) unstable; urgency=low
+
+  * HTTP based hotlist paths now support ZIP and GZIP file types
+
+ -- Hermann Steidel <hsteidel@rekor.ai>  Tue, 28 Oct 2021 00:00:00 +0000
+
+openalpr-hotlistimport (1.2.2-20211028154231) unstable; urgency=low
 
   * Add New Jersey MVC parser
   * Add Ohio LEADS parser

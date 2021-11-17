@@ -150,73 +150,79 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
     for alert_type in conf_data.get('alert_types', []):
         try:
             hotlist_path = alert_type['hotlist_path'] if 'hotlist_path' in alert_type else conf_data['hotlist_path']
-
-            # First get the hotlist data (either from the network or a local file)
-            # Copy the file to a temporary file to start working with it
+            hotlist_source_file = hotlist_path
+            # If this is a file that we need to fetch from a URL, download it first and attempt to get the
+            # actual file name from the URL path. Once we have that, set things up as if we were working with
+            # a local file.
+            # TODO this doesn't handle the scenario where the URL actually downloads something but the file is not in the path
             # TODO logic is getting complicated/repetitive with multiple compression types > abstract into manager class
             if hotlist_path.lower().startswith('http://') or hotlist_path.lower().startswith('https://'):
-                # This is a URL, try to download it
-                url_lib.urlretrieve(hotlist_path, conf_data['temp_dat_file'])
+                logger.info("Hotlist path is a URL, try to download it: %s" % hotlist_path)
+                download_url = hotlist_path
+                hotlist_path_parts = hotlist_path.lower().rsplit("/", 1)
+                derived_filename = hotlist_path_parts[1]
+                if derived_filename is None:
+                    raise RuntimeError('Could not extract file name from URL path %s' % hotlist_path_parts)
+                logger.info("Downloading file " + derived_filename)
+                url_lib.urlretrieve(download_url, derived_filename)
+                hotlist_source_file = derived_filename
 
+            if not os.path.isfile(hotlist_source_file):
+                logger.error("Could not find hotlist file: %s" % hotlist_path)
+                sys.exit(1)
+
+            logger.info("Using local file as source: %s" % hotlist_source_file)
+            password = conf_data.get('hotlist_password')
+            if password is not None:
+                if sys.version_info.major != 3:
+                    raise RuntimeError('Python 3.x is required for handling encrypted zip files')
+                password = password.encode('utf-8')
+            if is_zipfile(hotlist_source_file):
+                logger.info("File is Zip!")
+                with zipreader(hotlist_source_file, 'r') as zip_file:
+                    all_files = zip_file.namelist()
+
+                    if len(all_files) == 1:
+                        # Just process the one file and write to output
+                        content = zip_file.read(all_files[0], pwd=password)
+
+                        lines = [l for l in content.decode("utf-8").splitlines() if l != ""]
+                        with open(conf_data['temp_dat_file'], 'w') as f:
+                            for l in lines:
+                                f.write("%s%s" % (l, '\n'))
+                    else:
+                        logger.info("The specified zip file contains multiple files.  Must specify the file in the path (e.g., c:\\hotlists\\thefile.zip\\fileinside")
+
+            elif is_gzip(hotlist_source_file, logger):
+                logger.info("File is Gzip!")
+                with gzip.open(hotlist_source_file, 'rb') as f_in:
+                    with open(conf_data['temp_dat_file'], 'wb') as f_out:
+                        copyfileobj(f_in, f_out)
+
+            elif '.zip' in hotlist_source_file:
+                folder_path = os.path.dirname(hotlist_source_file)
+                with zipreader(folder_path, 'r') as f:
+                    content = {name: f.read(name, pwd=password) for name in f.namelist()}
+                zip_name = os.path.dirname(hotlist_source_file).split(os.sep)[-1].split('.')[0]
+                dat_file = os.path.basename(hotlist_source_file)
+                if dat_file not in content:
+                    dat_file_alt = os.path.join(zip_name, os.path.basename(hotlist_source_file))
+                    if dat_file_alt not in content:
+                        logging.error("Neither {} nor {} exist in zip archive {}".format(
+                            dat_file, dat_file_alt, folder_path))
+                        sys.exit(1)
+                    else:
+                        dat_file = dat_file_alt
+                lines = [l for l in content[dat_file].decode("utf-8").splitlines() if l != ""]
+                with open(conf_data['temp_dat_file'], 'w') as f:
+                    for l in lines:
+                        f.write("%s%s" % (l, '\n'))
             else:
-
-                # If it's a zip file, extract it first
-                password = conf_data.get('hotlist_password')
-                if password is not None:
-                    if sys.version_info.major != 3:
-                        raise RuntimeError('Python 3.x is required for handling encrypted zip files')
-                    password = password.encode('utf-8')
-                if is_zipfile(hotlist_path):
-
-                    with zipreader(hotlist_path, 'r') as zip_file:
-                        all_files = zip_file.namelist()
-
-                        if len(all_files) == 1:
-                            # Just process the one file and write to output
-                            content = zip_file.read(all_files[0], pwd=password)
-
-                            lines = [l for l in content.decode("utf-8").splitlines() if l != ""]
-                            with open(conf_data['temp_dat_file'], 'w') as f:
-                                for l in lines:
-                                    f.write("%s%s" % (l, '\n'))
-                        else:
-                            logger.info("The specified zip file contains multiple files.  Must specify the file in the path (e.g., c:\\hotlists\\thefile.zip\\fileinside")
-
-                elif is_gzip(hotlist_path):
-                    with gzip.open(hotlist_path, 'rb') as f_in:
-                        with open(conf_data['temp_dat_file'], 'wb') as f_out:
-                            copyfileobj(f_in, f_out)
-
-                elif '.zip' in hotlist_path:
-                    folder_path = os.path.dirname(hotlist_path)
-                    with zipreader(folder_path, 'r') as f:
-                        content = {name: f.read(name, pwd=password) for name in f.namelist()}
-                    zip_name = os.path.dirname(hotlist_path).split(os.sep)[-1].split('.')[0]
-                    dat_file = os.path.basename(hotlist_path)
-                    if dat_file not in content:
-                        dat_file_alt = os.path.join(zip_name, os.path.basename(hotlist_path))
-                        if dat_file_alt not in content:
-                            logging.error("Neither {} nor {} exist in zip archive {}".format(
-                                dat_file, dat_file_alt, folder_path))
-                            sys.exit(1)
-                        else:
-                            dat_file = dat_file_alt
-                    lines = [l for l in content[dat_file].decode("utf-8").splitlines() if l != ""]
-                    with open(conf_data['temp_dat_file'], 'w') as f:
-                        for l in lines:
-                            f.write("%s%s" % (l, '\n'))
-
-                elif not os.path.isfile(hotlist_path):
-                    logger.error("Could not find hotlist file: %s" % (hotlist_path))
-                    sys.exit(1)
-
-                else:
-                    copyfile(hotlist_path, conf_data['temp_dat_file'])
+                copyfile(hotlist_source_file, conf_data['temp_dat_file'])
 
             hotlistparser = factory.get_parser(conf_data, alert_type)
 
-            logger.info("processing alert list for " + alert_type.get('name', ''))
-
+            logger.info("Processing alert list for " + alert_type.get('name', ''))
             hotlistparser.parse(alert_type)
 
             logger.info("Wrote temp CSV %s" % (conf_data['temp_csv_file']))
