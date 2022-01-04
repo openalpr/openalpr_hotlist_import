@@ -193,7 +193,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                     else:
                         logger.info("The specified zip file contains multiple files.  Must specify the file in the path (e.g., c:\\hotlists\\thefile.zip\\fileinside")
 
-            elif is_gzip(hotlist_source_file, logger):
+            elif is_gzip(hotlist_source_file):
                 logger.info("File is Gzip!")
                 with gzip.open(hotlist_source_file, 'rb') as f_in:
                     with open(conf_data['temp_dat_file'], 'wb') as f_out:
