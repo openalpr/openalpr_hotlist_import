@@ -66,6 +66,10 @@ class BaseParser(object):
         """
         raise NotImplementedError()
 
+    def _clean_csv_field(self, text_content):
+        # Remove any "quote" or commas
+        return text_content.replace(",", "").replace("'", "").replace("\"", "")
+
     def parse(self, alert_type):
         self.dup_filter = {}
 
@@ -115,7 +119,10 @@ class BaseParser(object):
                     self.dup_filter[line_content['plate']] = True
                     # Write this line to the CSV
                     outcsv.write("%s,%s,%s\n" %
-                                 (line_content['plate'], line_content['description'], line_content['state']))
+                                 (self._clean_csv_field(line_content['plate']), 
+                                    self._clean_csv_field(line_content['description']), 
+                                    self._clean_csv_field(line_content['state']))
+                                )
 
     def get_default_lists(self):
         """Return a list of the default list names and parse codes for this hotlist"""
