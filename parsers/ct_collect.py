@@ -8,7 +8,7 @@ class CtCollectParser(BaseParser):
         super(CtCollectParser, self).__init__(config_obj)
 
     def get_parser_name(self):
-        return "Florida DMV"
+        return "CT Collect DMV"
 
     def get_example_format(self):
         """There are really 4 different formats, this is just expired licenses"""
