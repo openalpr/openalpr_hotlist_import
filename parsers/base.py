@@ -94,6 +94,12 @@ class BaseParser(object):
                         continue
                     if line_content is None:
                         continue
+                    if len(line_content['plate']) > 15:
+                        self.logger.info("Plate is too long, skipping: %s", line_content['plate'])
+                        continue
+                    if len(line_content['description']) > 1000:
+                        self.logger.info("Description is too long, skipping: %s", line_content['description'])
+                        continue
 
                     # The user has configured a restriction on states.
                     # ONLY import alerts that have the correct state code
