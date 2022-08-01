@@ -164,8 +164,9 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                 if derived_filename is None:
                     raise RuntimeError('Could not extract file name from URL path %s' % hotlist_path_parts)
                 logger.info("Downloading file " + derived_filename)
-                url_lib.urlretrieve(download_url, derived_filename)
-                hotlist_source_file = derived_filename
+                dest_path = os.path.dirname(hotlist_path)
+                hotlist_source_file = os.path.join(dest_path, derived_filename)
+                url_lib.urlretrieve(download_url, hotlist_source_file)
 
             if not os.path.isfile(hotlist_source_file):
                 logger.error("Could not find hotlist file: %s" % hotlist_path)
