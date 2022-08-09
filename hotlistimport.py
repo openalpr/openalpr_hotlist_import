@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import base64
 import gzip
 import json
 import logging
@@ -178,6 +178,12 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                     })
                     opener = url_lib.build_opener(proxy)
                     url_lib.install_opener(opener)
+
+                if conf_data.get('hotlist_http_basic_username') and conf_data.get('hotlist_http_basic_password'):
+                    logger.info("Found Basic Auth download credentials, applying them now")
+                    userpass = conf_data['hotlist_http_basic_username'] + ':' + conf_data['hotlist_http_basic_password']
+                    encoded_u = base64.b64encode(userpass.encode()).decode()
+                    request.add_header('Authorization', "Basic %s" % encoded_u)
 
                 dest_path = os.path.dirname(hotlist_path)
                 hotlist_source_file = os.path.join(dest_path, derived_filename)

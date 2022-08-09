@@ -7,3 +7,8 @@ venv/
 venv3/
 out/
 /config/hotlist-local.yaml.sample
+/hotlistimport.csv
+/hotlistimport.dat
+/samples/hotlists/
+/.python-version
+/extras/
