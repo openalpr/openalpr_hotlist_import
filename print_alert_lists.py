@@ -1,11 +1,12 @@
 #!/usr/bin/python
-import requests
-from argparse import ArgumentParser
-import yaml
+import json
 import os
 import sys
-import json
 import time
+from argparse import ArgumentParser
+
+import requests
+import yaml
 
 
 # https://cloud.openalpr.com/api/alert-lists/
@@ -15,10 +16,13 @@ import time
 
 class AlertListManager:
 
-    def __init__(self, server_url, company_id=None, api_key=None):
-        self.server_url = server_url
-        self.company_id = company_id
-        self.api_key = api_key
+    def __init__(self, conf_data):
+        self.server_url = conf_data['server_base_url']
+        self.company_id = conf_data.get('company_id')
+        self.api_key = conf_data.get('api_key')
+        self.conf_data = conf_data
+        self.proxies = None
+        self.headers = {'User-Agent': 'OpenALPR Hotlist Importer'}
 
         list_url = '%s/api/v2/alert-lists/' % self.server_url
 
@@ -29,10 +33,18 @@ class AlertListManager:
 
         list_url += '&page_size=5000'
 
+        if conf_data.get('proxy_host'):
+            proxy_host = conf_data['proxy_host']
+            print("Using proxy {}".format(proxy_host))
+            self.proxies = {
+                'http': proxy_host,
+                'https': proxy_host
+            }
+
         retries = 0
         success = False
         while retries < 5:
-            r = requests.get(list_url, verify=False)
+            r = requests.get(list_url, verify=False, headers=self.headers, proxies=self.proxies)
 
             if not r.ok:
                 retries += 1
@@ -81,7 +93,7 @@ class AlertListManager:
         else:
             postargs['company_id'] = self.company_id
 
-        r = requests.post(list_url, verify=False, data=postargs)
+        r = requests.post(list_url, verify=False, data=postargs, headers=self.headers, proxies=self.proxies)
 
         if r.status_code != 200 and r.status_code != 201:
             print(r.content)

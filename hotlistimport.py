@@ -1,23 +1,26 @@
 #!/usr/bin/python
 
-from argparse import ArgumentParser
-from email.mime.text import MIMEText
-from glob import glob
 import gzip
 import json
 import logging
-from logging.handlers import RotatingFileHandler
 import os
 import platform
-import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from shutil import copyfile, copyfileobj
 import smtplib
 import sys
 import time
 import traceback
 import warnings
+from argparse import ArgumentParser
+from email.mime.text import MIMEText
+from glob import glob
+from logging.handlers import RotatingFileHandler
+from shutil import copyfile, copyfileobj
+from urllib.request import Request
+
+import requests
 import yaml
+from urllib3.exceptions import InsecureRequestWarning
+
 if sys.version_info.major == 3:
     from pyzipper import is_zipfile as is_zipfile
     from pyzipper import AESZipFile as zipreader
@@ -28,7 +31,6 @@ elif sys.version_info.major == 2:
     import urllib as url_lib
 from parsers import factory
 from print_alert_lists import AlertListManager
-
 
 WINDOWS = platform.system().lower().find('windows') == 0
 
@@ -159,14 +161,29 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
             if hotlist_path.lower().startswith('http://') or hotlist_path.lower().startswith('https://'):
                 logger.info("Hotlist path is a URL, try to download it: %s" % hotlist_path)
                 download_url = hotlist_path
+                request = Request(download_url)
+                request.add_header('User-Agent', 'OpenALPR Hotlist Importer')
                 hotlist_path_parts = hotlist_path.lower().rsplit("/", 1)
                 derived_filename = hotlist_path_parts[1]
                 if derived_filename is None:
                     raise RuntimeError('Could not extract file name from URL path %s' % hotlist_path_parts)
                 logger.info("Downloading file " + derived_filename)
+
+                if conf_data.get('proxy_host'):
+                    proxy_host = conf_data.get('proxy_host')
+                    logger.info("Using proxy {}".format(proxy_host))
+                    proxy = url_lib.ProxyHandler({
+                        'http': proxy_host,
+                        'https': proxy_host
+                    })
+                    opener = url_lib.build_opener(proxy)
+                    url_lib.install_opener(opener)
+
                 dest_path = os.path.dirname(hotlist_path)
                 hotlist_source_file = os.path.join(dest_path, derived_filename)
-                url_lib.urlretrieve(download_url, hotlist_source_file)
+                with open(derived_filename, 'wb') as f:
+                    f.write(url_lib.urlopen(request).read())
+                    f.close()
 
             if not os.path.isfile(hotlist_source_file):
                 logger.error("Could not find hotlist file: %s" % hotlist_path)
@@ -229,11 +246,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
             logger.info("Wrote temp CSV %s" % (conf_data['temp_csv_file']))
 
             if not skip_upload:
-                if 'api_key' in conf_data:
-                    alert_list_manager = AlertListManager(conf_data['server_base_url'], api_key=conf_data['api_key'])
-                else:
-                    alert_list_manager = AlertListManager(conf_data['server_base_url'],
-                                                          company_id=conf_data['company_id'])
+                alert_list_manager = AlertListManager(conf_data)
 
                 # if they don't specify a list ID explicitly, then create it
                 if 'openalpr_list_id' not in alert_type:
