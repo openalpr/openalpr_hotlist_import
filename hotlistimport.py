@@ -266,7 +266,7 @@ def import_hotlist(config_file, foreground=False, skip_upload=False):
                 while retry < total_attempts and list_id is not None:
                     try:
                         retry += 1
-                        logger.info("Starting upload for alert type %s (Attempt #%d)" % (alert_type['name'], retry))
+                        logger.info("Starting upload for alert type %s, list %s (Attempt #%d)" % (alert_type['name'], str(list_id), retry))
 
                         # The CSV has been written, now let's push it to OpenALPR
                         base_url = conf_data['server_base_url']

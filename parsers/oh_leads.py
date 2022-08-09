@@ -46,7 +46,7 @@ class OhLeadsParser(BaseParser):
         if re.match('^SP2-[0-9]*:', raw_line) or re.match('^and to leave', raw_line):
             return None
 
-        ohio_list_keys = ['0H STOLEN VEHICLE', '0H WARRANT SUPP', '0H MISSING', '0H LPR CALIBRATION RECORD', '0H WARRANT' ]
+        ohio_list_keys = ['0H STOLEN VEHICLE', '0H WARRANT SUPP', '0H MISSING', '0H LPR CALIBRATION RECORD' ]
 
         # Two formats are in the datafile
         ncicformat = True
