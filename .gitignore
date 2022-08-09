@@ -6,3 +6,4 @@ build/
 venv/
 venv3/
 out/
+/config/hotlist-local.yaml.sample

@@ -1,5 +1,6 @@
 import sys
 from .ca_doj_clew import CaClewParser
+from .ga_spalder import GaSpalderParser
 from .pa_psp import PaPspParser
 from .ny_state import NyStateParser
 from .fl_state import FlStateParser
@@ -76,7 +77,8 @@ def get_parser(config_obj, alert_type):
         return IlSosParser(config_obj)
     elif parser_name == 'ct_collect':
         return CtCollectParser(config_obj)
-
+    elif parser_name == 'ga_spalder':
+        return GaSpalderParser(config_obj)
     else:
         print("Unable to find parser named %s" % (parser_name))
         raise Exception("No parser found")
