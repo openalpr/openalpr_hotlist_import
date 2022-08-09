@@ -1,0 +1,29 @@
+# Configuration for Hotlist import for WA Stolen Vehicles. Parse codes not supported.
+
+server_base_url: https://police.openalpr.com
+
+company_id: yourcompanyid
+
+hotlist_parser: wa_stolen_vehicles
+hotlist_path: samples/hotlists/Active_Stolen_Vehicle_VParts.csv
+
+#hotlist_http_basic_username: user
+#hotlist_http_basic_password: password
+
+temp_dat_file: /tmp/hotlistimport.dat
+temp_csv_file: /tmp/hotlistimport.csv
+
+log_file: /var/log/openalpr/hotlist.log
+log_archives: 5
+log_max_size_mb: 100
+
+state_import:
+
+skip_list:
+  - '0'
+  - '00'
+  - '000'
+  - '190'
+
+alert_types:
+  - name: WA Stolen Vehicles
