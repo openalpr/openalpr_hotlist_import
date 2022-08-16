@@ -1,3 +1,13 @@
+openalpr-hotlistimport (1.2.4-20220816180241) unstable; urgency=low
+
+  * GA Spalder (Expired and Suspended) Parser
+  * Minnesota NCIC Parser
+  * Washington State Stolen Vehicles Parser
+  * Add support for HTTP Basic Auth when downloading files
+  * Add basic support for downloading and posting data behind a Web Proxy
+
+ -- Hermann Steidel <hsteidel@rekor.ai>  Tue, 16 Aug 2022 00:00:00 +0000
+
 openalpr-hotlistimport (1.2.3-20211028155619) unstable; urgency=low
 
   * HTTP based hotlist paths now support ZIP and GZIP file types
