@@ -57,6 +57,12 @@ After opening the GUI, you will need to
 
 server_base_url: http://localhost:9001
 
+# If you are behind a proxy, you can setup a proxy and a port.
+# Note, this will be applied for both http and https and it will affect
+# both the file download (if done via HTTP) and the uploading of data to the web server.
+
+proxy_host: 10.110.10.90:8080
+
 # If your web server is setup for company_id authentication, you may
 # place it here
 
