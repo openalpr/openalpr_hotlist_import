@@ -22,6 +22,7 @@ from .il_sos import IlSosParser
 from .in_dmv import IndianaDmvParser
 from .oh_leads import OhLeadsParser
 from .ct_collect import CtCollectParser
+from .wa_ncic import WaNCICParser
 from .wa_stolen_vehicles import WaStolenVehicles
 
 # Some parsers require Python3+
@@ -85,6 +86,8 @@ def get_parser(config_obj, alert_type):
         return MnNCICParser(config_obj)
     elif parser_name == 'wa_stolen_vehicles':
         return WaStolenVehicles(config_obj)
+    elif parser_name == 'wa_ncic':
+        return WaNCICParser(config_obj)
     else:
         print("Unable to find parser named %s" % parser_name)
         raise Exception("No parser found")
