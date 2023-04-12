@@ -1,6 +1,5 @@
 from .base import BaseParser
 import re
-import datetime
 
 class OhLeadsParser(BaseParser):
 
@@ -46,7 +45,8 @@ class OhLeadsParser(BaseParser):
         if re.match('^SP2-[0-9]*:', raw_line) or re.match('^and to leave', raw_line):
             return None
 
-        ohio_list_keys = ['0H STOLEN VEHICLE', '0H WARRANT SUPP', '0H MISSING', '0H LPR CALIBRATION RECORD' ]
+        ohio_list_keys = ['0H STOLEN VEHICLE', '0H WARRANT SUPP', '0H MISSING', '0H LPR CALIBRATION RECORD',
+                          '0H WARRANT']
 
         # Two formats are in the datafile
         ncicformat = True
@@ -60,8 +60,7 @@ class OhLeadsParser(BaseParser):
             columns = [c.strip() for c in raw_line.split(' ')]
 
             if len(columns) != 11:
-                raise ValueError('Expected 11 columns, but received %d for input: %s' %  (len(columns), raw_line))
-
+                raise ValueError('Expected 11 columns, but received %d for input: %s' % (len(columns), raw_line))
 
             dummy_val, plate_number, state, record_date, expiration_date, make, model, vehicle_year, color, warrant_nix, warrant_idx = columns
             parse_code = warrant_idx[0]
@@ -74,14 +73,6 @@ class OhLeadsParser(BaseParser):
 
             parse_code = " ".join(columns[9:]).strip()
 
-        expiration_datetime = datetime.datetime.strptime(expiration_date, '%m/%d/%Y')
-        today = datetime.datetime.now() + datetime.timedelta(days=1)
-
-        if expiration_datetime < today:
-            # Skip this entry because the expiration date has passed
-            return None
-
-
         if plate_number == '':
             return None
         if 'parse_code' in alert_config and parse_code != alert_config['parse_code']:
@@ -89,7 +80,6 @@ class OhLeadsParser(BaseParser):
 
         # Convert vehicle abbreviations
         make = self.get_vehicle_make(make.replace('0', 'O'))
-        #bodytype = self.get_vehicle_type(bodytype)
         color = self.get_vehicle_color(color)
 
         # Format description
@@ -164,7 +154,6 @@ class OhLeadsParser(BaseParser):
                 'parse_code': '0H MISSING'
             },
 
-
         ]
 
     def get_example_format(self):
@@ -172,5 +161,5 @@ class OhLeadsParser(BaseParser):
 
     def get_example_tests(self):
         return [
-                {'raw_line': self.get_example_format(), 'plate': 'GGX6728', 'state': '0H'}
-               ]
+            {'raw_line': self.get_example_format(), 'plate': 'GGX6728', 'state': '0H'}
+        ]
